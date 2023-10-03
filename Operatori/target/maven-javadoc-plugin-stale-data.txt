@@ -1,0 +1,29 @@
+cmd.exe
+/X
+/C
+"C:\Users\gianl\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.8.v20230831-1047\jre\bin\javadoc.exe @options @packages"
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\allclasses-index.html = 1696263668627
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\allclasses.html = 1626099250000
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\allpackages-index.html = 1696263668631
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\constant-values.html = 1696263668507
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\deprecated-list.html = 1626852120000
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\element-list = 1696263668466
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\help-doc.html = 1696263668680
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\index-all.html = 1696263668665
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\index.html = 1696263668668
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\jquery-ui.overrides.css = 1696263668708
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\member-search-index.js = 1696263668638
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\member-search-index.zip = 1626852120000
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\module-search-index.js = 1696263668632
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\options = 1696263666348
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\overview-tree.html = 1696263668600
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\package-search-index.js = 1696263668635
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\package-search-index.zip = 1626852120000
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\packages = 1696263666349
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\script.js = 1696263668685
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\search.js = 1696263668696
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\serialized-form.html = 1696263668547
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\stylesheet.css = 1696263668683
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\tag-search-index.js = 1696263668639
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\type-search-index.js = 1696263668636
+C:\Users\gianl\eclipse-workspace\Operatori\target\apidocs\type-search-index.zip = 1626852120000
