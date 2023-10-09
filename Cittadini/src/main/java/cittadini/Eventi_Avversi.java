@@ -12,10 +12,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
@@ -130,7 +133,7 @@ public class Eventi_Avversi extends JFrame {
 			e.printStackTrace();
 		}
 
-		setBounds(100, 100, 896, 484);
+		setBounds(100, 100, 950, 500);
 
 		Events = new JLabel("Propri eventi avversi");
 		Events.setForeground(Color.BLUE);
@@ -207,7 +210,7 @@ public class Eventi_Avversi extends JFrame {
 		contentPane.add(Notes);
 
 		Button_refresh = new JButton("AGGIORNA");
-		Button_refresh.setBounds(393, 0, 126, 23);
+		Button_refresh.setBounds(393, 10, 126, 23);
 		contentPane.add(Button_refresh);
 
 		alert = new JLabel("New label");
@@ -600,7 +603,7 @@ public class Eventi_Avversi extends JFrame {
 			Insert_notes.setVisible(false);
 			Severity_label.setVisible(false);
 			comboBox_severity.setVisible(false);
-			Button_refresh.setVisible(false);
+			Button_refresh.setVisible(false);	
 			id_vacc_label.setVisible(false);
 			comboBox_id.setVisible(false);
 			delete_Avv.setVisible(false);
@@ -656,7 +659,9 @@ public class Eventi_Avversi extends JFrame {
 			String[] split = datiRigheSplit[i].split(":");
 			for (int nr = 0; nr < split.length; nr++) {
 				comboBox_id.addItem(Integer.parseInt(split[0]));
+				
 			}
+			
 		}
 
 	}

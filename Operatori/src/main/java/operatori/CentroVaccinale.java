@@ -271,6 +271,12 @@ public class CentroVaccinale extends JFrame {
 
 			if (risultato > 0) {
 				JOptionPane.showMessageDialog(new JFrame(), "Il centro vaccinale è stato inserito con successo !");
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
+				textField_3.setText("");
+				textField_4.setText("");
+				textField_5.setText("");
 			}else if(risultato == -1) {
 				
 				JOptionPane.showMessageDialog(new JFrame(), "Centro vaccinale già presente!");

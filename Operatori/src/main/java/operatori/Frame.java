@@ -66,9 +66,8 @@ public class Frame {
 			}
 		});
 		btnCentroVaccinale.setBounds(48, 51, 234, 250);
-		ImageIcon icon = new ImageIcon("../image/hospital.png");
-		btnCentroVaccinale
-				.setIcon(new ImageIcon(icon.getImage().getScaledInstance(250, -1, java.awt.Image.SCALE_SMOOTH)));
+		ImageIcon icon = new ImageIcon("C:\\Users\\gianl\\git\\progettoSoas\\Operatori\\src\\main\\java\\operatori\\image\\hospital.png");
+		btnCentroVaccinale.setIcon(new ImageIcon(icon.getImage().getScaledInstance(250, -1, java.awt.Image.SCALE_SMOOTH)));
 
 		frmCentroApplicativo.getContentPane().add(btnCentroVaccinale);
 
@@ -83,9 +82,8 @@ public class Frame {
 			}
 		});
 		btnVaccinazione.setBounds(323, 51, 234, 250);
-		ImageIcon icon2 = new ImageIcon("../image/vaccine.jpeg");
-		btnVaccinazione
-				.setIcon(new ImageIcon(icon2.getImage().getScaledInstance(382, -1, java.awt.Image.SCALE_SMOOTH)));
+		ImageIcon icon2 = new ImageIcon("C:\\Users\\gianl\\git\\progettoSoas\\Operatori\\src\\main\\java\\operatori\\image\\vaccine.jpeg");
+		btnVaccinazione.setIcon(new ImageIcon(icon2.getImage().getScaledInstance(382, -1, java.awt.Image.SCALE_SMOOTH)));
 		frmCentroApplicativo.getContentPane().add(btnVaccinazione);
 		
 	}

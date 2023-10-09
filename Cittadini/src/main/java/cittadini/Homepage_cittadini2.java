@@ -311,7 +311,7 @@ public class Homepage_cittadini2 extends JFrame {
 							public void mouseClicked(MouseEvent e) {
 
 								try {
-									compare = Table.getValueAt(Table.getSelectedRow(), 0).toString();
+									compare = Table.getValueAt(Table.getSelectedRow(), 6).toString();
 								//	System.out.println(compare);
 									if (Table.isCellSelected(Table.getSelectedRow(), 0)) {
 										if (!(compare.equals("centro_vaccinale_id"))) {
@@ -410,7 +410,7 @@ public class Homepage_cittadini2 extends JFrame {
 							public void mouseClicked(MouseEvent e) {
 
 								try {
-									compare = Table.getValueAt(Table.getSelectedRow(), 0).toString();
+									compare = Table.getValueAt(Table.getSelectedRow(), 6).toString();
 
 									if (!(compare.equals("centro_vaccinale_id"))) {
 										if (avversi == null) {

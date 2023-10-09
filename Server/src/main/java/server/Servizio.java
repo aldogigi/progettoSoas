@@ -598,13 +598,13 @@ public class Servizio {
 	 * Il metodo cerca tutte le vaccinazioni somministrate ad un
 	 * cittadino
 	 * 
-	 * @param id      indica il centro vaccinale
+	 * @param param      indica il centro vaccinale
 	 * @param CFemail email o codice fiscale
 	 * 
 	 * @return 	niente se il cittadino non è stato ancora vaccinato,
 	 * 			lista di tutte le vaccinazioni altrimenti
 	 */
-	public String popola_id_V(String id, String CFemail) throws SQLException {
+	public String popola_id_V(String param, String CFemail) throws SQLException {
 		ResultSet ris = null;
 
 		ResultSet ris2 = null;
@@ -626,7 +626,7 @@ public class Servizio {
 		ris = stmt.executeQuery("SELECT vaccinazione_effettuata.id_vaccinazione "
 				+ "FROM vaccinazione_effettuata JOIN centri_vaccinali "
 				+ "ON vaccinazione_effettuata.centro_vaccinale_id = centri_vaccinali.centro_vaccinale_id "
-				+ "WHERE vaccinazione_effettuata.centro_vaccinale_id = " + id + "  "
+				+ "WHERE vaccinazione_effettuata.centro_vaccinale_id = '" + param.toString() + "'  "
 				+ "AND (vaccinazione_effettuata.cf = '" + CFemail.toLowerCase() + "' OR  vaccinazione_effettuata.cf = '"
 				+ cf.toLowerCase() + "')");
 

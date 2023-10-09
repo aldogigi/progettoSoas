@@ -209,6 +209,9 @@ public class Vaccinazione extends JFrame {
 			int risultato = reg.registraVaccinato();
 			if (risultato > 0) {
 				JOptionPane.showMessageDialog(new JFrame(), "La vaccinazione è stata inserita con successo !");
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
 			} else {
 				JOptionPane.showMessageDialog(new JFrame(), "La vaccinazione non è stata inserita con successo",
 						"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
