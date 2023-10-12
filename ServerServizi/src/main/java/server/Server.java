@@ -19,12 +19,15 @@ import java.net.Socket;
  */
 public class Server {
 	
-	public static String username, pwd, host, port, dbName;
+	public static String username, pwd, host, port, dbName, portServiziOauth;
 	
 	public static void main(String[] args) throws IOException {
-		int PORT = 4444; /*Porta su cui gira la ServerSocket*/
 		
 		BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
+		System.out.print("Inserisci la porta:\n4444 per ServerServizi e 4445 per ServerOauth:\n");
+		portServiziOauth = in.readLine(); 
+		
+		int PORT = Integer.parseInt(portServiziOauth); /*Porta su cui gira la ServerSocket*/
 		
 		System.out.print("Inserisci l'username per accedere al database: ");
 		username = in.readLine(); 
