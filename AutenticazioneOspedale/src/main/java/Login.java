@@ -25,7 +25,7 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField EMail;
 	private JTextField Password;
-	private registrazione Registrazione;
+	private Registrazione registrazione;
 
 	/**
 	 * Launch the application.
@@ -99,8 +99,8 @@ public class Login extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				 Registrazione = new registrazione();
-				 Registrazione.setVisible(true);
+				 registrazione = new Registrazione();
+				 registrazione.setVisible(true);
 				 setVisible(false);
 				
 			}

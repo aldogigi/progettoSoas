@@ -18,7 +18,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
-public class registrazione extends JFrame {
+public class Registrazione extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -26,7 +26,7 @@ public class registrazione extends JFrame {
 	private JTextField Password;
 	private Login login;
 
-	public registrazione() {
+	public Registrazione() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 695, 409);
 		contentPane = new JPanel();
