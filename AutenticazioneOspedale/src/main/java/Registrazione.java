@@ -18,6 +18,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
+/**
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
+ * */
+
 public class Registrazione extends JFrame {
 
 	private static final long serialVersionUID = 1L;

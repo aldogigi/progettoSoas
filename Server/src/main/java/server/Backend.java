@@ -13,10 +13,8 @@ import java.sql.Connection;
  * E' la classe che gestisce tutte le richieste inviate
  * <p>da ogni client in quanto ad ogni richiesta corrisponde un singolo thread Backend
  *
- * @author Andrea Ferro 740958 VA
- * @author Gianluca Fontana 742393 VA
- * @author Manuel Nguyen 741939 VA 
- * @author Digvijaysinh D. Raj 741976 VA
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
  */
 
 public class Backend extends Thread {

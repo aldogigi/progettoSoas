@@ -23,10 +23,8 @@ import javax.swing.SwingConstants;
  * <p> Viene mostrare la schermata principale che permette di autenticarsi, registrarsi e
  * <p> accedere alle funzionalità libere
  *
- * @author Andrea Ferro 740958 VA
- * @author Gianluca Fontana 742393 VA
- * @author Manuel Nguyen 741939 VA 
- * @author Digvijaysinh D. Raj 741976 VA
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
  */
 
 public class Home2 extends JFrame {

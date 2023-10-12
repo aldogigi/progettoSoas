@@ -26,10 +26,8 @@ import javax.swing.JComboBox;
  * La classe gestisce l'interfaccia grafica e la logica applicativa per la gestione 
  * <p>delle avversità permettendo le seguenti funzionalità: inserimento, modifica e rimozione 
  *
- * @author Andrea Ferro 740958 VA
- * @author Gianluca Fontana 742393 VA
- * @author Manuel Nguyen 741939 VA 
- * @author Digvijaysinh D. Raj 741976 VA
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
  */
 public class Eventi_Avversi extends JFrame {
 

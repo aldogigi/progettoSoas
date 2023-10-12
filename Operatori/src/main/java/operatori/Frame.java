@@ -14,10 +14,8 @@ import java.awt.event.ActionEvent;
  * La classe contiene il main del nostro applicativo.
  * <p>Genera la nostra interfaccia principale
  *
- * @author Andrea Ferro 740958 VA
- * @author Gianluca Fontana 742393 VA
- * @author Manuel Nguyen 741939 VA 
- * @author Digvijaysinh D. Raj 741976 VA
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
  */
 public class Frame {
 	private JFrame frmCentroApplicativo;

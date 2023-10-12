@@ -3,11 +3,23 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTable;
+import java.awt.FlowLayout;
+import java.awt.CardLayout;
+
+/**
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti "Matricola"
+ * */
 
 public class OAuth_gestione extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -35,6 +47,9 @@ public class OAuth_gestione extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(new CardLayout(0, 0));
+		
+		table = new JTable();
+		contentPane.add(table, "name_25122036582800");
 	}
-
 }

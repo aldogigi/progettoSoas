@@ -11,10 +11,8 @@ import java.net.Socket;
 /**
 * La classe fa da proxy con il server offrendo al client tutti i metodi per l'invio di dati
 * 
-* @author Andrea Ferro 740958 VA
-* @author Gianluca Fontana 742393 VA
-* @author Manuel Nguyen 741939 VA 
-* @author Digvijaysinh D. Raj 741976 VA
+* @author Gianluca Fontana 21452A
+* @author Alex Rabuffetti "Matricola"
 */
 public class ProxyServer implements ServerInterface {
 	private Socket socket;
