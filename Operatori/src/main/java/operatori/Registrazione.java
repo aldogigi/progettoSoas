@@ -73,11 +73,11 @@ public class Registrazione extends JFrame{
 		Password = new JPasswordField();
 		Password.setColumns(10);
 		
-		JButton btnAccedi = new JButton("Registrati");
-		btnAccedi.setBackground(Color.BLUE);
-		btnAccedi.setForeground(Color.WHITE);
+		JButton btnRegistrati = new JButton("Registrati");
+		btnRegistrati.setBackground(Color.BLUE);
+		btnRegistrati.setForeground(Color.WHITE);
 		
-		btnAccedi.addActionListener(new ActionListener() {
+		btnRegistrati.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				
@@ -167,7 +167,7 @@ public class Registrazione extends JFrame{
 					.addComponent(labelPassword, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(242)
-					.addComponent(btnAccedi, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+					.addComponent(btnRegistrati, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
 					.addGap(230))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(167)
@@ -194,7 +194,7 @@ public class Registrazione extends JFrame{
 					.addGap(18)
 					.addComponent(Password, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(btnAccedi, GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+					.addComponent(btnRegistrati, GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(LabelRegistrati)
 					.addGap(18)
