@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +21,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 
@@ -41,6 +42,8 @@ public class Login extends JFrame{
 	private Registrazione registrazione;
 	private ProxyServer ps;
 	private JButton btnAutoLogin;
+	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
 
 
 
@@ -51,8 +54,8 @@ public class Login extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login frame = new Login();
-					frame.setVisible(true);
+					Login login = new Login();
+					login.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -107,7 +110,44 @@ public class Login extends JFrame{
 				
 				String emailString = EMail.getText().toString();
 				String passwordString = Password.getText().toString();
+				String risultato = "errore";
 				
+				if (emailString.length() == 0 || passwordString.length() == 0) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "E-Mail o Password vuoti");
+				
+				}
+				else if(!(EMAIL_REGEX.matcher(emailString).matches())) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "E-Mail sbagliata");
+					
+				}
+				else if(!(PASSWORD_REGEX.matcher(passwordString).matches())) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "Formato della password scorretto");
+					
+				}
+				else {
+				
+					try {
+						risultato = ps.checkUser(emailString + ":" + passwordString);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					if (risultato == "correct") {
+						
+						new HomepageOperatori();
+						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
+						setVisible(false);
+						
+					}
+					else {
+						
+						JOptionPane.showMessageDialog(new JFrame(), risultato);
+						
+					}
+				}
 			}
 		});
 		

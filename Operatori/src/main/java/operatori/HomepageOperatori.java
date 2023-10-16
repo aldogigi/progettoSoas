@@ -1,4 +1,5 @@
 package operatori;
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -7,8 +8,12 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.security.AlgorithmConstraints;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 /**
  * La classe contiene il main del nostro applicativo.
@@ -17,13 +22,14 @@ import java.awt.event.ActionEvent;
  * @author Gianluca Fontana 21452A
  * @author Alex Rabuffetti "Matricola"
  */
-public class Frame {
+public class HomepageOperatori {
 	private JFrame frmCentroApplicativo;
+	private Login login;
 
 	/**
 	 * Frame richiama il metodo initialize() che si occupera' della costruzione della GUI
 	 */
-	public Frame() {
+	public HomepageOperatori() {
 		initialize();
 	}
 
@@ -71,6 +77,26 @@ public class Frame {
 		btnVaccinazione.setIcon(new ImageIcon(icon2.getImage().getScaledInstance(382, -1, java.awt.Image.SCALE_SMOOTH)));
 		frmCentroApplicativo.getContentPane().add(btnVaccinazione);
 		
+		JLabel labelLogout = new JLabel("Logout");
+		labelLogout.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelLogout.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLogout.setBounds(10, 10, 53, 15);
+		labelLogout.setForeground(Color.BLUE);
+		frmCentroApplicativo.getContentPane().add(labelLogout);
+		
+		labelLogout.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				login = new Login();
+				frmCentroApplicativo.setVisible(false);
+			}
+			public void mouseReleased(MouseEvent e) {	
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+		});
 	}
-
 }

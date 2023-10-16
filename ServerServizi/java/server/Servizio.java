@@ -1,10 +1,13 @@
 package server;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.postgresql.util.PSQLException;
 
@@ -700,5 +703,76 @@ public class Servizio {
 			return "cancellazione fallita";
 		}
 
+	}
+	
+	public int inserisciUser(String email, String pass) {
+
+		int result = 0;
+		
+		try {
+
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+			ResultSet ris = stmt.executeQuery(
+					"SELECT iduser FROM auth " + "WHERE email = '" + email + "';");
+
+			if (ris.first()) {
+				System.out.println("Operatore già presente");
+				result = -1;
+				return result;
+			}
+
+			result = stmt.executeUpdate(
+					"INSERT INTO auth(iduser, email, password) VALUES(nextval('id_user_seq'),"
+							+ "'" + email + "'," + "'" + pass + "');");
+
+			if (result > 0) { 
+				System.out.println("Operatore inserito");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	public String checkUser(String email, String pass) throws SQLException{
+
+		String result = "error";
+		
+		try {
+
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+			Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+			
+			ResultSet ris = stmt.executeQuery(
+					"SELECT iduser FROM auth " + "WHERE email = '" + email + "';");
+
+			if (ris.next()) {
+				
+				ResultSet ris2 = stmt2.executeQuery(
+						"SELECT iduser FROM auth " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
+
+				if (ris2.next()) { 
+					System.out.println("Login avvenuto con successo");
+					result = "correct";
+				}
+				else {
+					System.out.println("Password sbagliata");
+					result = "Password sbagliata";
+				}
+				
+			}
+			else {
+				System.out.println("Email inesistente");
+				result = "Email inesistente";
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+		
 	}
 }

@@ -1,7 +1,6 @@
 package operatori;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +20,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -38,6 +39,8 @@ public class Registrazione extends JFrame{
 	private JTextField Password;
 	private Login login;
 	private ProxyServer ps;
+	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
 
 	/**
 	 * Create the frame.
@@ -72,6 +75,8 @@ public class Registrazione extends JFrame{
 		
 		Password = new JPasswordField();
 		Password.setColumns(10);
+		Password.setToolTipText(
+				"<html> La password deve avere: <br>       Almeno un carattere maiuscolo <br>       Almeno un carattere minusculo <br>       Almeno un carattere speciale <br>       Almeno un numero <br> 		 Deve essere lunga almeno 8 caratteri.</html> ");
 		
 		JButton btnRegistrati = new JButton("Registrati");
 		btnRegistrati.setBackground(Color.BLUE);
@@ -79,10 +84,46 @@ public class Registrazione extends JFrame{
 		
 		btnRegistrati.addActionListener(new ActionListener() {
 			
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 				
 				String emailString = EMail.getText().toString();
 				String passwordString = Password.getText().toString();
+				int risultato = 0;
+				
+				if (emailString.length() == 0 || Password.getText().length() == 0) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "E-Mail o Password vuoti");
+				
+				}
+				else if(!(EMAIL_REGEX.matcher(emailString).matches())) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "E-Mail sbagliata");
+					
+				}
+				else if(!(PASSWORD_REGEX.matcher(passwordString).matches())) {
+					
+					JOptionPane.showMessageDialog(new JFrame(), "Formato della password scorretta");
+					
+				}
+				else {
+				
+					try {
+						risultato = ps.inserisciUser(emailString + ":" + passwordString);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					
+					if (risultato > 0) {
+						
+						JOptionPane.showMessageDialog(new JFrame(), "Utente inserito correttamente!");
+						
+					}
+					else {
+						
+						JOptionPane.showMessageDialog(new JFrame(), "Utente già presente!");
+						
+					}
+				}
 				
 			}
 		});
