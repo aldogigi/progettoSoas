@@ -135,16 +135,18 @@ public class Login extends JFrame{
 						e1.printStackTrace();
 					}
 					
-					if (risultato == "correct") {
+					if (!(risultato.equals("correct"))) {
 						
-						new HomepageOperatori();
+						
+						JOptionPane.showMessageDialog(new JFrame(), risultato);
+					}
+					else {
+						HomepageOperatori HO = new HomepageOperatori();
+						HO.setVisible(true);
 						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
 						setVisible(false);
 						
-					}
-					else {
 						
-						JOptionPane.showMessageDialog(new JFrame(), risultato);
 						
 					}
 				}

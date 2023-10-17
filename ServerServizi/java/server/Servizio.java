@@ -748,14 +748,16 @@ public class Servizio {
 			ResultSet ris = stmt.executeQuery(
 					"SELECT iduser FROM auth " + "WHERE email = '" + email + "';");
 
-			if (ris.next()) {
+			if (ris.first()) {
 				
 				ResultSet ris2 = stmt2.executeQuery(
 						"SELECT iduser FROM auth " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
 
-				if (ris2.next()) { 
+				if (ris2.first()) { 
+					
 					System.out.println("Login avvenuto con successo");
 					result = "correct";
+					
 				}
 				else {
 					System.out.println("Password sbagliata");

@@ -48,9 +48,9 @@ public class ProxyServer implements ServerInterface {
 		String risposta = in.readLine();
 
 		try {
-			in.close();
+			/*in.close();
 			out.close();
-			socket.close();
+			socket.close();*/
 
 		} catch (Exception e) {
 			e.printStackTrace();

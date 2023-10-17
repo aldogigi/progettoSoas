@@ -1,6 +1,6 @@
 package operatori;
 import java.awt.Color;
-import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.security.AlgorithmConstraints;
+
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -22,32 +22,28 @@ import java.awt.Font;
  * @author Gianluca Fontana 21452A
  * @author Alex Rabuffetti "Matricola"
  */
-public class HomepageOperatori {
-	private JFrame frmCentroApplicativo;
-	private Login login;
-
+public class HomepageOperatori extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Frame richiama il metodo initialize() che si occupera' della costruzione della GUI
+	 * @param  
 	 */
 	public HomepageOperatori() {
-		initialize();
-	}
-
-	/**
-	 * Crea l'interfaccia grafica 
-	 */
-	public void initialize() {
-		frmCentroApplicativo = new JFrame();
-		frmCentroApplicativo.setTitle("CENTRO APPLICATIVO - OPERATORI");
-		frmCentroApplicativo.setBounds(100, 100, 598, 358);
-		frmCentroApplicativo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmCentroApplicativo.getContentPane().setLayout(null);
-		frmCentroApplicativo.setResizable(false);
+		
+		setTitle("CENTRO APPLICATIVO - OPERATORI");
+		setBounds(100, 100, 598, 358);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null);
+		setResizable(false);
 		JLabel lblAttivitDesiderata = new JLabel("CENTRO APPLICATIVO - OPERATORI");
 		lblAttivitDesiderata.setBounds(160, 23, 271, 15);
 		lblAttivitDesiderata.setHorizontalAlignment(SwingConstants.CENTER);
 
-		frmCentroApplicativo.getContentPane().add(lblAttivitDesiderata);
+		getContentPane().add(lblAttivitDesiderata);
 
 		JButton btnCentroVaccinale = new JButton("CENTRO VACCINALE");
 		btnCentroVaccinale.addActionListener(new ActionListener() {
@@ -60,7 +56,7 @@ public class HomepageOperatori {
 		ImageIcon icon = new ImageIcon("image/hospital.png");
 		btnCentroVaccinale.setIcon(new ImageIcon(icon.getImage().getScaledInstance(250, -1, java.awt.Image.SCALE_SMOOTH)));
 
-		frmCentroApplicativo.getContentPane().add(btnCentroVaccinale);
+		getContentPane().add(btnCentroVaccinale);
 
 		JButton btnVaccinazione = new JButton("VACCINAZIONE");
 		btnVaccinazione.addActionListener(new ActionListener() {
@@ -75,19 +71,23 @@ public class HomepageOperatori {
 		btnVaccinazione.setBounds(323, 51, 234, 250);
 		ImageIcon icon2 = new ImageIcon("image/vaccine.jpeg");
 		btnVaccinazione.setIcon(new ImageIcon(icon2.getImage().getScaledInstance(382, -1, java.awt.Image.SCALE_SMOOTH)));
-		frmCentroApplicativo.getContentPane().add(btnVaccinazione);
+		getContentPane().add(btnVaccinazione);
 		
 		JLabel labelLogout = new JLabel("Logout");
 		labelLogout.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelLogout.setHorizontalAlignment(SwingConstants.CENTER);
 		labelLogout.setBounds(10, 10, 53, 15);
 		labelLogout.setForeground(Color.BLUE);
-		frmCentroApplicativo.getContentPane().add(labelLogout);
+		getContentPane().add(labelLogout);
 		
-		labelLogout.addMouseListener(new MouseListener() {
+		
+		labelLogout.addMouseListener(new MouseListener()
+		
+		{
 			public void mouseClicked(MouseEvent e) {
-				login = new Login();
-				frmCentroApplicativo.setVisible(false);
+				Login login = new Login();
+				login.setVisible(true);
+				setVisible(false);
 			}
 			public void mouseReleased(MouseEvent e) {	
 			}
@@ -98,5 +98,6 @@ public class HomepageOperatori {
 			public void mouseEntered(MouseEvent e) {
 			}
 		});
+		
 	}
 }
