@@ -18,6 +18,7 @@ public class ProxyServer implements ServerInterface {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
+	private InetAddress addr;
 
 	/**
 	 * Il costruttore definisce la Socket e gli oggetti I/O
@@ -25,10 +26,8 @@ public class ProxyServer implements ServerInterface {
 	 * @exception IOExeption se non si riesce a comunicare con il server
 	 */
 	public ProxyServer() throws IOException {
-		InetAddress addr = InetAddress.getByName(null);
-		socket = new Socket(addr, ServerInterface.PORT);
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		addr = InetAddress.getByName(null);
+		
 	}
 
 
@@ -43,6 +42,11 @@ public class ProxyServer implements ServerInterface {
 	 */
 	
 	public String checkUser(String param) throws IOException {
+		
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
 		out.println("checkUser:" + param);
 
 		String risposta = in.readLine();
@@ -60,6 +64,11 @@ public class ProxyServer implements ServerInterface {
 	}
 	
 	public int inserisciCV(String param) throws IOException {
+		
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
 		out.println("inserisciCV:" + param);
 
 		String risposta = in.readLine();
@@ -77,6 +86,11 @@ public class ProxyServer implements ServerInterface {
 	}
 	
 	public int inserisciUser(String param) throws IOException {
+		
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
 		out.println("inserisciUser:" + param);
 		
 		String risposta = in.readLine();
@@ -104,6 +118,11 @@ public class ProxyServer implements ServerInterface {
 	 * @return intero maggiore di 0 se il server ha inserito la vaccinazione, intero negativo altrimenti
 	 */
 	public int inserisciVN(String param) throws IOException {
+		
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
 		out.println("inserisciVN:" + param);
 
 		String risposta = in.readLine();
@@ -128,6 +147,11 @@ public class ProxyServer implements ServerInterface {
 	 * @return lista di tutti i centri vaccinali se presenti, lista vuota altrimenti
 	 */
 	public String popolaCV() throws IOException {
+		
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
 		out.println("popolaCV");
 
 		String risposta = in.readLine();
