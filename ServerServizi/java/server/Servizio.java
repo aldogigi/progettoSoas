@@ -1,13 +1,10 @@
 package server;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.postgresql.util.PSQLException;
 
@@ -776,5 +773,70 @@ public class Servizio {
 
 		return result;
 		
+	}
+
+	public String allUserOAuth() throws SQLException{
+		
+		ResultSet ris = null;
+		String[] array = new String[3];
+
+		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+		ris = stmt.executeQuery("SELECT email, tymestamp FROM type_user;");
+		if (!(ris.first())) {
+			return "niente";
+		}
+		else {
+			array = new String[3];
+			ResultSetMetaData rsmd = ris.getMetaData();
+			int numColonne = rsmd.getColumnCount();
+			String nomeColonne = "";
+			for (int nr = 0; nr < numColonne; nr++)
+				nomeColonne += (rsmd.getColumnName(nr + 1).toString() + ":");
+			String datiRighe = "";
+			while (ris.next()) {
+				String riga = "";
+				for (int nr = 0; nr < numColonne; nr++) {
+					riga += (ris.getObject(nr + 1).toString() + ":");
+				}
+				datiRighe += riga + "___________";
+			}
+			array[0] = nomeColonne;
+			array[1] = datiRighe;
+		}
+		return (array[0] + "-" + array[1]);
+	}
+
+	public int inserNewUserOauth(String email, String tymestamp) {
+		
+		int result = 0;
+		
+		try {
+
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+			ResultSet ris = stmt.executeQuery(
+					"SELECT id_user FROM type_user " + "WHERE email = '" + email + "';");
+
+			if (ris.first()) {
+				System.out.println("Operatore già presente");
+				result = -1;
+				return result;
+			}
+
+			String token = "";
+			
+			result = stmt.executeUpdate(
+					"INSERT INTO type_user(iduser, type, token, email, tymestamp) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
+							+ "'" + email + "'," + "'" + tymestamp+ "');");
+
+			if (result > 0) { 
+				System.out.println("Operatore inserito");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 }

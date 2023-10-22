@@ -229,7 +229,28 @@ public class Backend extends Thread {
 
 						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
 
+					}
+					else if (param[0].equals("allUserOAuth")) {
 						
+						String result = servizio.allUserOAuth();
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
+					}
+					else if (param[0].equals("inserNewUserOauth")) {
+						
+						int result = servizio.inserNewUserOauth(param[1], param[2]);
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
 					}
 					
 
