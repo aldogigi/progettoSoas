@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -103,7 +107,25 @@ public class OAuth_buttons_users extends JButton {
     	check_text.setForeground(Color.WHITE);
     	add(check_text);
     	
-    	labelTime = new JLabel(timeToken);
+		String timestampNew = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(Calendar.getInstance().getTime());
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss", Locale.ENGLISH);
+
+		java.util.Date datenew = formatter.parse(timestampNew);
+		java.util.Date dateold = formatter.parse(timeToken);
+		
+		long duration  = datenew.getTime() - dateold.getTime();
+		long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+		
+		labelTime = new JLabel("");
+		
+		if(diffInMinutes > 30) {
+			labelTime.setText("Expired");
+		}
+		else {
+			labelTime.setText(timeToken);
+		}
+    	
     	labelTime.setHorizontalAlignment(SwingConstants.RIGHT);
     	labelTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
     	labelTime.setForeground(Color.RED);
@@ -145,12 +167,21 @@ public class OAuth_buttons_users extends JButton {
             }
         });
         
+        String time = labelTime.getText().toString();
+        
         addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				if(time == "Expired") {
 					
+					System.out.println("Expired");
+					
+				}
+				else {
+					System.out.println("Not expired");
+				}
 			}
 		
 		});

@@ -90,7 +90,7 @@ public class Registrazione extends JFrame{
 				String passwordString = Password.getText().toString();
 				int risultato = 0;
 				
-				if (emailString.length() == 0 || Password.getText().length() == 0) {
+				if (emailString.length() == 0 || passwordString.length() == 0) {
 					
 					JOptionPane.showMessageDialog(new JFrame(), "E-Mail o Password vuoti");
 				

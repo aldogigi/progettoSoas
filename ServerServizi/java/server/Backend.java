@@ -243,7 +243,7 @@ public class Backend extends Thread {
 					}
 					else if (param[0].equals("inserNewUserOauth")) {
 						
-						int result = servizio.inserNewUserOauth(param[1], param[2]);
+						int result = servizio.inserNewUserOauth(param[1], param[2], param[3]);
 
 						if (out != null) {
 							out.println(result);

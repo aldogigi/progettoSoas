@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
@@ -27,7 +29,7 @@ import javax.swing.JTextField;
  * @author Alex Rabuffetti "Matricola"
  * */
 
-public class Registrazione extends JFrame{
+public class Registrazione_OAuth extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -42,7 +44,7 @@ public class Registrazione extends JFrame{
 	 * Create the frame.
 	 * @param check 
 	 */
-	public Registrazione(String check) throws Exception{
+	public Registrazione_OAuth(String check) throws Exception{
 		ps = new ProxyServer();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +85,7 @@ public class Registrazione extends JFrame{
 				String emailString = EMail.getText().toString();
 				String passwordString = Password.getText().toString();
 				
-				if (emailString.length() == 0 || Password.getText().length() == 0) {
+				if (emailString.length() == 0 || passwordString.length() == 0) {
 					
 					JOptionPane.showMessageDialog(new JFrame(), "E-Mail o Password vuoti");
 				
@@ -102,8 +104,12 @@ public class Registrazione extends JFrame{
 				
 					int result = 0;
 					
+					String timestamp = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(Calendar.getInstance().getTime());
+					System.out.println(timestamp);
+					
+					
 					try {
-						result = ps.inserNewUserOauth(emailString + ":" + passwordString);
+						result = ps.inserNewUserOauth(emailString + ":" + passwordString + ":" + timestamp);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

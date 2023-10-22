@@ -36,7 +36,7 @@ public class OAuthGestione extends JFrame {
 	private String timeToken;
 	private ProxyServer ps;
 	private String[] emails;
-	private Registrazione registrazione;
+	private Registrazione_OAuth registrazione;
 
 	/**
 	 * Launch the application.
@@ -77,7 +77,7 @@ public class OAuthGestione extends JFrame {
 		panel.setLayout(gl);
 		
 		JLabel registati = new JLabel("Registrati");
-		registati.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 10));
+		registati.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		registati.setForeground(Color.BLACK);
 		registati.setHorizontalAlignment(SwingConstants.LEFT);
 		registati.setVerticalAlignment(SwingConstants.TOP);
@@ -95,6 +95,7 @@ public class OAuthGestione extends JFrame {
 			
 		}
 		else {
+			System.out.println(allUserOAuthString);
 			String[] splitUser = allUserOAuthString.split("-");
 			emails = splitUser[1].split("___________");
 			
@@ -137,7 +138,7 @@ public class OAuthGestione extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				try {
-					registrazione = new Registrazione(check);
+					registrazione = new Registrazione_OAuth(check);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -179,6 +180,6 @@ public class OAuthGestione extends JFrame {
 		setResizable(false);
 		contentPane.add(scroll);
 		contentPane.setVisible(true);
-		setBounds(100,100,519,218);
+		setBounds(100,100,519,145);
 	}
 }

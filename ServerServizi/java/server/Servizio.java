@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.postgresql.util.PSQLException;
 
 /**
@@ -794,6 +793,7 @@ public class Servizio {
 			for (int nr = 0; nr < numColonne; nr++)
 				nomeColonne += (rsmd.getColumnName(nr + 1).toString() + ":");
 			String datiRighe = "";
+			ris.beforeFirst();
 			while (ris.next()) {
 				String riga = "";
 				for (int nr = 0; nr < numColonne; nr++) {
@@ -807,7 +807,7 @@ public class Servizio {
 		return (array[0] + "-" + array[1]);
 	}
 
-	public int inserNewUserOauth(String email, String tymestamp) {
+	public int inserNewUserOauth(String email, String password, String tymestamp) {
 		
 		int result = 0;
 		
@@ -823,12 +823,44 @@ public class Servizio {
 				result = -1;
 				return result;
 			}
+			
+			String[] pezziEmail = email.split("@");
+			String[] dopoChiocciola = pezziEmail[1].split("");
+			String dopo = dopoChiocciola[1] + dopoChiocciola[3] + dopoChiocciola[5];
+			String[] primaChiocciola = pezziEmail[0].split("");
+			String prima = "";
+			for(int i = 0; i < primaChiocciola.length; i++) {
+				if(i%2 == 0) {
+					prima += primaChiocciola[i];
+				}
+			};
+			
+			String token = "OP"+ (prima + dopo).toUpperCase();
+			
+			System.out.println(tymestamp);
+			
+			String timestampTokenWithoutPunto = tymestamp.replace(".", "");
+			String timestampToken = timestampTokenWithoutPunto.replace("/", "");
 
-			String token = "";
+			System.out.println(timestampToken);
+			
+			token += timestampToken;
+			
+			String[] passTokenSplit = password.split("");
+			String passToken = "";
+			for(int i = 0; i < passTokenSplit.length; i++) {
+				if(i%2 == 0) {
+					passToken += passTokenSplit[i];
+				}
+			};
+			
+			token += passToken.toUpperCase();
+			
+			System.out.println(token);
 			
 			result = stmt.executeUpdate(
-					"INSERT INTO type_user(iduser, type, token, email, tymestamp) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
-							+ "'" + email + "'," + "'" + tymestamp+ "');");
+					"INSERT INTO type_user(id_user, type, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
+							+ "'" + email + "'," + "'" + tymestamp+ "', '" + password + "');");
 
 			if (result > 0) { 
 				System.out.println("Operatore inserito");
