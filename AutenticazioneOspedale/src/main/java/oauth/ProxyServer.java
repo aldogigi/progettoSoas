@@ -132,10 +132,31 @@ public class ProxyServer implements ServerInterface {
 
 		return Integer.parseInt(risposta);
 	}
+	
+	public int deleteUserOAuthOperatori(String param) throws IOException{
+		socket = new Socket(addr, 4444);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("deleteUserOAuthOperatori:" + param);
+
+		String risposta = in.readLine();
+
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Integer.parseInt(risposta);
+	}
 
 
 	public String presenceUserOAuth(String param) throws IOException {
-		socket = new Socket(addr, ServerInterface.PORT);
+		socket = new Socket(addr, 4444);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 		
@@ -153,5 +174,27 @@ public class ProxyServer implements ServerInterface {
 		}
 
 		return risposta;
+	}
+
+
+	public int inserisciUser(String param) throws IOException {
+		socket = new Socket(addr, 4444);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("inserisciUser:" + param);
+
+		String risposta = in.readLine();
+
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return Integer.parseInt(risposta);
 	}
 }

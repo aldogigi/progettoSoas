@@ -165,6 +165,23 @@ public class OAuth_buttons_users extends JButton {
 				}
 				
 				if(result == 0){
+					JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth eliminato con successo");
+					oAuthGestione.setVisible(false);
+					
+					try {
+						result = ps.deleteUserOAuthOperatori(token);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
+					if(result == 0){
+						JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth in Operatori eliminato con successo");
+						oAuthGestione.setVisible(false);
+					}
+					else {
+						JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth in Operatori inesistente");
+					}
 					try {
 						OAuthGestione oAuthGestione2 = new OAuthGestione(checkLR);
 						oAuthGestione2.setVisible(true);
@@ -172,8 +189,7 @@ public class OAuth_buttons_users extends JButton {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					JOptionPane.showMessageDialog(new JFrame(), "Utente eliminato con successo");
-					oAuthGestione.setVisible(false);
+					
 				}
 				else {
 					JOptionPane.showMessageDialog(new JFrame(), "Errore");
@@ -279,12 +295,36 @@ public class OAuth_buttons_users extends JButton {
 				else if(checkLR.equals("registrazione")) {
 					if(time == "Expired") {
 						
-						
+						 System.out.println("Expired registrazione");
+						 try {
+							 oAuthGestione.setVisible(false);
+							 loginOauth = new Login_OAuth(checkLR, token);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							 loginOauth.setVisible(true);
+							 setVisible(false);
 						
 					}
 					else {
-						
-						
+						int result = 0;
+						try {
+							result = ps.inserisciUser(token + ":" + "null");
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						if (result > 0) {
+							
+							JOptionPane.showMessageDialog(new JFrame(), "Utente inserito correttamente!");
+							
+						}
+						else {
+							
+							JOptionPane.showMessageDialog(new JFrame(), "Utente gia' presente!");
+							
+						}
 						
 					}
 				}

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -112,31 +114,22 @@ public class Login_OAuth extends JFrame{
 						e1.printStackTrace();
 					}
 					
-					if (!(risultato.equals("correct"))) {
+					if (!(risultato.equals("Token OAuth aggiornato"))) {
 						
 						
 						JOptionPane.showMessageDialog(new JFrame(), risultato);
 					}
 					else {
 						
-						dispose();
-						 ProcessBuilder builder = new ProcessBuilder(
-						            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar true " + token +"");
-						        builder.redirectErrorStream(true);
-						        Process p;
-								try {
-									p = builder.start();
-									BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-							        String line;
-							        while (true) {
-							            line = r.readLine();
-							            if (line == null) { break; }
-							            System.out.println(line);
-							        }
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								}
-						
+						 setVisible(false);
+						 OAuthGestione oAuthGestione = null;
+						try {
+							oAuthGestione = new OAuthGestione(checkLR);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						 oAuthGestione.setVisible(true);
 					}
 				}
 			}
@@ -225,6 +218,29 @@ public class Login_OAuth extends JFrame{
 			}
 			
 		});
+		
+		this.addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+				   
+				   dispose();
+				   ProcessBuilder builder = new ProcessBuilder(
+				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
+				        builder.redirectErrorStream(true);
+				        Process p;
+						try {
+							p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					        String line;
+					        while (true) {
+					            line = r.readLine();
+					            if (line == null) { break; }
+					            System.out.println(line);
+					        }
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+			   }
+			  });
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(

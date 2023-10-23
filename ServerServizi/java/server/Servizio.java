@@ -745,7 +745,6 @@ public class Servizio {
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 			Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 			Statement stmt3 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
-			Statement stmt4 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
 			if(checkTypeLoginSource.equals("null")) {
 				ris = stmt.executeQuery(
@@ -786,17 +785,8 @@ public class Servizio {
 						
 						if(!ris3) {
 							
-							String token = (ris2.getObject(1).toString());
-							ResultSet ris4 = stmt4.executeQuery(
-									"SELECT iduser FROM auth " + "WHERE email = '" + token + "';");
+							result = "Token OAuth aggiornato";
 							
-							if (ris4.first()) { 
-								System.out.println("Login avvenuto con successo");
-								result = "correct";
-							}
-							else {
-								result = "Token OAuth aggiornato, ma non esiste un account in Operatori con queste credenziali. Registrati!";
-							}
 						}
 						else {
 							System.out.println("Errore nell'aggiornamento del timestamp");
@@ -958,5 +948,32 @@ public class Servizio {
 		}
 
 		return "-1";
+	}
+
+	public int deleteUserOAuthOperatori(String token) throws SQLException{
+		
+		Boolean result = false;
+		
+		try {
+			String check = this.presenceUserOAuth(token);
+			
+			if(check.equals("0")) {
+				
+				Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+	
+				result = stmt.execute("DELETE FROM auth WHERE email = '" + token+ "';");
+	
+				if (!result) { 
+					return 0;
+				}
+			}
+			else if (check.equals("-1")) {
+				return -1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return -1;
 	}
 }

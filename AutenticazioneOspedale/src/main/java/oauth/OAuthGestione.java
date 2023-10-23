@@ -188,7 +188,7 @@ public class OAuthGestione extends JFrame {
 		contentPane.add(scroll);
 		contentPane.setVisible(true);
 		setBounds(100,100,760,161);
-		setTitle("OAuth");
+		setTitle("OAuth: " + checkLR);
 	}
 	
 	public void showOptionPane(String string) {

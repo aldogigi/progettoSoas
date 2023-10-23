@@ -263,6 +263,17 @@ public class Backend extends Thread {
 						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
 
 					}
+					else if (param[0].equals("deleteUserOAuthOperatori")) {
+						
+						int result = servizio.deleteUserOAuthOperatori(param[1]);
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
+					}
 					else if (param[0].equals("presenceUserOAuth")) {
 						
 						String result = servizio.presenceUserOAuth(param[1]);

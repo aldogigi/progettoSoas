@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -210,6 +214,30 @@ public class Registrazione_OAuth extends JFrame{
 					.addComponent(LabelRegistrati)
 					.addGap(18))
 		);
+		
+		this.addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+				   
+				   dispose();
+				   ProcessBuilder builder = new ProcessBuilder(
+				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
+				        builder.redirectErrorStream(true);
+				        Process p;
+						try {
+							p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					        String line;
+					        while (true) {
+					            line = r.readLine();
+					            if (line == null) { break; }
+					            System.out.println(line);
+					        }
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+			   }
+			  });
+		
 		contentPane.setLayout(gl_contentPane);
 		setTitle("Registrazione OAuth");
 		setResizable(false);
