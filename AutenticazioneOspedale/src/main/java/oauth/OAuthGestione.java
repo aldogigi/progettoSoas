@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -37,6 +38,8 @@ public class OAuthGestione extends JFrame {
 	private ProxyServer ps;
 	private String[] emails;
 	private Registrazione_OAuth registrazione;
+	private String checkLR = "";
+	private String token = "";
 
 	/**
 	 * Launch the application.
@@ -59,7 +62,7 @@ public class OAuthGestione extends JFrame {
 	 * Create the frame.
 	 * @throws Exception 
 	 */
-	public OAuthGestione(String check) throws Exception {
+	public OAuthGestione(String checkLR) throws Exception {
 		
 		ps = new ProxyServer();
 		
@@ -83,6 +86,9 @@ public class OAuthGestione extends JFrame {
 		registati.setVerticalAlignment(SwingConstants.TOP);
 		panel.add(registati);
 		
+		this.checkLR = checkLR;
+		System.out.print(this.checkLR);
+		
 		String allUserOAuthString = ps.allUserOAuth();
 		if(allUserOAuthString.equals("niente")) {
 			JLabel nothing = new JLabel("Nessun utente trovato nel server OAuth");
@@ -102,9 +108,10 @@ public class OAuthGestione extends JFrame {
 			int num = emails.length;
 			for(int i=0;i<num;i++) {
 				String[] riga = emails[i].split(":");
-				String email = riga[0];
-				timeToken = riga[1];			
-				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(email, timeToken);
+				token = riga[0];
+				String email = riga[1];
+				timeToken = riga[2];			
+				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(email, timeToken, this.checkLR, this, token);
 				panel.add(oAuth_buttons);
 			}
 		}
@@ -114,7 +121,7 @@ public class OAuthGestione extends JFrame {
 			   
 			   dispose();
 			   ProcessBuilder builder = new ProcessBuilder(
-			            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar");
+			            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
 			        builder.redirectErrorStream(true);
 			        Process p;
 					try {
@@ -138,7 +145,7 @@ public class OAuthGestione extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				try {
-					registrazione = new Registrazione_OAuth(check);
+					registrazione = new Registrazione_OAuth(checkLR);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -180,6 +187,12 @@ public class OAuthGestione extends JFrame {
 		setResizable(false);
 		contentPane.add(scroll);
 		contentPane.setVisible(true);
-		setBounds(100,100,519,145);
+		setBounds(100,100,760,161);
+		setTitle("OAuth");
 	}
+	
+	public void showOptionPane(String string) {
+		JOptionPane.showMessageDialog(new JFrame(), string);
+	}
+	
 }

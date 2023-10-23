@@ -50,12 +50,22 @@ public class Login extends JFrame{
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Login login = new Login();
-					login.setVisible(true);
+					Login login = new Login(args[0], args[1]);
+					if(args[0].equals("true")) {
+						
+						HomepageOperatori HO = new HomepageOperatori(args[0], args[1]);
+						HO.setVisible(true);
+						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
+						login.setVisible(false);
+						
+					}
+					else {
+						login.setVisible(true);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -65,8 +75,10 @@ public class Login extends JFrame{
 
 	/**
 	 * Create the frame.
+	 * @param checkOAuth 
+	 * @param tokenUserOAuth 
 	 */
-	public Login(){
+	public Login(final String checkOAuth, final String tokenUserOAuth){
 		
 		btnAutoLogin = new JButton("");
 		
@@ -130,7 +142,7 @@ public class Login extends JFrame{
 				else {
 				
 					try {
-						risultato = ps.checkUser(emailString + ":" + passwordString);
+						risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "null");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -141,7 +153,7 @@ public class Login extends JFrame{
 						JOptionPane.showMessageDialog(new JFrame(), risultato);
 					}
 					else {
-						HomepageOperatori HO = new HomepageOperatori();
+						HomepageOperatori HO = new HomepageOperatori(checkOAuth, tokenUserOAuth);
 						HO.setVisible(true);
 						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
 						setVisible(false);
@@ -160,7 +172,7 @@ public class Login extends JFrame{
 			
 			public void mouseClicked(MouseEvent e) {
 
-				 registrazione = new Registrazione();
+				 registrazione = new Registrazione(checkOAuth, tokenUserOAuth);
 				 registrazione.setVisible(true);
 				 setVisible(false);
 				

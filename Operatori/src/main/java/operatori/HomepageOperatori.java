@@ -30,10 +30,12 @@ public class HomepageOperatori extends JFrame {
 	
 	/**
 	 * Frame richiama il metodo initialize() che si occupera' della costruzione della GUI
+	 * @param checkOAuth 
+	 * @param tokenUserOAuth 
 	 * @param  
 	 */
-	public HomepageOperatori() {
-		
+	public HomepageOperatori(final String checkOAuth, final String tokenUserOAuth) {
+				
 		setTitle("CENTRO APPLICATIVO - OPERATORI");
 		setBounds(100, 100, 598, 358);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +87,7 @@ public class HomepageOperatori extends JFrame {
 		
 		{
 			public void mouseClicked(MouseEvent e) {
-				Login login = new Login();
+				Login login = new Login(checkOAuth, tokenUserOAuth);
 				login.setVisible(true);
 				setVisible(false);
 			}

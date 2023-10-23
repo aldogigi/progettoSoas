@@ -44,8 +44,10 @@ public class Registrazione extends JFrame{
 
 	/**
 	 * Create the frame.
+	 * @param checkOAuth 
+	 * @param tokenUserOAuth 
 	 */
-	public Registrazione(){
+	public Registrazione(final String checkOAuth, final String tokenUserOAuth){
 		try {
 			ps = new ProxyServer();
 		}catch (Exception e) {
@@ -135,7 +137,7 @@ public class Registrazione extends JFrame{
 			
 			public void mouseClicked(MouseEvent e) {
 
-				 login = new Login();
+				 login = new Login(checkOAuth, tokenUserOAuth);
 				 login.setVisible(true);
 				 setVisible(false);
 				
@@ -243,7 +245,7 @@ public class Registrazione extends JFrame{
 					.addGap(27))
 		);
 		contentPane.setLayout(gl_contentPane);
-		setTitle("Login");
+		setTitle("Registrazione");
 		setResizable(false);
 	}
 }

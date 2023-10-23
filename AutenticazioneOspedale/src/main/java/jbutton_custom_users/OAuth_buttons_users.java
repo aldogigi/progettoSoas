@@ -9,17 +9,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import oauth.Login_OAuth;
+import oauth.OAuthGestione;
 import oauth.ProxyServer;
 
 public class OAuth_buttons_users extends JButton {
@@ -82,6 +91,7 @@ public class OAuth_buttons_users extends JButton {
     private Color colorClick;
     private Color borderColor;
     private int radius = 0;
+    private Login_OAuth loginOauth;
     /**
      * @wbp.nonvisual location=41,23
      */
@@ -90,14 +100,18 @@ public class OAuth_buttons_users extends JButton {
      * @wbp.nonvisual location=281,43
      */
     private final JLabel labelTime;
+    /**
+     * @wbp.nonvisual location=466,33
+     */
+    private final JButton delete = new JButton("");
 
-    public OAuth_buttons_users(String email, String timeToken) throws Exception{
+    public OAuth_buttons_users(String email, String timeToken, String checkLR, OAuthGestione oAuthGestione, String token) throws Exception{
         //  Init Color
     	
     	ps = new ProxyServer();
     	GridLayout gl = new GridLayout();
 
-    	gl.setColumns(2);
+    	gl.setColumns(3);
     	gl.setRows(0);
     	setLayout(gl);
     	
@@ -130,6 +144,44 @@ public class OAuth_buttons_users extends JButton {
     	labelTime.setFont(new Font("Tahoma", Font.PLAIN, 18));
     	labelTime.setForeground(Color.RED);
     	add(labelTime);
+    	
+    	ImageIcon icon = new ImageIcon("image/trash.png");
+    	delete.setHorizontalAlignment(SwingConstants.RIGHT);
+    	delete.setIcon(icon);
+    	delete.setBorder(BorderFactory.createEmptyBorder());
+    	delete.setContentAreaFilled(false);
+    	delete.setFocusable(false);
+    	delete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int result = 0;
+				try {
+					result = ps.deleteUserOAuth(token);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(result == 0){
+					try {
+						OAuthGestione oAuthGestione2 = new OAuthGestione(checkLR);
+						oAuthGestione2.setVisible(true);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(new JFrame(), "Utente eliminato con successo");
+					oAuthGestione.setVisible(false);
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), "Errore");
+				}
+				
+			}
+		});
+    	add(delete);
     	
     	setBackground(new Color(119, 119, 255));
     	color = new Color(119, 119, 255);
@@ -174,13 +226,67 @@ public class OAuth_buttons_users extends JButton {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if(time == "Expired") {
-					
-					System.out.println("Expired");
-					
+				if(checkLR.equals("login")) {
+					if(time == "Expired") {
+						
+						 System.out.println("Expired login");
+						 try {
+							 oAuthGestione.setVisible(false);
+							 loginOauth = new Login_OAuth(checkLR, token);
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							 loginOauth.setVisible(true);
+							 setVisible(false);
+					}
+					else {
+						
+						String presenceUserOAuth = "";
+						try {
+							presenceUserOAuth = ps.presenceUserOAuth(token);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						if(presenceUserOAuth.equals("0")) {
+							oAuthGestione.dispose();
+							ProcessBuilder builder = new ProcessBuilder(
+						            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar true " + token + "");
+						        builder.redirectErrorStream(true);
+						        Process p;
+								try {
+									p = builder.start();
+									BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+							        String line;
+							        while (true) {
+							            line = r.readLine();
+							            if (line == null) { break; }
+							            System.out.println(line);
+							        }
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+						}
+						else if (presenceUserOAuth.equals("-1")) {
+								
+							oAuthGestione.showOptionPane("Questo utente non e' presente all'interno del database degli Operatori");
+							
+						}
+					}
 				}
-				else {
-					System.out.println("Not expired");
+				else if(checkLR.equals("registrazione")) {
+					if(time == "Expired") {
+						
+						
+						
+					}
+					else {
+						
+						
+						
+					}
 				}
 			}
 		

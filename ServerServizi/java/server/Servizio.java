@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.postgresql.util.PSQLException;
 
 /**
@@ -732,28 +735,75 @@ public class Servizio {
 		return result;
 	}
 
-	public String checkUser(String email, String pass) throws SQLException{
+	public String checkUser(String email, String pass, String checkTypeLoginSource) throws SQLException{
 
 		String result = "error";
+		ResultSet ris = null;
 		
 		try {
 
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 			Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
-			
-			ResultSet ris = stmt.executeQuery(
-					"SELECT iduser FROM auth " + "WHERE email = '" + email + "';");
+			Statement stmt3 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+			Statement stmt4 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
+			if(checkTypeLoginSource.equals("null")) {
+				ris = stmt.executeQuery(
+						"SELECT iduser FROM auth " + "WHERE email = '" + email + "';");
+			}
+			else if (checkTypeLoginSource.equals("oauth")){
+				
+				ris = stmt.executeQuery(
+						"SELECT token FROM type_user " + "WHERE email = '" + email + "';");
+				
+			}
 			if (ris.first()) {
 				
-				ResultSet ris2 = stmt2.executeQuery(
-						"SELECT iduser FROM auth " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
+				ResultSet ris2 = null;
+				if(checkTypeLoginSource.equals("null")) {
+					ris2 = stmt2.executeQuery(
+							"SELECT iduser FROM auth " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
+				}
+				else if(checkTypeLoginSource.equals("oauth")) {
+					
+					ris2 = stmt2.executeQuery(
+							"SELECT token FROM type_user " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
+					
+				}
 
 				if (ris2.first()) { 
 					
-					System.out.println("Login avvenuto con successo");
-					result = "correct";
-					
+					if(checkTypeLoginSource.equals("null")) {
+						System.out.println("Login avvenuto con successo");
+						result = "correct";
+					}
+					else if(checkTypeLoginSource.equals("oauth")) {
+						
+						
+						String timestampNew = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(Calendar.getInstance().getTime());
+						
+						Boolean ris3 = stmt3.execute("UPDATE type_user SET tymestamp = '" + timestampNew + "' WHERE email = '" + email + "' AND password = '" + pass + "';");
+						
+						if(!ris3) {
+							
+							String token = (ris2.getObject(1).toString());
+							ResultSet ris4 = stmt4.executeQuery(
+									"SELECT iduser FROM auth " + "WHERE email = '" + token + "';");
+							
+							if (ris4.first()) { 
+								System.out.println("Login avvenuto con successo");
+								result = "correct";
+							}
+							else {
+								result = "Token OAuth aggiornato, ma non esiste un account in Operatori con queste credenziali. Registrati!";
+							}
+						}
+						else {
+							System.out.println("Errore nell'aggiornamento del timestamp");
+							result = "Errore nell'aggiornamento del timestamp";
+						}
+						
+					}
 				}
 				else {
 					System.out.println("Password sbagliata");
@@ -781,7 +831,7 @@ public class Servizio {
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-		ris = stmt.executeQuery("SELECT email, tymestamp FROM type_user;");
+		ris = stmt.executeQuery("SELECT token, email, tymestamp FROM type_user;");
 		if (!(ris.first())) {
 			return "niente";
 		}
@@ -870,5 +920,43 @@ public class Servizio {
 		}
 
 		return result;
+	}
+
+	public int deleteUserOAuth(String token) throws SQLException{
+		
+		Boolean result = false;
+		
+		try {
+
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+			result = stmt.execute("DELETE FROM type_user WHERE token = '" + token+ "';");
+
+			if (!result) { 
+				return 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return -1;
+	}
+
+	public String presenceUserOAuth(String token) throws SQLException{
+		
+		try {
+			ResultSet ris = null;
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+			ris = stmt.executeQuery("SELECT iduser FROM auth WHERE email = '" + token+ "';");
+
+			if (ris.first()) { 
+				return "0";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return "-1";
 	}
 }

@@ -209,7 +209,7 @@ public class Backend extends Thread {
 
 					} else if (param[0].equals("checkUser")) {
 						
-						String result = servizio.checkUser(param[1], param[2]);
+						String result = servizio.checkUser(param[1], param[2], param[3]);
 
 						if (out != null) {
 							out.println(result);
@@ -244,6 +244,28 @@ public class Backend extends Thread {
 					else if (param[0].equals("inserNewUserOauth")) {
 						
 						int result = servizio.inserNewUserOauth(param[1], param[2], param[3]);
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
+					}
+					else if (param[0].equals("deleteUserOAuth")) {
+						
+						int result = servizio.deleteUserOAuth(param[1]);
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
+					}
+					else if (param[0].equals("presenceUserOAuth")) {
+						
+						String result = servizio.presenceUserOAuth(param[1]);
 
 						if (out != null) {
 							out.println(result);
