@@ -12,11 +12,18 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * E' la classe principale contenente il main.
@@ -56,19 +63,19 @@ public class Home2 extends JFrame {
 		super("Login Cittadini");
 		
 		
-		setBounds(100, 100, 516, 300);
+		setBounds(100, 100, 516, 338);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		Email_CF = new JTextField();
-		Email_CF.setBounds(158, 51, 197, 20);
+		Email_CF.setBounds(149, 49, 197, 20);
 		contentPane.add(Email_CF);
 		Email_CF.setColumns(10);
 
 		password = new JPasswordField();
-		password.setBounds(158, 93, 197, 20);
+		password.setBounds(149, 91, 197, 20);
 		contentPane.add(password);
 		password.setColumns(10);
 
@@ -76,30 +83,30 @@ public class Home2 extends JFrame {
 
 		toSignIn = new JLabel("Non ti sei ancora registrato? Registrati");
 		toSignIn.setHorizontalAlignment(SwingConstants.CENTER);
-		toSignIn.setBounds(126, 162, 277, 14);
+		toSignIn.setBounds(126, 160, 243, 14);
 		contentPane.add(toSignIn);
 		toSignIn.setForeground(Color.BLUE.darker());
 		toSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		lblNewLabel = new JLabel("Inserisci Email o CF");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(158, 36, 197, 14);
+		lblNewLabel.setBounds(149, 34, 197, 14);
 		contentPane.add(lblNewLabel);
 
 		lblInserisciLaPassword = new JLabel("Inserisci la password");
 		lblInserisciLaPassword.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInserisciLaPassword.setBounds(158, 82, 197, 12);
+		lblInserisciLaPassword.setBounds(149, 80, 197, 12);
 		contentPane.add(lblInserisciLaPassword);
 
 		response = new JLabel("New label");
 		response.setHorizontalAlignment(SwingConstants.CENTER);
-		response.setBounds(22, 212, 482, 47);
+		response.setBounds(10, 280, 482, 20);
 		response.setForeground(Color.RED);
 		contentPane.add(response);
 		response.setVisible(false);
 
 		JButton AccessButtom = new JButton("Accedi");
-		AccessButtom.setBounds(202, 124, 119, 23);
+		AccessButtom.setBounds(206, 121, 85, 23);
 		contentPane.add(AccessButtom);
 
 		toSignIn.addMouseListener(new MouseAdapter() {
@@ -117,10 +124,47 @@ public class Home2 extends JFrame {
 		
 		FreeAccess = new JLabel("Accesso Libero");
 		FreeAccess.setHorizontalAlignment(SwingConstants.CENTER);
-		FreeAccess.setBounds(202, 187, 119, 14);
+		FreeAccess.setBounds(149, 185, 197, 14);
 		contentPane.add(FreeAccess);
 		FreeAccess.setForeground(Color.BLUE.darker());
 		FreeAccess.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		JButton btnAutoLogin = new JButton("");
+		btnAutoLogin.setBounds(206, 202, 85, 68);
+		System.out.println(System.getProperty("user.dir"));
+		ImageIcon icon = new ImageIcon("image/oauth.png");
+		btnAutoLogin.setIcon(icon);
+		btnAutoLogin.setBorder(BorderFactory.createEmptyBorder());
+		btnAutoLogin.setContentAreaFilled(false);
+		btnAutoLogin.setFocusable(false);
+		
+		btnAutoLogin.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				 dispose();
+				 ProcessBuilder builder = new ProcessBuilder(
+				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login cittadini");
+				        builder.redirectErrorStream(true);
+				        Process p;
+						try {
+							p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					        String line;
+					        while (true) {
+					            line = r.readLine();
+					            if (line == null) { break; }
+					            System.out.println(line);
+					        }
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+				        
+			}
+		});
+		
+		contentPane.add(btnAutoLogin);
+		
 
 		FreeAccess.addMouseListener(new MouseAdapter() {
 			@Override
@@ -175,8 +219,8 @@ public class Home2 extends JFrame {
 						Homepage.setVisible(true);
 						Homepage.Severita();
 						dispose();
-					} else if (res.equals("non ho trovato nè CF nè Email sul Db, Registrati!")) {
-						response.setText("non ho trovato nè CF nè Email sul Db, Registrati!");
+					} else if (res.equals("non ho trovato ne' CF ne' Email sul Db, Registrati!")) {
+						response.setText("non ho trovato ne' CF ne' Email sul Db, Registrati!");
 						response.setVisible(true);
 					} else if (res.equals("password errata")) {
 						response.setText("password errata");
@@ -192,7 +236,7 @@ public class Home2 extends JFrame {
 
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Login");
+		setTitle("Cittadini - Login");
 	}
 
 	public static void main(String[] args) {

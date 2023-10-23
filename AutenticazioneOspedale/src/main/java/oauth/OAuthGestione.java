@@ -26,7 +26,7 @@ import java.awt.Color;
 
 /**
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  * */
 
 public class OAuthGestione extends JFrame {
@@ -40,6 +40,7 @@ public class OAuthGestione extends JFrame {
 	private Registrazione_OAuth registrazione;
 	private String checkLR = "";
 	private String token = "";
+	private String typeUser = "";
 
 	/**
 	 * Launch the application.
@@ -49,7 +50,7 @@ public class OAuthGestione extends JFrame {
 			public void run() {
 				try {
 					
-					OAuthGestione frame = new OAuthGestione(args[0]);
+					OAuthGestione frame = new OAuthGestione(args[0], args[1]);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +63,7 @@ public class OAuthGestione extends JFrame {
 	 * Create the frame.
 	 * @throws Exception 
 	 */
-	public OAuthGestione(String checkLR) throws Exception {
+	public OAuthGestione(String checkLR, String project) throws Exception {
 		
 		ps = new ProxyServer();
 		
@@ -89,7 +90,7 @@ public class OAuthGestione extends JFrame {
 		this.checkLR = checkLR;
 		System.out.print(this.checkLR);
 		
-		String allUserOAuthString = ps.allUserOAuth();
+		String allUserOAuthString = ps.allUserOAuth(project);
 		if(allUserOAuthString.equals("niente")) {
 			JLabel nothing = new JLabel("Nessun utente trovato nel server OAuth");
 			panel.setBackground(Color.RED);
@@ -108,44 +109,78 @@ public class OAuthGestione extends JFrame {
 			int num = emails.length;
 			for(int i=0;i<num;i++) {
 				String[] riga = emails[i].split(":");
-				token = riga[0];
-				String email = riga[1];
-				timeToken = riga[2];			
-				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(email, timeToken, this.checkLR, this, token);
+				if (riga[0].equals("operatore")) {
+					typeUser = "OP";
+				}
+				else if (riga[0].equals("cittadino")){
+					typeUser = "CT";
+				}
+				token = riga[1];
+				String cf = riga[2];
+				String email = riga[3];
+				timeToken = riga[4];			
+				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(email, timeToken, this.checkLR, this, token, project, typeUser, cf);
 				panel.add(oAuth_buttons);
 			}
 		}
 		
-		this.addWindowListener(new WindowAdapter() {
-		   public void windowClosing(WindowEvent evt) {
-			   
-			   dispose();
-			   ProcessBuilder builder = new ProcessBuilder(
-			            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
-			        builder.redirectErrorStream(true);
-			        Process p;
-					try {
-						p = builder.start();
-						BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				        String line;
-				        while (true) {
-				            line = r.readLine();
-				            if (line == null) { break; }
-				            System.out.println(line);
-				        }
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-		   }
-		  });
-		
+		if(project.equals("operatori")) {
+			
+			this.addWindowListener(new WindowAdapter() {
+			   public void windowClosing(WindowEvent evt) {
+				   
+				   dispose();
+				   ProcessBuilder builder = new ProcessBuilder(
+				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
+				        builder.redirectErrorStream(true);
+				        Process p;
+						try {
+							p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					        String line;
+					        while (true) {
+					            line = r.readLine();
+					            if (line == null) { break; }
+					            System.out.println(line);
+					        }
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+			   }
+			  });
+		}
+		else if (project.equals("cittadini")) {
+			this.addWindowListener(new WindowAdapter() {
+				   public void windowClosing(WindowEvent evt) {
+					   
+					   dispose();
+					   ProcessBuilder builder = new ProcessBuilder(
+					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar");
+					        builder.redirectErrorStream(true);
+					        Process p;
+							try {
+								p = builder.start();
+								BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						        String line;
+						        while (true) {
+						            line = r.readLine();
+						            if (line == null) { break; }
+						            System.out.println(line);
+						        }
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+				   }
+				  });
+		}
+			
 		registati.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
 				try {
-					registrazione = new Registrazione_OAuth(checkLR);
+					registrazione = new Registrazione_OAuth(checkLR, project);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -187,7 +222,7 @@ public class OAuthGestione extends JFrame {
 		setResizable(false);
 		contentPane.add(scroll);
 		contentPane.setVisible(true);
-		setBounds(100,100,760,161);
+		setBounds(100,100,960,161);
 		setTitle("OAuth: " + checkLR);
 	}
 	

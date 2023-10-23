@@ -3,20 +3,16 @@ package cittadini;
 import java.awt.Color;
 import java.awt.Cursor;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
 import javax.swing.*;
-import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +44,7 @@ public class Registrazione_Cittadini2 extends JFrame {
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
 	private Pattern CF_REGEX = Pattern.compile("^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$");
 	private JPasswordField ConfirmPass;
+	private JButton btnAutoLogin;
 	/*
 	 * La password deve avere una lunghezza di almeno otto (8) caratteri in cui il
 	 * sistema può supportarla. Le password devono includere caratteri di almeno due
@@ -62,7 +59,7 @@ public class Registrazione_Cittadini2 extends JFrame {
 	public Registrazione_Cittadini2() {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 552, 500);
+		setBounds(100, 100, 552, 534);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -109,9 +106,8 @@ public class Registrazione_Cittadini2 extends JFrame {
 		toLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		ErrorLabel = new JLabel("Riscontro");
-		ErrorLabel.setVerticalAlignment(SwingConstants.TOP);
 		ErrorLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		ErrorLabel.setBounds(12, 343, 528, 107);
+		ErrorLabel.setBounds(10, 428, 528, 45);
 		contentPane.add(ErrorLabel);
 
 		JLabel lblNewLabel_5_1 = new JLabel("Conferma Password:");
@@ -122,6 +118,43 @@ public class Registrazione_Cittadini2 extends JFrame {
 		ConfirmPass.setColumns(10);
 		ConfirmPass.setBounds(132, 247, 285, 20);
 		contentPane.add(ConfirmPass);
+		
+		btnAutoLogin = new JButton("");
+		btnAutoLogin.setBounds(208, 342, 124, 87);
+		
+		System.out.println(System.getProperty("user.dir"));
+		ImageIcon icon = new ImageIcon("image/oauth.png");
+		btnAutoLogin.setIcon(icon);
+		btnAutoLogin.setBorder(BorderFactory.createEmptyBorder());
+		btnAutoLogin.setContentAreaFilled(false);
+		btnAutoLogin.setFocusable(false);
+		
+		btnAutoLogin.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				 dispose();
+				 ProcessBuilder builder = new ProcessBuilder(
+				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar registrazione cittadini");
+				        builder.redirectErrorStream(true);
+				        Process p;
+						try {
+							p = builder.start();
+							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					        String line;
+					        while (true) {
+					            line = r.readLine();
+					            if (line == null) { break; }
+					            System.out.println(line);
+					        }
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+				        
+			}
+		});
+		
+		contentPane.add(btnAutoLogin);
 
 		ErrorLabel.setVisible(false);
 
@@ -183,12 +216,12 @@ public class Registrazione_Cittadini2 extends JFrame {
 						ErrorLabel.setText("Server Disconnesso");
                         ErrorLabel.setVisible(true);
 					}
-					if (risultato.equals("L'utente è già registrato")) {
+					if (risultato.equals("L'utente e' gia' registrato")) {
 
-						ErrorLabel.setText("L'utente è già registrato");
+						ErrorLabel.setText("L'utente e' gia' registrato");
 						ErrorLabel.setVisible(true);
-					} else if (risultato.equals("L'utente non si è ancora vaccinato")) {
-						ErrorLabel.setText("L'utente non si è ancora vaccinato");
+					} else if (risultato.equals("L'utente non si e' ancora vaccinato")) {
+						ErrorLabel.setText("L'utente non si e' ancora vaccinato");
 						ErrorLabel.setVisible(true);
 					} else if (risultato.equals("inserimento avvenuto")) {
 						ErrorLabel.setForeground(Color.GREEN);

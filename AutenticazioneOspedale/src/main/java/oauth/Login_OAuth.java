@@ -16,12 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 
 import javax.swing.SwingConstants;
@@ -42,12 +39,14 @@ public class Login_OAuth extends JFrame{
 	private ProxyServer ps;
 	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
+	private JTextField CF;
 
 	/**
 	 * Create the frame.
 	 * @param token 
+	 * @param project 
 	 */
-	public Login_OAuth(String checkLR, String token){
+	public Login_OAuth(String checkLR, String token, String project){
 				
 		try {
 			ps = new ProxyServer();
@@ -55,31 +54,50 @@ public class Login_OAuth extends JFrame{
 			e.printStackTrace();
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 695, 409);
+		setBounds(100, 100, 695, 442);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane); 
 		
 		JLabel labelLogin = new JLabel(" LOGIN");
+		labelLogin.setBounds(5, 28, 671, 72);
 		labelLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		labelLogin.setFont(new Font("Times New Roman", Font.BOLD, 22));
 		
 		JLabel labelEmail = new JLabel("E-Mail");
+		labelEmail.setBounds(5, 109, 671, 26);
 		labelEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		labelEmail.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
 		JLabel labelPassword = new JLabel("Password");
+		labelPassword.setBounds(5, 239, 671, 22);
 		labelPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		labelPassword.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		
 		EMail = new JTextField();
+		EMail.setBounds(163, 145, 351, 19);
 		EMail.setColumns(10);
 		
 		Password = new JPasswordField();
+		Password.setBounds(165, 271, 351, 19);
 		Password.setColumns(10);
 		
+		CF = new JTextField();
+		CF.setColumns(10);
+		CF.setBounds(163, 210, 351, 19);
+		contentPane.add(CF);
+		
+		JLabel labelCF = new JLabel("CF");
+		labelCF.setHorizontalAlignment(SwingConstants.CENTER);
+		labelCF.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		labelCF.setBounds(5, 174, 671, 26);
+		contentPane.add(labelCF);
+		setTitle("Login OAuth");
+		setResizable(false);
+		
 		JButton btnAccedi = new JButton("Accedi");
+		btnAccedi.setBounds(240, 312, 199, 39);
 		btnAccedi.setBackground(Color.BLUE);
 		btnAccedi.setForeground(Color.WHITE);
 		
@@ -89,6 +107,7 @@ public class Login_OAuth extends JFrame{
 				
 				String emailString = EMail.getText().toString();
 				String passwordString = Password.getText().toString();
+				String cFString = CF.getText().toString().toLowerCase();
 				String risultato = "errore";
 				
 				if (emailString.length() == 0 || passwordString.length() == 0) {
@@ -109,7 +128,12 @@ public class Login_OAuth extends JFrame{
 				else {
 				
 					try {
-						risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth");
+						if(project.equals("operatori")) {
+							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + "");
+						}
+						else if(project.equals("cittadini")) {
+							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + cFString);
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -124,7 +148,7 @@ public class Login_OAuth extends JFrame{
 						 setVisible(false);
 						 OAuthGestione oAuthGestione = null;
 						try {
-							oAuthGestione = new OAuthGestione(checkLR);
+							oAuthGestione = new OAuthGestione(checkLR, project);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -136,6 +160,7 @@ public class Login_OAuth extends JFrame{
 		});
 		
 		JLabel LabelRegistrati = new JLabel("Non sei ancora registrato? Registrati");
+		LabelRegistrati.setBounds(5, 361, 671, 13);
 		LabelRegistrati.setHorizontalAlignment(SwingConstants.CENTER);
 		LabelRegistrati.setForeground(Color.BLUE);
 		LabelRegistrati.addMouseListener(new MouseListener() {
@@ -143,7 +168,7 @@ public class Login_OAuth extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 
 				 try {
-					registrazione = new Registrazione_OAuth(checkLR);
+					registrazione = new Registrazione_OAuth(checkLR, project);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -175,6 +200,7 @@ public class Login_OAuth extends JFrame{
 		});
 		
 		JLabel lblIndietro = new JLabel("Indietro");
+		lblIndietro.setBounds(5, 5, 72, 17);
 		lblIndietro.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		
 		lblIndietro.addMouseListener(new MouseListener() {
@@ -185,7 +211,7 @@ public class Login_OAuth extends JFrame{
 				setVisible(false);
 				OAuthGestione oAuthGestione;
 				try {
-					oAuthGestione = new OAuthGestione(checkLR);
+					oAuthGestione = new OAuthGestione(checkLR, project);
 					oAuthGestione.setVisible(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -219,7 +245,9 @@ public class Login_OAuth extends JFrame{
 			
 		});
 		
-		this.addWindowListener(new WindowAdapter() {
+		if(project.equals("operatori")) {
+			
+			this.addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
 				   
 				   dispose();
@@ -241,55 +269,73 @@ public class Login_OAuth extends JFrame{
 						}
 			   }
 			  });
+		}
+		else if (project.equals("cittadini")) {
+			this.addWindowListener(new WindowAdapter() {
+				   public void windowClosing(WindowEvent evt) {
+					   
+					   dispose();
+					   ProcessBuilder builder = new ProcessBuilder(
+					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar");
+					        builder.redirectErrorStream(true);
+					        Process p;
+							try {
+								p = builder.start();
+								BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+						        String line;
+						        while (true) {
+						            line = r.readLine();
+						            if (line == null) { break; }
+						            System.out.println(line);
+						        }
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+				   }
+				  });
+		}
+		contentPane.setLayout(null);
+		contentPane.add(labelEmail);
+		contentPane.add(labelLogin);
+		contentPane.add(EMail);
+		contentPane.add(labelPassword);
+		contentPane.add(btnAccedi);
+		contentPane.add(LabelRegistrati);
+		contentPane.add(Password);
+		contentPane.add(lblIndietro);
 		
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(labelEmail, GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
-				.addComponent(labelLogin, GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(165)
-					.addComponent(EMail, GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-					.addGap(155))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(labelPassword, GroupLayout.PREFERRED_SIZE, 661, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(242)
-					.addComponent(btnAccedi, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-					.addGap(230))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(167)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(LabelRegistrati, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)
-						.addComponent(Password, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE))
-					.addGap(153))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(lblIndietro, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(599, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(lblIndietro)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(labelLogin, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(labelEmail, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(EMail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(14)
-					.addComponent(labelPassword)
-					.addGap(18)
-					.addComponent(Password, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(btnAccedi, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(LabelRegistrati)
-					.addGap(18))
-		);
-		contentPane.setLayout(gl_contentPane);
-		setTitle("Login OAuth");
-		setResizable(false);
+		if(project.equals("operatori")) {
+			setBounds(100, 100, 695, 409);
+			lblIndietro.setBounds(5, 5, 72, 17);
+			labelLogin.setBounds(5, 28, 671, 72);
+			labelEmail.setBounds(5, 109, 671, 26);
+			EMail.setBounds(163, 145, 351, 19);
+			labelPassword.setBounds(5, 174, 671, 22);
+			Password.setBounds(165, 218, 351, 19);
+			btnAccedi.setBounds(240, 259, 199, 39);
+			LabelRegistrati.setBounds(5, 308, 671, 13);
+
+			labelCF.setVisible(false);
+			CF.setVisible(false);
+			
+		}
+		else if (project.equals("cittadini")) {
+			setBounds(100, 100, 695, 442);
+			lblIndietro.setBounds(5, 5, 72, 17);
+			labelLogin.setBounds(5, 28, 671, 72);
+			labelEmail.setBounds(5, 109, 671, 26);
+			EMail.setBounds(163, 145, 351, 19);
+			labelCF.setBounds(5, 174, 671, 26);
+			CF.setBounds(163, 210, 351, 19);
+			labelPassword.setBounds(5, 239, 671, 22);
+			Password.setBounds(165, 271, 351, 19);
+			btnAccedi.setBounds(240, 312, 199, 39);
+			LabelRegistrati.setBounds(5, 361, 671, 13);
+			
+			labelCF.setVisible(true);
+			CF.setVisible(true);
+		}
+		
+		
 	}
 }

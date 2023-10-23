@@ -212,7 +212,7 @@ public class Login extends JFrame{
 				
 				 dispose();
 				 ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login");
+				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login operatori");
 				        builder.redirectErrorStream(true);
 				        Process p;
 						try {
@@ -280,7 +280,7 @@ public class Login extends JFrame{
 					.addGap(27))
 		);
 		contentPane.setLayout(gl_contentPane);
-		setTitle("Login");
+		setTitle("Operatori - Login");
 		setResizable(false);
 	}
 }

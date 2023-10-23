@@ -23,8 +23,6 @@ public class Homepage_cittadini2 extends JFrame {
 	private Eventi_Avversi avversi = null;
 	private ArrayList<Eventi_Avversi> listaAvversi = null;
 	private String compare = "";
-	private int count = 1;
-
 	private JPanel contentPane;
 	private JTextField Search_name;
 
@@ -57,8 +55,6 @@ public class Homepage_cittadini2 extends JFrame {
 
 	private String CFset = "";
 	private String CFnormale = "";
-
-	private int rowsCount;
 
 	private JTextArea resultFromTable2;
 
@@ -421,7 +417,6 @@ public class Homepage_cittadini2 extends JFrame {
 
 										} else if (avversi != null) {
 											avversi = null;
-											count = 1;
 
 										}
 									}

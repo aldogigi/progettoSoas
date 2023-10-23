@@ -224,9 +224,9 @@ public class Servizio {
 		if (ris.next()) {
 			result = String.valueOf(ris.getString("cf"));
 			if (ris2.next()) {
-				return "L'utente è già registrato";
+				return "L'utente e' gia' registrato";
 			} else {
-				System.out.println("C'è qualcosa che non va");
+				System.out.println("C'e' qualcosa che non va");
 			}
 
 			stmt.executeUpdate("INSERT INTO cittadini_registrati(email, password, cf) VALUES('" + email + "', '"
@@ -234,7 +234,7 @@ public class Servizio {
 			return "inserimento avvenuto";
 
 		} else if (!(ris.next())) {
-			return "L'utente non si è ancora vaccinato";
+			return "L'utente non si e' ancora vaccinato";
 
 		}
 
@@ -261,7 +261,7 @@ public class Servizio {
 			ris = stmt.executeQuery(
 					"SELECT cf FROM cittadini_registrati " + "WHERE email = '" + Email_CF.toLowerCase() + "' ;");
 			if (!(ris.next())) {
-				return "non ho trovato nè CF nè Email sul Db, Registrati!";
+				return "non ho trovato ne' CF ne' Email sul Db, Registrati!";
 			} else {
 				ResultSet ris2 = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE password = '" + Pass
 						+ "' AND email = '" + Email_CF.toLowerCase() + "' ;");
@@ -272,9 +272,6 @@ public class Servizio {
 				}
 			}
 		} else {
-			if (Email_CF != Email_CF.toUpperCase()) {
-				return "Il codice fiscale ha tutte lettere maiuscole";
-			}
 			ResultSet ris2 = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE password = '" + Pass
 					+ "' AND cf = '" + Email_CF.toLowerCase() + "' ;");
 			if (!(ris2.next())) {
@@ -735,7 +732,7 @@ public class Servizio {
 		return result;
 	}
 
-	public String checkUser(String email, String pass, String checkTypeLoginSource) throws SQLException{
+	public String checkUser(String email, String pass, String checkTypeLoginSource, String CF) throws SQLException{
 
 		String result = "error";
 		ResultSet ris = null;
@@ -753,7 +750,7 @@ public class Servizio {
 			else if (checkTypeLoginSource.equals("oauth")){
 				
 				ris = stmt.executeQuery(
-						"SELECT token FROM type_user " + "WHERE email = '" + email + "';");
+						"SELECT token FROM type_user " + "WHERE email = '" + email + "' and cf = '" + CF + "';");
 				
 			}
 			if (ris.first()) {
@@ -766,7 +763,7 @@ public class Servizio {
 				else if(checkTypeLoginSource.equals("oauth")) {
 					
 					ris2 = stmt2.executeQuery(
-							"SELECT token FROM type_user " + "WHERE email = '" + email + "' AND password = '" + pass + "';");
+							"SELECT token FROM type_user " + "WHERE email = '" + email + "' AND password = '" + pass + "' and cf = '" + CF + "';");
 					
 				}
 
@@ -781,7 +778,7 @@ public class Servizio {
 						
 						String timestampNew = new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(Calendar.getInstance().getTime());
 						
-						Boolean ris3 = stmt3.execute("UPDATE type_user SET tymestamp = '" + timestampNew + "' WHERE email = '" + email + "' AND password = '" + pass + "';");
+						Boolean ris3 = stmt3.execute("UPDATE type_user SET tymestamp = '" + timestampNew + "' WHERE email = '" + email + "' AND password = '" + pass + "' and cf = '" + CF + "';");
 						
 						if(!ris3) {
 							
@@ -797,7 +794,7 @@ public class Servizio {
 				}
 				else {
 					System.out.println("Password sbagliata");
-					result = "Password sbagliata";
+					result = "Password o Codice Fiscale sbagliati";
 				}
 				
 			}
@@ -814,19 +811,31 @@ public class Servizio {
 		
 	}
 
-	public String allUserOAuth() throws SQLException{
+	public String allUserOAuth(String project) throws SQLException{
 		
 		ResultSet ris = null;
 		String[] array = new String[3];
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-		ris = stmt.executeQuery("SELECT token, email, tymestamp FROM type_user;");
+		String typeProject = "";
+		if(project.equals("operatori")) {
+			
+			typeProject = "operatore";
+			
+		}
+		else if(project.equals("cittadini")) {
+			
+			typeProject = "cittadino";
+			
+		}
+		
+		ris = stmt.executeQuery("SELECT type, token, cf, email, tymestamp FROM type_user WHERE type = '" + typeProject + "';");
 		if (!(ris.first())) {
 			return "niente";
 		}
 		else {
-			array = new String[3];
+			array = new String[5];
 			ResultSetMetaData rsmd = ris.getMetaData();
 			int numColonne = rsmd.getColumnCount();
 			String nomeColonne = "";
@@ -847,16 +856,26 @@ public class Servizio {
 		return (array[0] + "-" + array[1]);
 	}
 
-	public int inserNewUserOauth(String email, String password, String tymestamp) {
+	public int inserNewUserOauth(String email, String password, String tymestamp, String cFString, String project) {
 		
 		int result = 0;
 		
 		try {
 
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
-
-			ResultSet ris = stmt.executeQuery(
-					"SELECT id_user FROM type_user " + "WHERE email = '" + email + "';");
+			
+			ResultSet ris = null;
+			
+			if(project.equals("operatori")) {
+				
+				ris = stmt.executeQuery(
+						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "';");
+			}
+			else if (project.equals("cittadini")) {
+				
+				ris = stmt.executeQuery(
+						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "' AND cf = '" + cFString + "';");
+			}
 
 			if (ris.first()) {
 				System.out.println("Operatore già presente");
@@ -875,9 +894,34 @@ public class Servizio {
 				}
 			};
 			
-			String token = "OP"+ (prima + dopo).toUpperCase();
+			String typeProject = "";
+			
+			if(project.equals("operatori")) {
+				
+				typeProject = "OP";
+				
+			}
+			else if(project.equals("cittadini")) {
+				
+				typeProject = "CT";
+				
+			}
+			
+			String cfToken = "";
+			if(project.equals("cittadini")) {
+				
+				String[] cfTokenSplit = cFString.split("");
+				for(int i = 0; i < cfTokenSplit.length; i++) {
+					if(i%3 == 0) {
+						cfToken += cfTokenSplit[i];
+					}
+				};
+				
+			}
 			
 			System.out.println(tymestamp);
+			
+			String token = typeProject + (prima + dopo).toUpperCase() + cfToken;
 			
 			String timestampTokenWithoutPunto = tymestamp.replace(".", "");
 			String timestampToken = timestampTokenWithoutPunto.replace("/", "");
@@ -898,9 +942,16 @@ public class Servizio {
 			
 			System.out.println(token);
 			
-			result = stmt.executeUpdate(
-					"INSERT INTO type_user(id_user, type, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
-							+ "'" + email + "'," + "'" + tymestamp+ "', '" + password + "');");
+			if(project.equals("operatori")) {
+				result = stmt.executeUpdate(
+						"INSERT INTO type_user(id_user, type, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
+								+ "'" + email + "'," + "'" + tymestamp+ "', '" + password + "');");
+			}
+			else if(project.equals("cittadini")) {
+				result = stmt.executeUpdate(
+						"INSERT INTO type_user(id_user, type, cf, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'cittadino', '" + cFString + "', '"+ token +"', "
+								+ "'" + email + "'," + "'" + tymestamp+ "', '" + password + "');");
+			}
 
 			if (result > 0) { 
 				System.out.println("Operatore inserito");

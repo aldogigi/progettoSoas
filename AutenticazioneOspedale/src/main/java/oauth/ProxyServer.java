@@ -41,13 +41,13 @@ public class ProxyServer implements ServerInterface {
 	 * @return intero maggiore di 0 se il server ha inserito il centro vaccinale, intero negativo altrimenti
 	 */
 	
-	public String allUserOAuth() throws IOException {
+	public String allUserOAuth(String param) throws IOException {
 		
 		socket = new Socket(addr, ServerInterface.PORT);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 		
-		out.println("allUserOAuth:");
+		out.println("allUserOAuth:" + param);
 
 		String risposta = in.readLine();
 
@@ -196,5 +196,49 @@ public class ProxyServer implements ServerInterface {
 		}
 
 		return Integer.parseInt(risposta);
+	}
+
+
+	public String registraCittadino(String param) throws IOException{
+		socket = new Socket(addr, 4444);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("inserisciCittadini:" + param);
+
+		String risposta = in.readLine();
+
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return risposta;
+	}
+
+
+	public String CheckCittadini(String param) throws IOException{
+		socket = new Socket(addr, 4444);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("CheckCittadini:" + param);
+
+		String risposta = in.readLine();
+
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return risposta;
 	}
 }
