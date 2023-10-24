@@ -176,7 +176,7 @@ public class OAuth_buttons_users extends JButton {
 					oAuthGestione.setVisible(false);
 					
 					try {
-						result = ps.deleteUserOAuthOperatori(token);
+						result = ps.deleteUserOAuthOperatori(token + ":" + project);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -186,7 +186,7 @@ public class OAuth_buttons_users extends JButton {
 						JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth in Operatori eliminato con successo");
 						oAuthGestione.setVisible(false);
 					}
-					else {
+					else if(result == -1){
 						JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth in Operatori inesistente");
 					}
 					try {
@@ -277,7 +277,7 @@ public class OAuth_buttons_users extends JButton {
 						}
 						else if(project.equals("cittadini")) {
 							try {
-								presenceUserOAuth = ps.CheckCittadini(token + ":" + "null");
+								presenceUserOAuth = ps.CheckCittadini(cf + "_" + token + ":" + "null");
 							} catch (IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -315,7 +315,7 @@ public class OAuth_buttons_users extends JButton {
 								oAuthGestione.dispose();
 								ProcessBuilder builder = null;
 								builder = new ProcessBuilder(
-							            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar true ");
+							            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar true " + token + " " + cf + "");
 							
 						        builder.redirectErrorStream(true);
 						        Process p;

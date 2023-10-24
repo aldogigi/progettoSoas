@@ -162,7 +162,7 @@ public class Registrazione_Cittadini2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				(new Home2()).setVisible(true);
+				(new Home2("false", "null", "null")).setVisible(true);
 				dispose();
 
 			}

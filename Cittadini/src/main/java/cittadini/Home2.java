@@ -56,10 +56,13 @@ public class Home2 extends JFrame {
 
 	/**
 	 * Il costruttore crea l'interfaccia grafica principale
+	 * @param cf 
+	 * @param args2 
+	 * @param args 
 	 * 
 	 * @exception Expceton se non si riesce a comunicare con il server o se il server è disconnesso
 	 */
-	public Home2() {
+	public Home2(String checkOauthLogin, String token, String cf) {
 		super("Login Cittadini");
 		
 		
@@ -237,14 +240,39 @@ public class Home2 extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Cittadini - Login");
+		setVisible(true);
+		
+		if(checkOauthLogin.equals("true")) {
+			
+			try {
+				Homepage = new Homepage_cittadini2();
+				TabbedPane = Homepage.getTabbedPane();
+				panel = Homepage.getPanel();
+				ProxyServer proxy = new ProxyServer();
+				System.out.println(cf);
+				String result = proxy.setCF(cf);
+				Homepage.set(result);
+				Homepage.setCFnormale(cf);
+				Homepage.setTitle("Accesso da Autenticato");
+				Homepage.goSignIn().setVisible(false);
+				Homepage.goLogIn().setText("Logout");
+				Homepage.setVisible(true);
+				Homepage.Severita();
+				setVisible(false);
+				dispose();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+		}
+		
 	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Home2 frame = new Home2();
-					frame.setVisible(true);
+					new Home2(args[0], args[1], args[2]);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

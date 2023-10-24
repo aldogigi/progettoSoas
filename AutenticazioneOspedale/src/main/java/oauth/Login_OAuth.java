@@ -129,7 +129,7 @@ public class Login_OAuth extends JFrame{
 				
 					try {
 						if(project.equals("operatori")) {
-							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + "");
+							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + "null");
 						}
 						else if(project.equals("cittadini")) {
 							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + cFString);
@@ -276,7 +276,7 @@ public class Login_OAuth extends JFrame{
 					   
 					   dispose();
 					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar");
+					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null");
 					        builder.redirectErrorStream(true);
 					        Process p;
 							try {

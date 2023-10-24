@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.PageAttributes;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -256,7 +257,12 @@ public class Servizio {
 	public String CheckCittadini(String Email_CF, String Pass) throws SQLException {
 
 		Statement stmt = conn.createStatement();
-		ResultSet ris = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE cf = '" + Email_CF.toLowerCase() + "' ;");
+		ResultSet ris = null;
+		if(Pass.equals("null")) {
+			String[] cfsplit = Email_CF.split("_");
+			Email_CF = cfsplit[0];
+		}
+		ris = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE cf = '" + Email_CF.toLowerCase() + "' ;");
 		if (!(ris.next())) {
 			ris = stmt.executeQuery(
 					"SELECT cf FROM cittadini_registrati " + "WHERE email = '" + Email_CF.toLowerCase() + "' ;");
@@ -272,8 +278,14 @@ public class Servizio {
 				}
 			}
 		} else {
-			ResultSet ris2 = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE password = '" + Pass
-					+ "' AND cf = '" + Email_CF.toLowerCase() + "' ;");
+			ResultSet ris2;
+			if(Pass.equals("null")) {
+				return "autenticazione";
+			}
+			else {
+				ris2 = stmt.executeQuery("SELECT cf FROM cittadini_registrati " + "WHERE password = '" + Pass
+						+ "' AND cf = '" + Email_CF.toLowerCase() + "' ;");
+			}
 			if (!(ris2.next())) {
 				return "password errata";
 			} else {
@@ -846,7 +858,12 @@ public class Servizio {
 			while (ris.next()) {
 				String riga = "";
 				for (int nr = 0; nr < numColonne; nr++) {
-					riga += (ris.getObject(nr + 1).toString() + ":");
+					if(ris.getObject(nr + 1) != null) {
+						riga += (ris.getObject(nr + 1).toString() + ":");
+					}
+					else {
+						riga += ":";
+					}
 				}
 				datiRighe += riga + "___________";
 			}
@@ -924,8 +941,9 @@ public class Servizio {
 			String token = typeProject + (prima + dopo).toUpperCase() + cfToken;
 			
 			String timestampTokenWithoutPunto = tymestamp.replace(".", "");
-			String timestampToken = timestampTokenWithoutPunto.replace("/", "");
-
+			String timestampTokenWithoutSlash = timestampTokenWithoutPunto.replace("/", "");
+			String timestampToken = timestampTokenWithoutSlash.replace(" ", "");
+			
 			System.out.println(timestampToken);
 			
 			token += timestampToken;
@@ -944,7 +962,7 @@ public class Servizio {
 			
 			if(project.equals("operatori")) {
 				result = stmt.executeUpdate(
-						"INSERT INTO type_user(id_user, type, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'operatore', '"+ token +"', "
+						"INSERT INTO type_user(id_user, type, cf, token, email, tymestamp, password) VALUES(nextval('id_user_seq'), 'operatore', 'null', '"+ token +"', "
 								+ "'" + email + "'," + "'" + tymestamp+ "', '" + password + "');");
 			}
 			else if(project.equals("cittadini")) {
@@ -1001,30 +1019,32 @@ public class Servizio {
 		return "-1";
 	}
 
-	public int deleteUserOAuthOperatori(String token) throws SQLException{
+	public int deleteUserOAuthOperatori(String token , String project) throws SQLException{
 		
 		Boolean result = false;
 		
 		try {
-			String check = this.presenceUserOAuth(token);
-			
-			if(check.equals("0")) {
+			if(project.equals("operatori")) {
+				String check = this.presenceUserOAuth(token);
 				
-				Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
-	
-				result = stmt.execute("DELETE FROM auth WHERE email = '" + token+ "';");
-	
-				if (!result) { 
-					return 0;
+				if(check.equals("0")) {
+					
+					Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+		
+					result = stmt.execute("DELETE FROM auth WHERE email = '" + token+ "';");
+		
+					if (!result) { 
+						return 0;
+					}
 				}
-			}
-			else if (check.equals("-1")) {
-				return -1;
+				else if (check.equals("-1")) {
+					return -1;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return -1;
+		return -2;
 	}
 }

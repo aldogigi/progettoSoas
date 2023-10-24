@@ -218,7 +218,7 @@ public class Registrazione_OAuth extends JFrame{
 					   
 					   dispose();
 					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar");
+					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null");
 					        builder.redirectErrorStream(true);
 					        Process p;
 							try {

@@ -254,7 +254,7 @@ public class Backend extends Thread {
 					}
 					else if (param[0].equals("deleteUserOAuth")) {
 						
-						int result = servizio.deleteUserOAuth(param[1]);
+						int result = servizio.deleteUserOAuth(param[1]);;
 
 						if (out != null) {
 							out.println(result);
@@ -265,7 +265,7 @@ public class Backend extends Thread {
 					}
 					else if (param[0].equals("deleteUserOAuthOperatori")) {
 						
-						int result = servizio.deleteUserOAuthOperatori(param[1]);
+						int result = servizio.deleteUserOAuthOperatori(param[1], param[2]);
 
 						if (out != null) {
 							out.println(result);
