@@ -18,6 +18,20 @@ public class PolicyCittadini {
 	private String RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides";
 	@XmlPath("Policy/@Version")
 	private String version="1.0";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/@MatchId")
+	private String matchIdTargetPolicy = "urn:oasis:names:tc:xacml:1.0:function:string-equal";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeValue/text()")
+	private String AttributeValuePolicy = "Management of ServerServizi Database";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeValue/@DataType")
+	private String DataTypeAttributeValuePolicy = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeDesignator/@AttributeId")
+	private String AttributeIdPolicy = "urn:oasis:names:tc:xacml:1.0:action:action-id";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeDesignator/@Category")
+	private String CategoryPolicy = "urn:oasis:names:tc:xacml:3.0:attribute-category:action";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeDesignator/@DataType")
+	private String DataTypeAttributeDesignatorPolicy = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeDesignator/@MustBePresent")
+	private String mustBePresent = "true";
 	@XmlPath("Policy/Rule/text()")
     private String rule;
     private String ruleId;
@@ -26,50 +40,15 @@ public class PolicyCittadini {
     private String description;
 	@XmlPath("Policy/Rule/Target/text()")
     private String target;
-	@XmlElement(name = "Policy/Rule/Target/Subjects/Subject", required = true)
 	
+	@XmlElement(name = "Policy/Rule/Target/Subjects/Subject", required = true)
     private List<xml_dati_Cittadini.Subjectss> subjects = new ArrayList<xml_dati_Cittadini.Subjectss>();
-    
-//    @XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
-//    private String subjects2 = "Zu ciccio u capraro";
-//    @XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
-//    private String subject2;
-//    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/text()")
-//    private String subjectMatch2;
-//    private String matchIDSubject2;
-//    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/AttributeValue/text()")
-//    private String attributeValueSubject2;
-//    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/SubjectAttributeDesignator/text()")
-//    private String subjectAttributeDesignator2 = "1";
-//    private String attributeIdSubject2;
-    
-	@XmlPath("Policy/Rule/Target/Resources/text()")
-    private String resources;
-	@XmlPath("Policy/Rule/Target/Resources/Resource/text()")
-    private String resource;
-	@XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/text()")
-    private String resourceMatch;
-    private String MatchIDResource;
-    @XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/AttributeValue/text()")
-    private String attributeValueResource;
-    @XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/ResourceAttributeDesignator/text()")
-    private String resourceAttributeDesignator;
-    private String attributeIdResource;
-    
-    @XmlPath("Policy/Rule/Target/Actions/text()")
-    private String actions;
-	@XmlPath("Policy/Rule/Target/Actions/Action/text()")
-    private String action;
-	@XmlPath("Policy/Rule/Target/Actions/Action/ActionMatch/text()")
-    private String actionMatch;
-    private String MatchIDAction;
-    @XmlPath("Policy/Rule/Target/Actions/Action/ActionMatch/AttributeValue/text()")
-    private String attributeValueAction;
-    @XmlPath("Policy/Rule/Target/Actions/Action/ActionMatch/ActionAttributeDesignator/text()")
-    private String actionAttributeDesignator;
-    private String attributeIdAction;
-    
-    
+	@XmlElement(name = "Policy/Rule/Target/Resources/Resource", required = true)
+    private List<xml_dati_Cittadini.Resourcess> resources = new ArrayList<xml_dati_Cittadini.Resourcess>();
+	@XmlElement(name = "Policy/Rule/Target/Actions/Action", required = true)
+    private List<xml_dati_Cittadini.Actionss> actions = new ArrayList<xml_dati_Cittadini.Actionss>();
+	
+	
 	public String getRule() {
 		return rule;
 	}
@@ -108,6 +87,22 @@ public class PolicyCittadini {
 		this.subjects.add(subjectss);
 	}
 	
+	public List<Resourcess> getResources() {
+		return resources;
+	}
+	
+	public void setResources(Resourcess resourcess) {
+		this.resources.add(resourcess);
+	}
+	
+	public List<Actionss> getActions() {
+		return actions;
+	}
+	
+	public void setActions(Actionss actionss) {
+		this.actions.add(actionss);
+	}
+	
 	@XmlPath("Policy/Rule/@Effect")
 	public String getEffectAtt() {
 		return effectAtt;
@@ -115,47 +110,7 @@ public class PolicyCittadini {
 	public void setEffectAtt(String effectAtt) {
 		this.effectAtt = effectAtt;
 	}
-	@XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/@MatchID")
-	public String getMatchIDResource() {
-		return MatchIDResource;
-	}
-	public void setMatchIDResource(String matchIDResource) {
-		MatchIDResource = matchIDResource;
-	}
-    @XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/ResourceAttributeDesignator/@AttributeId")
-	public String getAttributeIdResource() {
-		return attributeIdResource;
-	}
-	public void setAttributeIdResource(String attributeIdResource) {
-		this.attributeIdResource = attributeIdResource;
-	}
-	public String getAttributeValueResource() {
-		return attributeValueResource;
-	}
-	public void setAttributeValueResource(String attributeValueResource) {
-		this.attributeValueResource = attributeValueResource;
-	}
-	@XmlPath("Policy/Rule/Target/Actions/Action/ActionMatch/@MatchID")
-	public String getMatchIDAction() {
-		return MatchIDAction;
-	}
-	public void setMatchIDAction(String matchIDAction) {
-		MatchIDAction = matchIDAction;
-	}
-    @XmlPath("Policy/Rule/Target/Actions/Action/ActionMatch/ActionAttributeDesignator/@AttributeId")
-	public String getAttributeIdAction() {
-		return attributeIdAction;
-	}
-	public void setAttributeIdAction(String attributeIdAction) {
-		this.attributeIdAction = attributeIdAction;
-	}
 	
-	public String getAttributeValueAction() {
-		return attributeValueAction;
-	}
-	public void setAttributeValueAction(String AttributeValueAction) {
-		this.attributeValueAction = AttributeValueAction;
-	}
 	public String getPolicy() {
 		return policy;
 	}
