@@ -11,8 +11,42 @@
   			<artifactId>postgresql</artifactId>
   			<version>42.2.20</version>
   		</dependency>
+        <!-- API, java.xml.bind module -->
+		<dependency>
+		    <groupId>jakarta.xml.bind</groupId>
+		    <artifactId>jakarta.xml.bind-api</artifactId>
+		    <version>3.0.1</version>
+		    <exclusions>
+			  <exclusion>
+			    <groupId>xerces.wso2</groupId>
+			    <artifactId>xercesImpl</artifactId>
+			  </exclusion>
+			</exclusions> 
+		</dependency>
+		<dependency>
+			 <groupId>org.glassfish.jersey.media</groupId>
+			 <artifactId>jersey-media-jaxb</artifactId>
+		    <version>3.0.1</version>
+		    <exclusions>
+			  <exclusion>
+			    <groupId>xercesImpl</groupId>
+			    <artifactId>xercesImpl</artifactId>
+			  </exclusion>
+			</exclusions> 
+		</dependency>
+		<dependency>
+			 <groupId>com.sun.xml.bind</groupId>
+			 <artifactId>jaxb-osgi</artifactId>
+			 <version>3.0.1</version>
+			 <exclusions>
+			  <exclusion>
+			    <groupId>xercesImpl</groupId>
+			    <artifactId>xercesImpl</artifactId>
+			  </exclusion>
+			</exclusions> 
+		</dependency>
+		 <!-- API -->
   	</dependencies>
-  
 	<properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -47,7 +81,9 @@
                 <appendAssemblyId>false</appendAssemblyId>
                 
             </configuration>
+            
         </execution>
+        
     </executions>
 	</plugin>
 	

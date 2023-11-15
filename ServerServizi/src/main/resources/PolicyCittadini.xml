@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="ServerServiziPolicyCittadini" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides" Version="1.0">
+   <Rule Effect="Permit" RuleId="ruleDaniel">
+      <Description>Allow Daniel to send a message</Description>
+      <Target>
+         <Subjects>
+            <Subject>Zu ciccio u capraro<SubjectMatch MatchID="string-equal">
+                  <AttributeValue>Daniel</AttributeValue>
+                  <SubjectAttributeDesignator AttributeId="subject-id"/>
+               </SubjectMatch>
+            </Subject>
+         </Subjects>
+         <Resources>
+            <Resource>
+               <ResourceMatch MatchID="anyURI-equal">
+                  <AttributeValue>uri:message</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id"/>
+               </ResourceMatch>
+            </Resource>
+         </Resources>
+         <Actions>
+            <Action>
+               <ActionMatch MatchID="string-equal">
+                  <AttributeValue>send</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+         </Actions>
+      </Target>
+   </Rule>
+</Policy>
