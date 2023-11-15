@@ -1,0 +1,37 @@
+package xml_dati_Cittadini;
+
+import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+public class Subjectss{
+
+	@XmlPath("SubjectMatch/text()")
+    private String subjectMatch;
+    private String matchIDSubject;
+    @XmlPath("SubjectMatch/AttributeValue/text()")
+    private String attributeValueSubject;
+    @XmlPath("SubjectMatch/SubjectAttributeDesignator/text()")
+    private String subjectAttributeDesignator;
+    private String attributeIdSubject;
+    
+    @XmlPath("SubjectMatch/@MatchID")
+	public String getmatchIDSubject() {
+		return matchIDSubject;
+	}
+	public void setmatchIDSubject(String matchIDSubject) {
+		this.matchIDSubject = matchIDSubject;
+	}
+	
+	public String getAttributeValueSubject() {
+		return attributeValueSubject;
+	}
+	public void setAttributeValueSubject(String AttributeValueSubject) {
+		this.attributeValueSubject = AttributeValueSubject;
+	}
+    @XmlPath("SubjectMatch/SubjectAttributeDesignator/@AttributeId")
+	public String getAttributeIdSubject() {
+		return attributeIdSubject;
+	}
+	public void setAttributeIdSubject(String attributeIdSubject) {
+		this.attributeIdSubject = attributeIdSubject;
+	}
+}

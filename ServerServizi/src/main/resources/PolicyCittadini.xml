@@ -4,8 +4,15 @@
       <Description>Allow Daniel to send a message</Description>
       <Target>
          <Subjects>
-            <Subject>Zu ciccio u capraro<SubjectMatch MatchID="string-equal">
+            <Subject>
+               <SubjectMatch MatchID="string-equal">
                   <AttributeValue>Daniel</AttributeValue>
+                  <SubjectAttributeDesignator AttributeId="subject-id"/>
+               </SubjectMatch>
+            </Subject>
+            <Subject>
+               <SubjectMatch MatchID="string-equal">
+                  <AttributeValue>Alex</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>

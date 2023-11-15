@@ -1,8 +1,11 @@
 package xml_dati_Cittadini;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.*;
 	
 public class PolicyCittadini {
 
@@ -23,26 +26,15 @@ public class PolicyCittadini {
     private String description;
 	@XmlPath("Policy/Rule/Target/text()")
     private String target;
+	@XmlElement(name = "Policy/Rule/Target/Subjects/Subject", required = true)
 	
-	
-	@XmlPath("Policy/Rule/Target/Subjects/text()")	
-    private String subjects;
-	@XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
-    private String subject;
-	@XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/text()")
-    private String subjectMatch;
-    private String matchIDSubject;
-    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/AttributeValue/text()")
-    private String attributeValueSubject;
-    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/SubjectAttributeDesignator/text()")
-    private String subjectAttributeDesignator;
-    private String attributeIdSubject;
+    private List<xml_dati_Cittadini.Subjectss> subjects = new ArrayList<xml_dati_Cittadini.Subjectss>();
     
-	@XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
-    private String subjects2 = "Zu ciccio u capraro";
-//   	@XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
+//    @XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
+//    private String subjects2 = "Zu ciccio u capraro";
+//    @XmlPath("Policy/Rule/Target/Subjects/Subject/text()")
 //    private String subject2;
-//   	@XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/text()")
+//    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/text()")
 //    private String subjectMatch2;
 //    private String matchIDSubject2;
 //    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/AttributeValue/text()")
@@ -103,36 +95,25 @@ public class PolicyCittadini {
 	public String getTarget() {
 		return target;
 	}
+	
 	public void setTarget(String target) {
 		this.target = target;
 	}
+	
+	public List<Subjectss> getSubjects() {
+		return subjects;
+	}
+	
+	public void setSubjects(Subjectss subjectss) {
+		this.subjects.add(subjectss);
+	}
+	
 	@XmlPath("Policy/Rule/@Effect")
 	public String getEffectAtt() {
 		return effectAtt;
 	}
 	public void setEffectAtt(String effectAtt) {
 		this.effectAtt = effectAtt;
-	}
-	@XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/@MatchID")
-	public String getmatchIDSubject() {
-		return matchIDSubject;
-	}
-	public void setmatchIDSubject(String matchIDSubject) {
-		this.matchIDSubject = matchIDSubject;
-	}
-	
-	public String getAttributeValueSubject() {
-		return attributeValueSubject;
-	}
-	public void setAttributeValueSubject(String AttributeValueSubject) {
-		this.attributeValueSubject = AttributeValueSubject;
-	}
-    @XmlPath("Policy/Rule/Target/Subjects/Subject/SubjectMatch/SubjectAttributeDesignator/@AttributeId")
-	public String getAttributeIdSubject() {
-		return attributeIdSubject;
-	}
-	public void setAttributeIdSubject(String attributeIdSubject) {
-		this.attributeIdSubject = attributeIdSubject;
 	}
 	@XmlPath("Policy/Rule/Target/Resources/Resource/ResourceMatch/@MatchID")
 	public String getMatchIDResource() {
@@ -180,6 +161,5 @@ public class PolicyCittadini {
 	}
 	public void setPolicy(String policy) {
 		this.policy = policy;
-	}
-
+	}	
 }
