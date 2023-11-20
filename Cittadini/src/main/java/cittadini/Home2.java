@@ -65,7 +65,6 @@ public class Home2 extends JFrame {
 	public Home2(String checkOauthLogin, String token, String cf) {
 		super("Login Cittadini");
 		
-		
 		setBounds(100, 100, 516, 338);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

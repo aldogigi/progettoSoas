@@ -9,6 +9,8 @@ public class Resourcess {
     private String MatchIDResource;
     @XmlPath("ResourceMatch/AttributeValue/text()")
     private String attributeValueResource;
+    @XmlPath("ResourceMatch/AttributeValue/@DataType")
+    private String attributeValueResourceDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
     @XmlPath("ResourceMatch/ResourceAttributeDesignator/text()")
     private String resourceAttributeDesignator;
     private String attributeIdResource;

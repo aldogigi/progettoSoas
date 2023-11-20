@@ -1,13 +1,14 @@
 package server;
 
+import java.io.File;
 import java.sql.Connection;
+import xml_dati_Cittadini.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import org.postgresql.util.PSQLException;
 
 /**
@@ -16,17 +17,22 @@ import org.postgresql.util.PSQLException;
  * @author Gianluca Fontana 21452A
  * @author Alex Rabuffetti "Matricola"
  */
-public class Servizio {
+public class Servizio{
 	private Connection conn;
 	private String Email_CF;
-
+	private File file = new File("src\\main\\resources\\PolicyCittadini.xml");
+	private PolicyCittadini policyCittadini = new PolicyCittadini();;
+	//private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);
+	//private Marshaller marshaller;
 	/**
 	 * Il costruttore inizializza la connessione con il database
 	 * 
 	 * @param conn rappresenta la connessione stabilita con il database
+	 * @throws Exception 
 	 */
-	public Servizio(Connection conn) {
+	public Servizio(Connection conn) throws Exception {
 		this.conn = conn;
+
 	}
 
 	/**
@@ -106,7 +112,7 @@ public class Servizio {
 	 *         altrimenti ritorna un intero negativo e viene eseguito il rollback
 	 */
 	public int inserisciVN(String centroVaccinale, String nome, String cognome, String codiceFiscale, String data,
-			String vaccinSom) {
+			String vaccinSom) throws Exception{
 
 		int result = 0;
 		int x = 0;
@@ -154,6 +160,57 @@ public class Servizio {
 				System.out.println("Vaccinazione inserita");
 				result = x;
 				conn.commit(); /* Approvo la query e la rendo permanente */
+		        //--------------------------------------------------------
+				
+				ris = stmt.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata WHERE cf = '"+ codiceFiscale + "' AND data_somministrazione = '" + data + "';");
+
+				if (ris.next()) {
+					id = Integer.parseInt(ris.getString("id_vaccinazione"));
+					System.out.println("id_vaccinazione: " + id);
+				}
+				
+				file = new File("src\\main\\resources\\PolicyCittadini.xml");
+				
+				Ruless rule1 = new Ruless();
+		        Subjectss subjects1 = new Subjectss();        
+		        Resourcess resources1 = new Resourcess();
+		        Actionss action1 = new Actionss();
+		        Actionss action2 = new Actionss();
+				
+		        rule1.setRuleAtt("rule" + codiceFiscale);
+		        rule1.setDescription("Allow " + codiceFiscale + " to show all events and insert a new adverse event");
+		        rule1.setEffectAtt("Permit");
+		        
+		        subjects1.setmatchIDSubject("string-equal");
+		        subjects1.setAttributeValueSubject(codiceFiscale);
+		        subjects1.setAttributeIdSubject("subject-id");
+		        
+		        rule1.setSubjects(subjects1);
+		        
+		        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        resources1.setAttributeValueResource(String.valueOf(id));
+		        resources1.setAttributeIdResource("resource=id_vaccinazione");
+		        
+		        rule1.setResources(resources1);
+		        System.out.println(rule1.getResources());
+		        
+		        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        action1.setAttributeValueAction("show");
+		        action1.setAttributeIdAction("action-id");
+		        
+		        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        action2.setAttributeValueAction("insert");
+		        action2.setAttributeIdAction("action-id");
+		        
+		        rule1.setActions(action1);
+		        rule1.setActions(action2);
+		        		        
+		        policyCittadini.setRules(rule1);
+		        
+//				marshaller = jc.createMarshaller();
+//			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//		        marshaller.marshal(policyCittadini, file);
+		        
 			} else {
 				result = -1;
 				conn.rollback(); /* Nel caso ci siano stato errori eseguo un ripristino */
@@ -1045,5 +1102,70 @@ public class Servizio {
 		}
 
 		return -2;
+	}
+
+	public String deployAllRuleXACML() throws Exception{
+		
+		String result = "";
+		try {
+			ResultSet ris = null;
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+			ris = stmt.executeQuery("SELECT cf, id_vaccinazione FROM vaccinazione_effettuata;");
+									
+				while (ris.next()) {
+					
+					Ruless rule1 = new Ruless();
+			        Subjectss subjects1 = new Subjectss();        
+			        Resourcess resources1 = new Resourcess();
+			        Actionss action1 = new Actionss();
+			        Actionss action2 = new Actionss();
+					
+			        rule1.setRuleAtt("rule" + ris.getString(0));
+			        rule1.setDescription("Allow " + ris.getString(0) + " to show all events and insert a new adverse event");
+			        rule1.setEffectAtt("Permit");
+			        
+			        subjects1.setmatchIDSubject("string-equal");
+			        subjects1.setAttributeValueSubject(ris.getString(0));
+			        subjects1.setAttributeIdSubject("subject-id");
+			        
+			        rule1.setSubjects(subjects1);
+			        
+			        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+			        resources1.setAttributeValueResource(String.valueOf(ris.getString(1)));
+			        resources1.setAttributeIdResource("resource=id_vaccinazione");
+			        
+			        rule1.setResources(resources1);
+			        System.out.println(rule1.getResources());
+			        
+			        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+			        action1.setAttributeValueAction("show");
+			        action1.setAttributeIdAction("action-id");
+			        
+			        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+			        action2.setAttributeValueAction("insert");
+			        action2.setAttributeIdAction("action-id");
+			        
+			        rule1.setActions(action1);
+			        rule1.setActions(action2);
+			        		        
+			        policyCittadini.setRules(rule1);
+				}
+				
+				//marshaller = jc.createMarshaller();
+			    //marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		        //marshaller.marshal(policyCittadini, file);
+		        
+		        result = "yes";
+			if (!(ris.first())){
+				
+				result = "not";
+	        	
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("C'e' stato qualache problema");
+		}
+		return result;
 	}
 }

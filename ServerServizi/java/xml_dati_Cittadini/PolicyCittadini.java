@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlElement;
 	
 public class PolicyCittadini {
 
@@ -32,84 +32,9 @@ public class PolicyCittadini {
 	private String DataTypeAttributeDesignatorPolicy = "http://www.w3.org/2001/XMLSchema#string";
 	@XmlPath("Policy/Target/AnyOf/AnyOf/Match/AttributeDesignator/@MustBePresent")
 	private String mustBePresent = "true";
-	@XmlPath("Policy/Rule/text()")
-    private String rule;
-    private String ruleId;
-    private String effectAtt;
-	@XmlPath("Policy/Rule/Description/text()")
-    private String description;
-	@XmlPath("Policy/Rule/Target/text()")
-    private String target;
+	@XmlElement(name = "Policy/Rule", required = true)
+    private List<xml_dati_Cittadini.Ruless> rules = new ArrayList<xml_dati_Cittadini.Ruless>();
 	
-	@XmlElement(name = "Policy/Rule/Target/Subjects/Subject", required = true)
-    private List<xml_dati_Cittadini.Subjectss> subjects = new ArrayList<xml_dati_Cittadini.Subjectss>();
-	@XmlElement(name = "Policy/Rule/Target/Resources/Resource", required = true)
-    private List<xml_dati_Cittadini.Resourcess> resources = new ArrayList<xml_dati_Cittadini.Resourcess>();
-	@XmlElement(name = "Policy/Rule/Target/Actions/Action", required = true)
-    private List<xml_dati_Cittadini.Actionss> actions = new ArrayList<xml_dati_Cittadini.Actionss>();
-	
-	
-	public String getRule() {
-		return rule;
-	}
-	public void setRule(String rule) {
-		this.rule = rule;
-	}
-	@XmlPath("Policy/Rule/@RuleId")
-	public String getRuleAtt() {
-		return ruleId;
-	}
-	
-	public void setRuleAtt(String ruleId) {
-		this.ruleId = ruleId;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getTarget() {
-		return target;
-	}
-	
-	public void setTarget(String target) {
-		this.target = target;
-	}
-	
-	public List<Subjectss> getSubjects() {
-		return subjects;
-	}
-	
-	public void setSubjects(Subjectss subjectss) {
-		this.subjects.add(subjectss);
-	}
-	
-	public List<Resourcess> getResources() {
-		return resources;
-	}
-	
-	public void setResources(Resourcess resourcess) {
-		this.resources.add(resourcess);
-	}
-	
-	public List<Actionss> getActions() {
-		return actions;
-	}
-	
-	public void setActions(Actionss actionss) {
-		this.actions.add(actionss);
-	}
-	
-	@XmlPath("Policy/Rule/@Effect")
-	public String getEffectAtt() {
-		return effectAtt;
-	}
-	public void setEffectAtt(String effectAtt) {
-		this.effectAtt = effectAtt;
-	}
 	
 	public String getPolicy() {
 		return policy;
@@ -117,4 +42,11 @@ public class PolicyCittadini {
 	public void setPolicy(String policy) {
 		this.policy = policy;
 	}	
+	
+	public List<Ruless> getRules() {
+		return rules;
+	}
+	public void setRules(Ruless ruless) {
+		this.rules.add(ruless);
+	}
 }

@@ -137,7 +137,12 @@ public class Registrazione extends JFrame{
 			
 			public void mouseClicked(MouseEvent e) {
 
-				 login = new Login(checkOAuth, tokenUserOAuth);
+				 try {
+					login = new Login(checkOAuth, tokenUserOAuth);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				 login.setVisible(true);
 				 setVisible(false);
 				

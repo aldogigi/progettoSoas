@@ -168,4 +168,28 @@ public class ProxyServer implements ServerInterface {
 		return risposta;
 	}
 
+
+	public String deployAllRuleXACML() throws IOException {
+
+		socket = new Socket(addr, ServerInterface.PORT);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("deployAllRyleXACML");
+
+		String risposta = in.readLine();
+
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return risposta;
+		
+	}
+
 }

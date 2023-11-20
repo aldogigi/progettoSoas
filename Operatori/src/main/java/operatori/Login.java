@@ -77,8 +77,9 @@ public class Login extends JFrame{
 	 * Create the frame.
 	 * @param checkOAuth 
 	 * @param tokenUserOAuth 
+	 * @throws Exception 
 	 */
-	public Login(final String checkOAuth, final String tokenUserOAuth){
+	public Login(final String checkOAuth, final String tokenUserOAuth) throws Exception{
 		
 		btnAutoLogin = new JButton("");
 		
@@ -153,7 +154,13 @@ public class Login extends JFrame{
 						JOptionPane.showMessageDialog(new JFrame(), risultato);
 					}
 					else {
-						HomepageOperatori HO = new HomepageOperatori(checkOAuth, tokenUserOAuth);
+						HomepageOperatori HO = null;
+						try {
+							HO = new HomepageOperatori(checkOAuth, tokenUserOAuth);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						HO.setVisible(true);
 						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
 						setVisible(false);
@@ -282,5 +289,6 @@ public class Login extends JFrame{
 		contentPane.setLayout(gl_contentPane);
 		setTitle("Operatori - Login");
 		setResizable(false);
+		
 	}
 }

@@ -49,13 +49,18 @@ public class Backend extends Thread {
 	 * @exception IOException se non si riesce a comunicare con il server
 	 * @exception Exception se il server è disconnesso
 	 */
-	public void run() {
+	public void run(){
 		System.out.println("Thread numero: " + this.getId());
 
 		Connessione connessione = new Connessione(Server.username, Server.pwd, Server.host, Server.port, Server.dbName);
 		conn = connessione.connetti();
 
-		servizio = new Servizio(conn); /*Creo un oggetto Servizio passando la connessione al database*/
+		try {
+			servizio = new Servizio(conn);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} /*Creo un oggetto Servizio passando la connessione al database*/
 
 		String richiesta = "";
 		String[] param = null;
@@ -277,6 +282,17 @@ public class Backend extends Thread {
 					else if (param[0].equals("presenceUserOAuth")) {
 						
 						String result = servizio.presenceUserOAuth(param[1]);
+
+						if (out != null) {
+							out.println(result);
+						}
+
+						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
+
+					}
+					else if (param[0].equals("deployAllRuleXACML")) {
+						
+						String result = servizio.deployAllRuleXACML();
 
 						if (out != null) {
 							out.println(result);

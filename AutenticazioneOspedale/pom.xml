@@ -15,6 +15,11 @@
     <artifactId>jgoodies-common</artifactId>
     <version>1.4.0</version>
 </dependency>
+<dependency>
+	<groupId>org.postgresql</groupId>
+	<artifactId>postgresql</artifactId>
+	<version>42.2.20</version>
+</dependency>
 
 <!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
 <dependency>

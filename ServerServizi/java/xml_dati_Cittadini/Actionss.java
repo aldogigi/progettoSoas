@@ -9,6 +9,8 @@ public class Actionss {
     private String MatchIDAction;
     @XmlPath("ActionMatch/AttributeValue/text()")
     private String attributeValueAction;
+    @XmlPath("ActionMatch/AttributeValue/@DataType")
+    private String attributeValueActionDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
     @XmlPath("ActionMatch/ActionAttributeDesignator/text()")
     private String actionAttributeDesignator;
     private String attributeIdAction;

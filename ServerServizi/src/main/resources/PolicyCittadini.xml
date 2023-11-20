@@ -5,42 +5,40 @@
          <AnyOf>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Management of ServerServizi Database</AttributeValue>
-               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" 
-               Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" 
-               DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AnyOf>
       </AnyOf>
    </Target>
-   <Rule Effect="Permit" RuleId="ruleDaniel">
-      <Description>Allow Daniel to send a message</Description>
+   <Rule Effect="Permit" RuleId="rulefntglc00m07d423f">
+      <Description>Allow fntglc00m07d423f to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue>Daniel</AttributeValue>
-                  <SubjectAttributeDesignator AttributeId="subject-id"/>
-               </SubjectMatch>
-            </Subject>
-            <Subject>
-               <SubjectMatch MatchID="string-equal">
-                  <AttributeValue>Alex</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fntglc00m07d423f</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
          </Subjects>
          <Resources>
             <Resource>
-               <ResourceMatch MatchID="anyURI-equal">
-                  <AttributeValue>uri:message</AttributeValue>
-                  <ResourceAttributeDesignator AttributeId="resource=id"/>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">6</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
                </ResourceMatch>
             </Resource>
          </Resources>
          <Actions>
             <Action>
-               <ActionMatch MatchID="string-equal">
-                  <AttributeValue>send</AttributeValue>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
                   <ActionAttributeDesignator AttributeId="action-id"/>
                </ActionMatch>
             </Action>

@@ -27,14 +27,16 @@ public class HomepageOperatori extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private ProxyServer ps;
 	
 	/**
 	 * Frame richiama il metodo initialize() che si occupera' della costruzione della GUI
 	 * @param checkOAuth 
 	 * @param tokenUserOAuth 
 	 * @param  
+	 * @throws IOException 
 	 */
-	public HomepageOperatori(final String checkOAuth, final String tokenUserOAuth) {
+	public HomepageOperatori(final String checkOAuth, final String tokenUserOAuth) throws IOException {
 				
 		setTitle("CENTRO APPLICATIVO - OPERATORI");
 		setBounds(100, 100, 598, 358);
@@ -87,7 +89,13 @@ public class HomepageOperatori extends JFrame {
 		
 		{
 			public void mouseClicked(MouseEvent e) {
-				Login login = new Login(checkOAuth, tokenUserOAuth);
+				Login login = null;
+				try {
+					login = new Login(checkOAuth, tokenUserOAuth);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				login.setVisible(true);
 				setVisible(false);
 			}
@@ -100,6 +108,18 @@ public class HomepageOperatori extends JFrame {
 			public void mouseEntered(MouseEvent e) {
 			}
 		});
+		
+		String costructRules = ps.deployAllRuleXACML();
+		if (costructRules.equals("not")) {
+			System.out.println("Costruzione non avvenuta");
+
+		}
+		else if (costructRules.equals("yes")) {
+			System.out.println("Costruzione regole XACML automatiche avvenuto con successo");
+		}
+		else {
+			System.out.println("error");
+		}
 		
 	}
 }

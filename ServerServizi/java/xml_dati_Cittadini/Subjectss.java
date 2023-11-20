@@ -9,6 +9,8 @@ public class Subjectss{
     private String matchIDSubject;
     @XmlPath("SubjectMatch/AttributeValue/text()")
     private String attributeValueSubject;
+    @XmlPath("SubjectMatch/AttributeValue/@DataType")
+    private String attributeValueSubjectDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
     @XmlPath("SubjectMatch/SubjectAttributeDesignator/text()")
     private String subjectAttributeDesignator;
     private String attributeIdSubject;

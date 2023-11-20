@@ -202,8 +202,6 @@ public class Homepage_cittadini2 extends JFrame {
 				JComboBox<Object> comboBox = (JComboBox<Object>) event.getSource();
 
 				Object selected = comboBox.getSelectedItem();
-				String command = event.getActionCommand();
-				
 				String value = ((ComboItem) selected).getValue();
 
 				if ("Cerca per nome".equals(value)) {
@@ -529,7 +527,7 @@ public class Homepage_cittadini2 extends JFrame {
 						listaAvversi.add(avversi);
 					}
 				} catch (Exception z) {
-
+					z.printStackTrace();
 				}
 			}
 		});
