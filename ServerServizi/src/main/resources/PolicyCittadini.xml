@@ -286,6 +286,12 @@
                   <ResourceAttributeDesignator AttributeId="resource=id_evento_avverso"/>
                </ResourceMatch>
             </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">9</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_evento_avverso"/>
+               </ResourceMatch>
+            </Resource>
          </Resources>
          <Actions>
             <Action>
