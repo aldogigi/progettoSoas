@@ -395,4 +395,39 @@
          </Actions>
       </Target>
    </Rule>
+   <Rule Effect="Permit" RuleId="rulefntglc00m07d423f">
+      <Description>Allow fntglc00m07d423f to show all events and insert a new adverse event</Description>
+      <Target>
+         <Subjects>
+            <Subject>
+               <SubjectMatch MatchID="string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fntglc00m07d423f</AttributeValue>
+                  <SubjectAttributeDesignator AttributeId="subject-id"/>
+               </SubjectMatch>
+            </Subject>
+         </Subjects>
+         <Resources>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">14</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+         </Resources>
+         <Actions>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+         </Actions>
+      </Target>
+   </Rule>
 </Policy>

@@ -163,56 +163,9 @@ public class Servizio{
 				result = x;
 				conn.commit(); /* Approvo la query e la rendo permanente */
 		        //--------------------------------------------------------
+		        
+				deployAllRuleXACML();
 				
-				ris = stmt.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata WHERE cf = '"+ codiceFiscale + "' AND data_somministrazione = '" + data + "';");
-
-				if (ris.next()) {
-					id = Integer.parseInt(ris.getString("id_vaccinazione"));
-					System.out.println("id_vaccinazione: " + id);
-				}
-				
-				file = new File("src\\main\\resources\\PolicyCittadini.xml");
-				
-				Ruless rule1 = new Ruless();
-		        Subjectss subjects1 = new Subjectss();        
-		        Resourcess resources1 = new Resourcess();
-		        Actionss action1 = new Actionss();
-		        Actionss action2 = new Actionss();
-				
-		        rule1.setRuleAtt("rule" + codiceFiscale);
-		        rule1.setDescription("Allow " + codiceFiscale + " to show all events and insert a new adverse event");
-		        rule1.setEffectAtt("Permit");
-		        
-		        subjects1.setmatchIDSubject("string-equal");
-		        subjects1.setAttributeValueSubject(codiceFiscale);
-		        subjects1.setAttributeIdSubject("subject-id");
-		        
-		        rule1.setSubjects(subjects1);
-		        
-		        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        resources1.setAttributeValueResource(String.valueOf(id));
-		        resources1.setAttributeIdResource("resource=id_vaccinazione");
-		        
-		        rule1.setResources(resources1);
-		        System.out.println(rule1.getResources());
-		        
-		        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        action1.setAttributeValueAction("show");
-		        action1.setAttributeIdAction("action-id");
-		        
-		        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        action2.setAttributeValueAction("insert");
-		        action2.setAttributeIdAction("action-id");
-		        
-		        rule1.setActions(action1);
-		        rule1.setActions(action2);
-		        		        
-		        policyCittadini.setRules(rule1);
-		        
-				marshaller = jc.createMarshaller();
-			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		        marshaller.marshal(policyCittadini, file);
-		        
 			} else {
 				result = -1;
 				conn.rollback(); /* Nel caso ci siano stato errori eseguo un ripristino */
