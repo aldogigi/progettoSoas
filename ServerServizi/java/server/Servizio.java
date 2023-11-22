@@ -164,7 +164,6 @@ public class Servizio{
 				conn.commit(); /* Approvo la query e la rendo permanente */
 		        //--------------------------------------------------------
 		        
-				deployAllRuleXACML();
 				
 			} else {
 				result = -1;
@@ -225,7 +224,7 @@ public class Servizio{
 	 * @return stringa che informa il cittadino se è stato registrato, non è stato
 	 *         registrato o se non è ancora stato vaccinato
 	 */
-	public String registraCittadino(String CF, String email, String password) throws SQLException {
+	public String registraCittadino(String CF, String email, String password) throws Exception {
 
 		Statement stmt = conn.createStatement();
 		ResultSet ris = stmt.executeQuery("SELECT cf FROM vaccinazione_effettuata " + "WHERE cf = '" + CF.toLowerCase() + "' ;");
@@ -243,6 +242,7 @@ public class Servizio{
 
 			stmt.executeUpdate("INSERT INTO cittadini_registrati(email, password, cf) VALUES('" + email + "', '"
 					+ password + "','" + CF.toLowerCase() + "');");
+			deployAllRuleXACML();
 			return "inserimento avvenuto";
 
 		} else if (!(ris.next())) {
@@ -585,7 +585,7 @@ public class Servizio{
 	 *         avverso già presente
 	 */
 	public String inserisciEventiAvversi(String tipo, int severy, String note, String id1, String cFEmail)
-			throws SQLException {
+			throws Exception {
 
 		ResultSet ris = null;
 
@@ -605,6 +605,7 @@ public class Servizio{
 							+ "VALUES(nextval('eventi_avversi_seq'), '" + tipo + "', " + severy + ", '" + note + "', "
 							+ id1 + ");");
 			if (risultato > 0) {
+				deployAllRuleXACML();
 				return "inserimento avvenuto";
 			} else {
 				return "inserimento fallito";
@@ -711,12 +712,13 @@ public class Servizio{
 	 * 
 	 * @return cancellazione avvenuta se non ci sono stati problemi, cancellazione fallita se ci sono stati dei problemi
 	 */
-	public String deleteAvversita(String id) throws SQLException {
+	public String deleteAvversita(String id) throws Exception {
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 		int risultato = stmt.executeUpdate("DELETE FROM eventi_avversi WHERE id_evento_avverso = " + id + " ;");
 		if (risultato > 0) {
+			
 			return "cancellazione avvenuta";
 		} else {
 			return "cancellazione fallita";
@@ -1119,7 +1121,66 @@ public class Servizio{
 			else {
 				result = "yes";
 			}
+			
 			System.out.println(result);
+			
+			ris = stmt.executeQuery("SELECT cf, id_evento_avverso FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi;");
+			
+			while (ris.next()) {
+				
+				Ruless rule1 = new Ruless();
+		        Subjectss subjects1 = new Subjectss();        
+		        Resourcess resources1 = new Resourcess();
+		        Actionss action1 = new Actionss();
+		        Actionss action2 = new Actionss();
+				
+		        rule1.setRuleAtt("rule" + ris.getString(1));
+		        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
+		        rule1.setEffectAtt("Permit");
+		        
+		        subjects1.setmatchIDSubject("string-equal");
+		        subjects1.setAttributeValueSubject(ris.getString(1));
+		        subjects1.setAttributeIdSubject("subject-id");
+		        
+		        rule1.setSubjects(subjects1);
+		        
+		        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        resources1.setAttributeValueResource(String.valueOf(ris.getString(2)));
+		        resources1.setAttributeIdResource("resource=id_evento_avverso");
+		        
+		        rule1.setResources(resources1);
+		        System.out.println(rule1.getResources());
+		        
+		        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        action1.setAttributeValueAction("modify");
+		        action1.setAttributeIdAction("action-id");
+		        
+		        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+		        action2.setAttributeValueAction("delete");
+		        action2.setAttributeIdAction("action-id");
+		        
+		        rule1.setActions(action1);
+		        rule1.setActions(action2);
+		        		        
+		        policyCittadini.setRules(rule1);
+			}
+			
+			marshaller = jc.createMarshaller();
+		    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	        marshaller.marshal(policyCittadini, file);
+	        
+		if (!(ris.first())){
+			
+			result = "not";
+        	
+		}
+		else {
+			result = "yes";
+		}
+		
+		System.out.println(result);
+		
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("C'e' stato qualache problema");

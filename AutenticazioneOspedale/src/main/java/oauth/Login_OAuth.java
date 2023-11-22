@@ -250,11 +250,13 @@ public class Login_OAuth extends JFrame{
 			this.addWindowListener(new WindowAdapter() {
 			   public void windowClosing(WindowEvent evt) {
 				   
-				   dispose();
+				   
 				   ProcessBuilder builder = new ProcessBuilder(
 				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
+				   
 				        builder.redirectErrorStream(true);
 				        Process p;
+				        
 						try {
 							p = builder.start();
 							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -267,6 +269,7 @@ public class Login_OAuth extends JFrame{
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
+						dispose();
 			   }
 			  });
 		}
