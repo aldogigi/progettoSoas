@@ -10,13 +10,13 @@
          </AnyOf>
       </AnyOf>
    </Target>
-   <Rule Effect="Permit" RuleId="rulerbflxa98p17b300n">
-      <Description>Allow rbflxa98p17b300n to show all events and insert a new adverse event</Description>
+   <Rule Effect="Permit" RuleId="ruleafmskl99m15d423f">
+      <Description>Allow afmskl99m15d423f to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">rbflxa98p17b300n</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">afmskl99m15d423f</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
@@ -24,7 +24,13 @@
          <Resources>
             <Resource>
                <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">2</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">10</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">12</AttributeValue>
                   <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
                </ResourceMatch>
             </Resource>
@@ -45,13 +51,13 @@
          </Actions>
       </Target>
    </Rule>
-   <Rule Effect="Permit" RuleId="rulegnlfnt12c12x300n">
-      <Description>Allow gnlfnt12c12x300n to show all events and insert a new adverse event</Description>
+   <Rule Effect="Permit" RuleId="rulesklarm99m15d423f">
+      <Description>Allow sklarm99m15d423f to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">gnlfnt12c12x300n</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">sklarm99m15d423f</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
@@ -59,7 +65,7 @@
          <Resources>
             <Resource>
                <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">8</AttributeValue>
                   <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
                </ResourceMatch>
             </Resource>
@@ -80,48 +86,13 @@
          </Actions>
       </Target>
    </Rule>
-   <Rule Effect="Permit" RuleId="rulefrskln98c26c420m">
-      <Description>Allow frskln98c26c420m to show all events and insert a new adverse event</Description>
+   <Rule Effect="Permit" RuleId="rulepntmtn99a44d423e">
+      <Description>Allow pntmtn99a44d423e to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">frskln98c26c420m</AttributeValue>
-                  <SubjectAttributeDesignator AttributeId="subject-id"/>
-               </SubjectMatch>
-            </Subject>
-         </Subjects>
-         <Resources>
-            <Resource>
-               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">4</AttributeValue>
-                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
-               </ResourceMatch>
-            </Resource>
-         </Resources>
-         <Actions>
-            <Action>
-               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
-                  <ActionAttributeDesignator AttributeId="action-id"/>
-               </ActionMatch>
-            </Action>
-            <Action>
-               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
-                  <ActionAttributeDesignator AttributeId="action-id"/>
-               </ActionMatch>
-            </Action>
-         </Actions>
-      </Target>
-   </Rule>
-   <Rule Effect="Permit" RuleId="rulehxhkrn98m23x200m">
-      <Description>Allow hxhkrn98m23x200m to show all events and insert a new adverse event</Description>
-      <Target>
-         <Subjects>
-            <Subject>
-               <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">hxhkrn98m23x200m</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">pntmtn99a44d423e</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
@@ -150,13 +121,84 @@
          </Actions>
       </Target>
    </Rule>
-   <Rule Effect="Permit" RuleId="rulerbflxa98p17b300n">
-      <Description>Allow rbflxa98p17b300n to show all events and insert a new adverse event</Description>
+   <Rule Effect="Permit" RuleId="rulefntglc00m07d423f">
+      <Description>Allow fntglc00m07d423f to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">rbflxa98p17b300n</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fntglc00m07d423f</AttributeValue>
+                  <SubjectAttributeDesignator AttributeId="subject-id"/>
+               </SubjectMatch>
+            </Subject>
+         </Subjects>
+         <Resources>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">6</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">7</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">9</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">11</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">13</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">14</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+         </Resources>
+         <Actions>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+         </Actions>
+      </Target>
+   </Rule>
+   <Rule Effect="Permit" RuleId="rulefntgpp98m27d423l">
+      <Description>Allow fntgpp98m27d423l to show all events and insert a new adverse event</Description>
+      <Target>
+         <Subjects>
+            <Subject>
+               <SubjectMatch MatchID="string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fntgpp98m27d423l</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
@@ -165,6 +207,41 @@
             <Resource>
                <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                   <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">4</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_vaccinazione"/>
+               </ResourceMatch>
+            </Resource>
+         </Resources>
+         <Actions>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+            <Action>
+               <ActionMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
+                  <ActionAttributeDesignator AttributeId="action-id"/>
+               </ActionMatch>
+            </Action>
+         </Actions>
+      </Target>
+   </Rule>
+   <Rule Effect="Permit" RuleId="rulepntmtn99a44d423e">
+      <Description>Allow pntmtn99a44d423e to show all events and insert a new adverse event</Description>
+      <Target>
+         <Subjects>
+            <Subject>
+               <SubjectMatch MatchID="string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">pntmtn99a44d423e</AttributeValue>
+                  <SubjectAttributeDesignator AttributeId="subject-id"/>
+               </SubjectMatch>
+            </Subject>
+         </Subjects>
+         <Resources>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5</AttributeValue>
                   <ResourceAttributeDesignator AttributeId="resource=id_evento_avverso"/>
                </ResourceMatch>
             </Resource>
@@ -185,13 +262,13 @@
          </Actions>
       </Target>
    </Rule>
-   <Rule Effect="Permit" RuleId="rulegnlfnt12c12x300n">
-      <Description>Allow gnlfnt12c12x300n to show all events and insert a new adverse event</Description>
+   <Rule Effect="Permit" RuleId="rulefntglc00m07d423f">
+      <Description>Allow fntglc00m07d423f to show all events and insert a new adverse event</Description>
       <Target>
          <Subjects>
             <Subject>
                <SubjectMatch MatchID="string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">gnlfnt12c12x300n</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fntglc00m07d423f</AttributeValue>
                   <SubjectAttributeDesignator AttributeId="subject-id"/>
                </SubjectMatch>
             </Subject>
@@ -199,7 +276,13 @@
          <Resources>
             <Resource>
                <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">5</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3</AttributeValue>
+                  <ResourceAttributeDesignator AttributeId="resource=id_evento_avverso"/>
+               </ResourceMatch>
+            </Resource>
+            <Resource>
+               <ResourceMatch MatchID="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">4</AttributeValue>
                   <ResourceAttributeDesignator AttributeId="resource=id_evento_avverso"/>
                </ResourceMatch>
             </Resource>

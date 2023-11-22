@@ -689,7 +689,7 @@ public class Servizio{
 	 *         altrimenti
 	 */
 	public String updateAvversita(String id_vaccinazione, String id, String evento, String severita, String note)
-			throws SQLException {
+			throws Exception {
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
@@ -698,6 +698,7 @@ public class Servizio{
 				+ id_vaccinazione + ", note='" + note.toLowerCase() + "' " + "WHERE id_vaccinazione=" + id_vaccinazione
 				+ " AND  id_evento_avverso=" + id + " ;");
 		if (risultato > 0) {
+			deployAllRuleXACML();
 			return "modifica avvenuta";
 		} else {
 			return "modifica fallita";
@@ -718,7 +719,7 @@ public class Servizio{
 
 		int risultato = stmt.executeUpdate("DELETE FROM eventi_avversi WHERE id_evento_avverso = " + id + " ;");
 		if (risultato > 0) {
-			
+			deployAllRuleXACML();
 			return "cancellazione avvenuta";
 		} else {
 			return "cancellazione fallita";
@@ -1068,13 +1069,13 @@ public class Servizio{
 			ResultSet ris = null;
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
-			ris = stmt.executeQuery("SELECT cf, id_vaccinazione FROM vaccinazione_effettuata;");
+			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata;");
 									
 				while (ris.next()) {
 					
 					Ruless rule1 = new Ruless();
 			        Subjectss subjects1 = new Subjectss();        
-			        Resourcess resources1 = new Resourcess();
+			        Resourcess resources1 = null;
 			        Actionss action1 = new Actionss();
 			        Actionss action2 = new Actionss();
 					
@@ -1088,12 +1089,21 @@ public class Servizio{
 			        
 			        rule1.setSubjects(subjects1);
 			        
-			        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        resources1.setAttributeValueResource(String.valueOf(ris.getString(2)));
-			        resources1.setAttributeIdResource("resource=id_vaccinazione");
+			        ResultSet ris2 = null;
+					Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+					ris2 = stmt2.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata WHERE cf = '" + ris.getString(1) + "';");
 			        
-			        rule1.setResources(resources1);
-			        System.out.println(rule1.getResources());
+					while(ris2.next()) {	
+						resources1 = new Resourcess();
+				        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+				        resources1.setAttributeValueResource(String.valueOf(ris2.getString(1)));
+				        resources1.setAttributeIdResource("resource=id_vaccinazione");
+				        
+				        rule1.setResources(resources1);
+				        System.out.println(rule1.getResources());
+				        
+					}
 			        
 			        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
 			        action1.setAttributeValueAction("show");
@@ -1124,13 +1134,13 @@ public class Servizio{
 			
 			System.out.println(result);
 			
-			ris = stmt.executeQuery("SELECT cf, id_evento_avverso FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi;");
+			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi;");
 			
 			while (ris.next()) {
 				
 				Ruless rule1 = new Ruless();
 		        Subjectss subjects1 = new Subjectss();        
-		        Resourcess resources1 = new Resourcess();
+		        Resourcess resources1 = null;
 		        Actionss action1 = new Actionss();
 		        Actionss action2 = new Actionss();
 				
@@ -1144,12 +1154,18 @@ public class Servizio{
 		        
 		        rule1.setSubjects(subjects1);
 		        
-		        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        resources1.setAttributeValueResource(String.valueOf(ris.getString(2)));
-		        resources1.setAttributeIdResource("resource=id_evento_avverso");
+				Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
+
+				ResultSet ris2 = stmt2.executeQuery("SELECT id_evento_avverso FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi WHERE cf = '" + ris.getString(1) + "';");
 		        
-		        rule1.setResources(resources1);
-		        System.out.println(rule1.getResources());
+				while (ris2.next()) {
+					resources1 = new Resourcess();
+			        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
+			        resources1.setAttributeValueResource(String.valueOf(ris2.getString(1)));
+			        resources1.setAttributeIdResource("resource=id_evento_avverso");
+			        rule1.setResources(resources1);
+			        System.out.println(rule1.getResources());
+				}
 		        
 		        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
 		        action1.setAttributeValueAction("modify");
