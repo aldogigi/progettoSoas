@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.xml.bind.*;
+
 import org.postgresql.util.PSQLException;
 
 /**
@@ -20,10 +22,10 @@ import org.postgresql.util.PSQLException;
 public class Servizio{
 	private Connection conn;
 	private String Email_CF;
-	private File file = new File("src\\main\\resources\\PolicyCittadini.xml");
-	private PolicyCittadini policyCittadini = new PolicyCittadini();;
-	//private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);
-	//private Marshaller marshaller;
+	private File file = new File("ServerServizi\\src\\main\\resources\\PolicyCittadini.xml");
+	private PolicyCittadini policyCittadini = new PolicyCittadini();
+	private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);
+	private Marshaller marshaller;
 	/**
 	 * Il costruttore inizializza la connessione con il database
 	 * 
@@ -207,9 +209,9 @@ public class Servizio{
 		        		        
 		        policyCittadini.setRules(rule1);
 		        
-//				marshaller = jc.createMarshaller();
-//			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//		        marshaller.marshal(policyCittadini, file);
+				marshaller = jc.createMarshaller();
+			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		        marshaller.marshal(policyCittadini, file);
 		        
 			} else {
 				result = -1;
@@ -942,12 +944,12 @@ public class Servizio{
 			if(project.equals("operatori")) {
 				
 				ris = stmt.executeQuery(
-						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "';");
+						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "' AND token LIKE 'OP%';");
 			}
 			else if (project.equals("cittadini")) {
 				
 				ris = stmt.executeQuery(
-						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "' AND cf = '" + cFString + "';");
+						"SELECT id_user FROM type_user " + "WHERE email = '" + email + "' AND cf = '" + cFString + "' AND token LIKE 'CT%';");
 			}
 
 			if (ris.first()) {
@@ -1106,7 +1108,7 @@ public class Servizio{
 
 	public String deployAllRuleXACML() throws Exception{
 		
-		String result = "";
+		String result = "error";
 		try {
 			ResultSet ris = null;
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
@@ -1121,18 +1123,18 @@ public class Servizio{
 			        Actionss action1 = new Actionss();
 			        Actionss action2 = new Actionss();
 					
-			        rule1.setRuleAtt("rule" + ris.getString(0));
-			        rule1.setDescription("Allow " + ris.getString(0) + " to show all events and insert a new adverse event");
+			        rule1.setRuleAtt("rule" + ris.getString(1));
+			        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
 			        rule1.setEffectAtt("Permit");
 			        
 			        subjects1.setmatchIDSubject("string-equal");
-			        subjects1.setAttributeValueSubject(ris.getString(0));
+			        subjects1.setAttributeValueSubject(ris.getString(1));
 			        subjects1.setAttributeIdSubject("subject-id");
 			        
 			        rule1.setSubjects(subjects1);
 			        
 			        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        resources1.setAttributeValueResource(String.valueOf(ris.getString(1)));
+			        resources1.setAttributeValueResource(String.valueOf(ris.getString(2)));
 			        resources1.setAttributeIdResource("resource=id_vaccinazione");
 			        
 			        rule1.setResources(resources1);
@@ -1152,16 +1154,19 @@ public class Servizio{
 			        policyCittadini.setRules(rule1);
 				}
 				
-				//marshaller = jc.createMarshaller();
-			    //marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		        //marshaller.marshal(policyCittadini, file);
+				marshaller = jc.createMarshaller();
+			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		        marshaller.marshal(policyCittadini, file);
 		        
-		        result = "yes";
 			if (!(ris.first())){
 				
 				result = "not";
 	        	
 			}
+			else {
+				result = "yes";
+			}
+			System.out.println(result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("C'e' stato qualache problema");

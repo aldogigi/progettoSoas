@@ -38,6 +38,7 @@ public class HomepageOperatori extends JFrame {
 	 */
 	public HomepageOperatori(final String checkOAuth, final String tokenUserOAuth) throws IOException {
 				
+		ps = new ProxyServer();
 		setTitle("CENTRO APPLICATIVO - OPERATORI");
 		setBounds(100, 100, 598, 358);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +119,7 @@ public class HomepageOperatori extends JFrame {
 			System.out.println("Costruzione regole XACML automatiche avvenuto con successo");
 		}
 		else {
-			System.out.println("error");
+			System.out.println(costructRules);
 		}
 		
 	}

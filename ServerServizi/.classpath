@@ -34,18 +34,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gianl/.m2/repository/org/wso2/balana/org.wso2.balana/1.2.14-SNAPSHOT/org.wso2.balana-1.2.14-SNAPSHOT.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Users/gianl/.m2/repository/org/wso2/balana/org.wso2.balana/1.2.14-SNAPSHOT/org.wso2.balana-1.2.14-SNAPSHOT-javadoc.jar!/"/>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="org.wso2.balana"/>
-			<attribute name="maven.artifactId" value="org.wso2.balana"/>
-			<attribute name="maven.version" value="1.2.14-SNAPSHOT"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gianl/Downloads/eclipselink-4.0.2.v20230613-3bfa6ac6dd/eclipselink/jlib/eclipselink.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gianl/eclipse/commons-logging-1.2/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gianl/Downloads/Xerces-J-src.2.12.2"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

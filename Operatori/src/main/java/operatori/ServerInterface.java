@@ -16,4 +16,8 @@ public interface ServerInterface {
 	public int inserisciVN(String param) throws IOException;
 
 	public String popolaCV() throws IOException;
+	
+	public int inserisciUser(String param) throws IOException;
+	
+	public String deployAllRuleXACML() throws IOException;
 }

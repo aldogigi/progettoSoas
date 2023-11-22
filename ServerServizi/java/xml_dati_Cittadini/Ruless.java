@@ -3,9 +3,10 @@ package xml_dati_Cittadini;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-import jakarta.xml.bind.annotation.XmlElement;
 
 public class Ruless {
 

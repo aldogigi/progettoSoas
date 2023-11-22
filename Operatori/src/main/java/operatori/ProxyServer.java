@@ -175,7 +175,7 @@ public class ProxyServer implements ServerInterface {
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 		
-		out.println("deployAllRyleXACML");
+		out.println("deployAllRuleXACML");
 
 		String risposta = in.readLine();
 

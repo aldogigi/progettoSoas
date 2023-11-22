@@ -12,38 +12,57 @@
   			<version>42.2.20</version>
   		</dependency>
         <!-- API, java.xml.bind module -->
-		<dependency>
-		    <groupId>jakarta.xml.bind</groupId>
-		    <artifactId>jakarta.xml.bind-api</artifactId>
-		    <version>3.0.1</version>
+        <dependency>
+		    <groupId>org.wso2.balana</groupId>
+		    <artifactId>org.wso2.balana</artifactId>
+		    <version>1.1.12</version>
 		    <exclusions>
-			  <exclusion>
-			    <groupId>xerces.wso2</groupId>
-			    <artifactId>xercesImpl</artifactId>
-			  </exclusion>
-			</exclusions> 
+		        <exclusion>
+		          <artifactId>xercesImpl</artifactId>
+		          <groupId>xerces.wso2</groupId>
+		        </exclusion>
+		     </exclusions>
 		</dependency>
 		<dependency>
 			 <groupId>org.glassfish.jersey.media</groupId>
 			 <artifactId>jersey-media-jaxb</artifactId>
 		    <version>3.0.1</version>
-		    <exclusions>
-			  <exclusion>
-			    <groupId>xercesImpl</groupId>
-			    <artifactId>xercesImpl</artifactId>
-			  </exclusion>
-			</exclusions> 
 		</dependency>
 		<dependency>
 			 <groupId>com.sun.xml.bind</groupId>
 			 <artifactId>jaxb-osgi</artifactId>
 			 <version>3.0.1</version>
-			 <exclusions>
-			  <exclusion>
-			    <groupId>xercesImpl</groupId>
-			    <artifactId>xercesImpl</artifactId>
-			  </exclusion>
-			</exclusions> 
+		</dependency>
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-runtime</artifactId>
+		    <version>4.0.0</version> 
+		</dependency>
+		<dependency>
+	      <groupId>com.sun.xml.bind</groupId>
+	      <artifactId>jaxb-impl</artifactId>
+	      <version>2.3.6</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>eclipselink</artifactId>
+		    <version>2.5.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>javax.persistence</artifactId>
+		    <version>2.0.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>1.1.1</version>
 		</dependency>
 		 <!-- API -->
   	</dependencies>
@@ -71,7 +90,7 @@
                 <archive>
                 <manifest>
                     <mainClass>
-                        server.Server
+                        server.Server<!--xml_dati_Cittadini.XMLEditor-->
                     </mainClass>
                 </manifest>
                 </archive>
@@ -107,12 +126,12 @@
 	<plugin>
             <groupId>org.jvnet.jaxb2.maven2</groupId>
             <artifactId>maven-jaxb2-plugin</artifactId>
-            <version>0.14.0</version>
+            <version>3.0.0</version>
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish.jaxb</groupId>
                     <artifactId>jaxb-runtime</artifactId>
-                    <version>2.3.1</version>
+                    <version>3.0.0</version>
                 </dependency>
             </dependencies>
     </plugin>

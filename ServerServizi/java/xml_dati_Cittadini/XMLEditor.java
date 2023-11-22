@@ -2,8 +2,7 @@ package xml_dati_Cittadini;
 
 import java.io.File;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Marshaller;
+import javax.xml.bind.*;
 
 public class XMLEditor{
 	
