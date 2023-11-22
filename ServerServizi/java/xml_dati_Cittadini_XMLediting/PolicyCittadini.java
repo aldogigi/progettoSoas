@@ -1,4 +1,4 @@
-package xml_dati_Cittadini;
+package xml_dati_Cittadini_XMLediting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class PolicyCittadini {
 	@XmlPath("Target/AnyOf/AnyOf/Match/AttributeDesignator/@MustBePresent")
 	private String mustBePresent = "true";
 	@XmlElement(name = "Rule", required = true)
-    private List<xml_dati_Cittadini.Ruless> rules = new ArrayList<xml_dati_Cittadini.Ruless>();
+    private List<xml_dati_Cittadini_XMLediting.Ruless> rules = new ArrayList<xml_dati_Cittadini_XMLediting.Ruless>();
 	
 	
 	public String getPolicy() {

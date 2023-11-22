@@ -1,4 +1,4 @@
-package xml_dati_Cittadini;
+package xml_dati_Cittadini_XMLediting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +18,11 @@ public class Ruless {
     private String target;
 	
 	@XmlElement(name = "Target/Subjects/Subject", required = true)
-    private List<xml_dati_Cittadini.Subjectss> subjects = new ArrayList<xml_dati_Cittadini.Subjectss>();
+    private List<xml_dati_Cittadini_XMLediting.Subjectss> subjects = new ArrayList<xml_dati_Cittadini_XMLediting.Subjectss>();
 	@XmlElement(name = "Target/Resources/Resource", required = true)
-    private List<xml_dati_Cittadini.Resourcess> resources = new ArrayList<xml_dati_Cittadini.Resourcess>();
+    private List<xml_dati_Cittadini_XMLediting.Resourcess> resources = new ArrayList<xml_dati_Cittadini_XMLediting.Resourcess>();
 	@XmlElement(name = "Target/Actions/Action", required = true)
-    private List<xml_dati_Cittadini.Actionss> actions = new ArrayList<xml_dati_Cittadini.Actionss>();
+    private List<xml_dati_Cittadini_XMLediting.Actionss> actions = new ArrayList<xml_dati_Cittadini_XMLediting.Actionss>();
 	
 
 	@XmlPath("@RuleId")

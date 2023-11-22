@@ -2,7 +2,6 @@ package server;
 
 import java.io.File;
 import java.sql.Connection;
-import xml_dati_Cittadini.*;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -12,6 +11,8 @@ import java.util.Calendar;
 import javax.xml.bind.*;
 
 import org.postgresql.util.PSQLException;
+
+import xml_dati_Cittadini_XMLediting.*;
 
 /**
  * E' la classe che fornisce i metodi principali che si occupano di interrogare il database eseguendo la query di interesse.

@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package xml_dati_Cittadini;
+package xml_dati_Cittadini_XMLCheckerPolicy;
 
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BagAttribute;

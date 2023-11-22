@@ -16,7 +16,7 @@
 * under the License.
 */
 
-package xml_dati_Cittadini;
+package xml_dati_Cittadini_XMLCheckerPolicy;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

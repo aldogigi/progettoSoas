@@ -1,4 +1,4 @@
-package xml_dati_Cittadini;
+package xml_dati_Cittadini_XMLediting;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
