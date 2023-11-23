@@ -1,2 +1,0 @@
-Balana Sample - Hierarchical  Resource
-======================================
