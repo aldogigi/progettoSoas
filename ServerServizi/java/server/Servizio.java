@@ -1070,7 +1070,7 @@ public class Servizio{
 			ResultSet ris = null;
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
-			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata;");
+			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN cittadini_registrati;");
 									
 				while (ris.next()) {
 					
@@ -1081,7 +1081,7 @@ public class Servizio{
 			        Actionss action2 = new Actionss();
 					
 			        rule1.setRuleAtt("rule" + ris.getString(1));
-			        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
+			        rule1.setDescription("Allow " + ris.getString(1) + " to modify and update events");
 			        rule1.setEffectAtt("Permit");
 			        
 			        subjects1.setmatchIDSubject("string-equal");
