@@ -14,6 +14,8 @@ public class Resourcess {
     @XmlPath("ResourceMatch/ResourceAttributeDesignator/text()")
     private String resourceAttributeDesignator;
     private String attributeIdResource;
+    @XmlPath("ResourceMatch/ResourceAttributeDesignator/@DataType")
+    private String resourceAttributeDesignatorResourceDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
     
     @XmlPath("ResourceMatch/@MatchID")
 	public String getMatchIDResource() {

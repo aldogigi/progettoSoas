@@ -14,6 +14,8 @@ public class Subjectss{
     @XmlPath("SubjectMatch/SubjectAttributeDesignator/text()")
     private String subjectAttributeDesignator;
     private String attributeIdSubject;
+    @XmlPath("SubjectMatch/SubjectAttributeDesignator/@DataType")
+    private String subjectAttributeDesignatorSubjectDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
     
     @XmlPath("SubjectMatch/@MatchID")
 	public String getmatchIDSubject() {

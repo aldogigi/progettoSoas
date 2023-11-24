@@ -65,6 +65,17 @@
 		    <artifactId>commons-logging</artifactId>
 		    <version>1.1.1</version>
 		</dependency>
+		<dependency>
+		    <groupId>xerces</groupId>
+		    <artifactId>xercesImpl</artifactId>
+		    <version>2.12.2</version>
+		    <exclusions>
+		        <exclusion>
+				  <groupId>xml-apis</groupId>
+		          <artifactId>xml-apis</artifactId>
+		        </exclusion>
+		     </exclusions>
+		</dependency>
 		 <!-- API -->
   	</dependencies>
 	<properties>
@@ -91,7 +102,7 @@
                 <archive>
                 <manifest>
                     <mainClass>
-                        server.Server<!--xml_dati_Cittadini.XMLEditor-->
+                        <!--server.Server--><!--xml_dati_Cittadini.XMLEditor-->xml_dati_Cittadini_XMLCheckerPolicy.XMLBinder
                     </mainClass>
                 </manifest>
                 </archive>

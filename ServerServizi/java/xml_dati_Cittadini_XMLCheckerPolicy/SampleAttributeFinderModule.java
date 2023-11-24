@@ -44,6 +44,7 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
         try {
             defaultSubjectId = new URI("urn:oasis:names:tc:xacml:1.0:subject:subject-id");
         } catch (URISyntaxException e) {
+        	e.printStackTrace();
            //ignore
         }
 
@@ -59,7 +60,7 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
     @Override
     public Set<String> getSupportedIds() {
         Set<String> ids = new HashSet<String>();
-        ids.add("http://test.org/claim/role");
+        ids.add("subject-id");
         return ids;   
     }
 

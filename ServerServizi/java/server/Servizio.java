@@ -1081,10 +1081,10 @@ public class Servizio{
 			        Actionss action2 = new Actionss();
 					
 			        rule1.setRuleAtt("rule" + ris.getString(1));
-			        rule1.setDescription("Allow " + ris.getString(1) + " to modify and update events");
+			        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
 			        rule1.setEffectAtt("Permit");
 			        
-			        subjects1.setmatchIDSubject("string-equal");
+			        subjects1.setmatchIDSubject("urn:oasis:names:tc:xacml:1.0:function:string-equal");
 			        subjects1.setAttributeValueSubject(ris.getString(1));
 			        subjects1.setAttributeIdSubject("subject-id");
 			        
@@ -1145,11 +1145,11 @@ public class Servizio{
 		        Actionss action1 = new Actionss();
 		        Actionss action2 = new Actionss();
 				
-		        rule1.setRuleAtt("rule" + ris.getString(1));
-		        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
+		        rule1.setRuleAtt("rule_" + ris.getString(1));
+		        rule1.setDescription("Allow " + ris.getString(1) + " to modify and update events");
 		        rule1.setEffectAtt("Permit");
 		        
-		        subjects1.setmatchIDSubject("string-equal");
+		        subjects1.setmatchIDSubject("urn:oasis:names:tc:xacml:1.0:function:string-equal");
 		        subjects1.setAttributeValueSubject(ris.getString(1));
 		        subjects1.setAttributeIdSubject("subject-id");
 		        

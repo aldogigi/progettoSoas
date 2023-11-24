@@ -27,18 +27,12 @@ import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.finder.AttributeFinder;
 import org.wso2.balana.finder.AttributeFinderModule;
-import org.wso2.balana.finder.ResourceFinder;
-import org.wso2.balana.finder.ResourceFinderModule;
 import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Attributes;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,89 +46,56 @@ public class XMLBinder {
 
     public static void main(String[] args) throws Exception{
 
-    	BufferedReader console=new BufferedReader(new InputStreamReader(System.in));
         String userName = null;
         String type = null;
 
         printDescription();
 
         initBalana();
-
-        System.out.println("\nYou can check the authorization for children or descendants resource " +
-                                                                        "under root resources \n");
-
-        System.out.println("root-");
-        System.out.println("    ------ private ---- leadership");
-        System.out.println("    -              ---- support");
-        System.out.println("    -              ---- team");
-        System.out.println("    -              ---- business");
-        System.out.println("    -");
-        System.out.println("    ------ public  ---- developments");
-        System.out.println("    -              ---- news");
-        System.out.println();
-
-        System.out.println("\nCheck authorized resources for user : ");
-        userName = console.readLine();
         
-        System.out.println("\nCheck authorized resources for user : ");
-        type = console.readLine();
-        
+        String request = createXACMLRequest(userName, type);
+        PDP pdp = getPDPNewInstance();
 
-        if(userName != null && userName.trim().length() > 0){
+        System.out.println("\n======================== XACML Request ====================");
+        System.out.println(request);
+        System.out.println("===========================================================");
 
-            if(type != null && type.toLowerCase().equals("d")){
-                type = "Descendants";
-            } else {
-                type = "Children";
-            }
+        String response = pdp.evaluate(request);
 
-            String request = createXACMLRequest(userName, type);
-            PDP pdp = getPDPNewInstance();
+        System.out.println("\n======================== XACML Response ===================");
+        System.out.println(response);
+        System.out.println("===========================================================");
 
-            System.out.println("\n======================== XACML Request ====================");
-            System.out.println(request);
-            System.out.println("===========================================================");
+        Set<String> permitResources = new HashSet<String>();
+        Set<String> denyResources = new HashSet<String>();
 
-            String response = pdp.evaluate(request);
-
-            System.out.println("\n======================== XACML Response ===================");
-            System.out.println(response);
-            System.out.println("===========================================================");
-
-            Set<String> permitResources = new HashSet<String>();
-            Set<String> denyResources = new HashSet<String>();
-
-            try {
-                ResponseCtx responseCtx = ResponseCtx.getInstance(getXacmlResponse(response));
-                Set<AbstractResult> results  = responseCtx.getResults();
-                for(AbstractResult result : results){
-                    Set<Attributes> attributesSet = ((Result)result).getAttributes();
-                    for(Attributes attributes : attributesSet){
-                        for(Attribute attribute : attributes.getAttributes()){
-                            if(AbstractResult.DECISION_PERMIT == result.getDecision()){
-                                permitResources.add(attribute.getValue().encode());
-                            } else {
-                                denyResources.add(attribute.getValue().encode());
-                            }
+        try {
+            ResponseCtx responseCtx = ResponseCtx.getInstance(getXacmlResponse(response));
+            Set<AbstractResult> results  = responseCtx.getResults();
+            for(AbstractResult result : results){
+                Set<Attributes> attributesSet = ((Result)result).getAttributes();
+                for(Attributes attributes : attributesSet){
+                    for(Attribute attribute : attributes.getAttributes()){
+                        if(AbstractResult.DECISION_PERMIT == result.getDecision()){
+                            permitResources.add(attribute.getValue().encode());
+                        } else {
+                            denyResources.add(attribute.getValue().encode());
                         }
                     }
                 }
-            } catch (ParsingException e) {
-                e.printStackTrace(); 
             }
+        } catch (ParsingException e) {
+            e.printStackTrace(); 
+        }
 
-            if(permitResources.size() > 0){
-                System.out.println("\n" + userName + " is authorized for following resources...\n");
-                for(String result : permitResources){
-                    System.out.print(result + "\t");
-                }
-                System.out.println("\n");
-            } else {
-                System.out.println("\n" + userName + " is NOT authorized access any resource..!!!\n");
+        if(permitResources.size() > 0){
+            System.out.println("\n is authorized for following resources...\n");
+            for(String result : permitResources){
+                System.out.print(result + "\t");
             }
-
+            System.out.println("\n");
         } else {
-            System.err.println("\nUser name can not be empty\n");                
+            System.out.println("\n is NOT authorized access any resource..!!!\n");
         }
 
         System.exit(0);
@@ -147,6 +108,7 @@ public class XMLBinder {
             String policyLocation = (new File(".")).getCanonicalPath() + File.separator + "src" + File.separator + "main" + File.separator + "resources";
             System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
         } catch (IOException e) {
+        	e.printStackTrace();
             System.err.println("Can not locate policy repository");
         }
         // create default instance of Balana
@@ -168,14 +130,7 @@ public class XMLBinder {
         finderModules.add(new SampleAttributeFinderModule());
         attributeFinder.setModules(finderModules);
 
-        // registering new resource finder. so default PDPConfig is needed to change
-        ResourceFinder resourceFinder = pdpConfig.getResourceFinder();
-        List<ResourceFinderModule> resourceModules = resourceFinder.getModules();
-        resourceModules.add(new HierarchicalResourceFinder());
-        resourceFinder.setModules(resourceModules);
-
-
-        return new PDP(new PDPConfig(attributeFinder, pdpConfig.getPolicyFinder(), resourceFinder, true));
+        return new PDP(new PDPConfig(attributeFinder, pdpConfig.getPolicyFinder(), null, true));
     }
 
 
@@ -198,12 +153,14 @@ public class XMLBinder {
         try {
             doc = dbf.newDocumentBuilder().parse(inputStream);
         } catch (Exception e) {
+        	e.printStackTrace();
             System.err.println("DOM of request element can not be created from String");
             return null;
         } finally {
             try {
                 inputStream.close();
             } catch (IOException e) {
+            	e.printStackTrace();
                System.err.println("Error in closing input stream of XACML response");
             }
         }
@@ -212,33 +169,29 @@ public class XMLBinder {
 
     public static void printDescription(){
 
-        System.out.println("\nThis sample shows the use of Multiple decision profile " +
-                "and Hierarchical resource  profile in XACML 3.0 \n");    
+        System.out.println("\nThis mini tool is for test policy created dinamically\n");    
 
     }
 
 
     public static String createXACMLRequest(String userName, String type){
 
-        return "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\" IncludeInResult=\"false\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">access</AttributeValue>\n" +
+        return "<Request xmlns=\"urn:oasis:names:tc:xacml:1.0:policy\">\n" +
+                "<Subject>\n" +
+                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" DataType=\"http://www.w3.org/2001/XMLSchema#string\">\n" +
+                "<AttributeValue>"+ "pntmtn99a44d423e" +"</AttributeValue>\n" +
                 "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:subject:subject-id\" IncludeInResult=\"false\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">"+ userName +"</AttributeValue>\n" +
+                "</Subject>\n" +
+                "<Resource>\n" +
+                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource=id_vaccinazione\" DataType=\"http://www.w3.org/2001/XMLSchema#string\">\n" +
+                "<AttributeValue>"+ "5" +"</AttributeValue>\n" +
                 "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">root</AttributeValue>\n" +
+                "</Resource>\n" +
+                "<Action>\n" +
+                "<Attribute AttributeId=\"action-id\" DataType=\"http://www.w3.org/2001/XMLSchema#string\">\n" +
+                "<AttributeValue>"+ "show" +"</AttributeValue>\n" +
                 "</Attribute>\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:2.0:resource:scope\" IncludeInResult=\"false\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + type + "</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
+                "</Action>\n" +
                 "</Request>";
 
     }
