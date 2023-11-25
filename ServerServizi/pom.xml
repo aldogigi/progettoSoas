@@ -12,8 +12,7 @@
   			<artifactId>postgresql</artifactId>
   			<version>42.2.20</version>
   		</dependency>
-        <!-- API, java.xml.bind module -->
-        <dependency>
+  		<dependency>
 		    <groupId>org.wso2.balana</groupId>
 		    <artifactId>org.wso2.balana</artifactId>
 		    <version>1.1.12</version>
@@ -22,8 +21,9 @@
 		          <artifactId>xercesImpl</artifactId>
 		          <groupId>xerces.wso2</groupId>
 		        </exclusion>
-		     </exclusions>
+		    </exclusions>
 		</dependency>
+        <!-- API, java.xml.bind module -->
 		<dependency>
 			 <groupId>org.glassfish.jersey.media</groupId>
 			 <artifactId>jersey-media-jaxb</artifactId>
