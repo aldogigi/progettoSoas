@@ -33,10 +33,10 @@ public class XMLChecker {
     public static void main(String[] args) throws Exception{
 
     	BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
-        String userName = "bob";
+        String userName = "";
         String resultResponse = "";
-        String action = "show";
-        String resource = "null";
+        String action = "";
+        String resource = "";
 
         initBalana();
 
@@ -113,7 +113,9 @@ public class XMLChecker {
 
         try{
             // using file based policy repository. so set the policy location as system property
-            String policyLocation = (new File(".")).getCanonicalPath() + File.separator + "src" + File.separator + "main" + File.separator + "resources";
+            String policyLocation = (new File("ServerServizi\\src\\main\\resources").getCanonicalPath());
+            System.out.println("policyLocation: " + policyLocation);
+            
             System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
         } catch (IOException e) {
             System.err.println("Can not locate policy repository");

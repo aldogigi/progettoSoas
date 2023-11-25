@@ -23,8 +23,10 @@ import xml_dati_Cittadini_XMLediting.*;
 public class Servizio{
 	private Connection conn;
 	private String Email_CF;
-	private File file = new File("ServerServizi\\src\\main\\resources\\PolicyCittadini.xml");
+	private File fileShowInsert = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniShowInsert.xml");
+	private File fileModifyDelete = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniModifyDelete.xml");
 	private PolicyCittadini policyCittadini = new PolicyCittadini();
+	private PolicyCittadini policyCittadini2 = new PolicyCittadini();
 	private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);
 	private Marshaller marshaller;
 	/**
@@ -1071,24 +1073,28 @@ public class Servizio{
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
 			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN cittadini_registrati;");
-									
+			
+
+	        Actionss action1 = new Actionss();
+	        Actionss action2 = new Actionss();
+	        
+			action1.setAttributeValueAllOf("show");
+	        action2.setAttributeValueAllOf("insert");
+	        
+	        policyCittadini.setActionss(action1);
+	        policyCittadini.setActionss(action2);
+	        
+	        System.out.println(policyCittadini.getActionss());
+	        
 				while (ris.next()) {
 					
 					Ruless rule1 = new Ruless();
-			        Subjectss subjects1 = new Subjectss();        
 			        Resourcess resources1 = null;
-			        Actionss action1 = new Actionss();
-			        Actionss action2 = new Actionss();
-					
-			        rule1.setRuleAtt("rule" + ris.getString(1));
-			        rule1.setDescription("Allow " + ris.getString(1) + " to show all events and insert a new adverse event");
+			        
+			        rule1.setRuleAtt("rule_" + ris.getString(1));
 			        rule1.setEffectAtt("Permit");
 			        
-			        subjects1.setmatchIDSubject("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        subjects1.setAttributeValueSubject(ris.getString(1));
-			        subjects1.setAttributeIdSubject("subject-id");
-			        
-			        rule1.setSubjects(subjects1);
+			        rule1.setAttributeValueSubject(ris.getString(1));
 			        
 			        ResultSet ris2 = null;
 					Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
@@ -1096,33 +1102,20 @@ public class Servizio{
 					ris2 = stmt2.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata WHERE cf = '" + ris.getString(1) + "';");
 			        
 					while(ris2.next()) {	
+						
 						resources1 = new Resourcess();
-				        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-				        resources1.setAttributeValueResource(String.valueOf(ris2.getString(1)));
-				        resources1.setAttributeIdResource("resource=id_vaccinazione");
-				        
+				        resources1.setResourcename(ris2.getString(1));
 				        rule1.setResources(resources1);
 				        System.out.println(rule1.getResources());
-				        
+
 					}
 			        
-			        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        action1.setAttributeValueAction("show");
-			        action1.setAttributeIdAction("action-id");
-			        
-			        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        action2.setAttributeValueAction("insert");
-			        action2.setAttributeIdAction("action-id");
-			        
-			        rule1.setActions(action1);
-			        rule1.setActions(action2);
-			        		        
 			        policyCittadini.setRules(rule1);
 				}
 				
 				marshaller = jc.createMarshaller();
 			    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		        marshaller.marshal(policyCittadini, file);
+		        marshaller.marshal(policyCittadini, fileShowInsert);
 		        
 			if (!(ris.first())){
 				
@@ -1137,54 +1130,45 @@ public class Servizio{
 			
 			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi;");
 			
-			while (ris.next()) {
-				
-				Ruless rule1 = new Ruless();
-		        Subjectss subjects1 = new Subjectss();        
-		        Resourcess resources1 = null;
-		        Actionss action1 = new Actionss();
-		        Actionss action2 = new Actionss();
-				
+	        Actionss action3 = new Actionss();
+	        Actionss action4 = new Actionss();
+	        
+	        action3.setAttributeValueAllOf("modify");
+	        action4.setAttributeValueAllOf("delete");
+	        
+	        policyCittadini2.setActionss(action3);
+	        policyCittadini2.setActionss(action4);
+	        
+	        System.out.println(policyCittadini2.getActionss());
+		        
+		    while (ris.next()) {
+		        	
+		    	Resourcess resources1 = null;
+		        Ruless rule1 = new Ruless();
 		        rule1.setRuleAtt("rule_" + ris.getString(1));
-		        rule1.setDescription("Allow " + ris.getString(1) + " to modify and update events");
 		        rule1.setEffectAtt("Permit");
 		        
-		        subjects1.setmatchIDSubject("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        subjects1.setAttributeValueSubject(ris.getString(1));
-		        subjects1.setAttributeIdSubject("subject-id");
-		        
-		        rule1.setSubjects(subjects1);
+		        rule1.setAttributeValueSubject(ris.getString(1));
 		        
 				Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // Preparo
 
 				ResultSet ris2 = stmt2.executeQuery("SELECT id_evento_avverso FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi WHERE cf = '" + ris.getString(1) + "';");
 		        
-				while (ris2.next()) {
+				while(ris2.next()) {	
+					
 					resources1 = new Resourcess();
-			        resources1.setMatchIDResource("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-			        resources1.setAttributeValueResource(String.valueOf(ris2.getString(1)));
-			        resources1.setAttributeIdResource("resource=id_evento_avverso");
+			        resources1.setResourcename(ris2.getString(1));
 			        rule1.setResources(resources1);
 			        System.out.println(rule1.getResources());
+
 				}
 		        
-		        action1.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        action1.setAttributeValueAction("modify");
-		        action1.setAttributeIdAction("action-id");
-		        
-		        action2.setMatchIDAction("urn:oasis:names:tc:xacml:1.0:function:string-equal");
-		        action2.setAttributeValueAction("delete");
-		        action2.setAttributeIdAction("action-id");
-		        
-		        rule1.setActions(action1);
-		        rule1.setActions(action2);
-		        		        
-		        policyCittadini.setRules(rule1);
+				policyCittadini2.setRules(rule1);
 			}
 			
 			marshaller = jc.createMarshaller();
 		    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	        marshaller.marshal(policyCittadini, file);
+	        marshaller.marshal(policyCittadini2, fileModifyDelete);
 	        
 		if (!(ris.first())){
 			

@@ -74,7 +74,7 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
             BagAttribute bagAttribute = (BagAttribute) result.getAttributeValue();
             if(bagAttribute.size() > 0){
                 String userName = ((AttributeValue) bagAttribute.iterator().next()).encode();
-                roleName = findRole(userName);
+                roleName = userName;
             }
         }
 
@@ -88,15 +88,5 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
     @Override
     public boolean isDesignatorSupported() {
         return true;
-    }
-
-    private String findRole(String userName){
-
-        if(userName.equals("pntmtn99a44d423e")){
-            return "pntmtn99a44d423e";
-        }
-        else {
-        	return "ciao";
-        }
     }
 }

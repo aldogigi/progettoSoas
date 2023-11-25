@@ -11,31 +11,27 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 public class PolicyCittadini {
 
-	private String policy;
 	@XmlPath("@xmlns")
-	private String xmln = "urn:oasis:names:tc:xacml:1.0:policy";
+	private String xmln = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
 	@XmlPath("@PolicyId")
 	private String policyId = "ServerServiziPolicyCittadini";
 	@XmlPath("@RuleCombiningAlgId")
 	private String RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides";
 	@XmlPath("@Version")
 	private String version="1.0";
-	@XmlPath("Target/Subjects/AnySubject/text()")
-	private String anySubject = "";
-	@XmlPath("Target/Resources/AnyResource/text()")
-	private String anyResource = "";
-	@XmlPath("Target/Actions/AnyAction/text()")
-	private String anyAction = "";
+	
+	@XmlElement(name = "Target/AnyOf/AllOf", required = true)
+    private List<xml_dati_Cittadini_XMLediting.Actionss> actionss = new ArrayList<xml_dati_Cittadini_XMLediting.Actionss>();
+	
 	@XmlElement(name = "Rule", required = true)
     private List<xml_dati_Cittadini_XMLediting.Ruless> rules = new ArrayList<xml_dati_Cittadini_XMLediting.Ruless>();
 	
-	
-	public String getPolicy() {
-		return policy;
+	public List<Actionss> getActionss() {
+		return actionss;
 	}
-	public void setPolicy(String policy) {
-		this.policy = policy;
-	}	
+	public void setActionss(Actionss actions) {
+		actionss.add(actions);
+	}
 	
 	public List<Ruless> getRules() {
 		return rules;

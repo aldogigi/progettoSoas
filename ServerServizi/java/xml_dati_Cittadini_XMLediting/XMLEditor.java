@@ -13,38 +13,35 @@ public class XMLEditor{
         PolicyCittadini policyCittadini = new PolicyCittadini();
         
         Ruless rule1 = new Ruless();
-        Subjectss subjects1 = new Subjectss();        
         Resourcess resources1 = new Resourcess();
+        Resourcess resources2 = new Resourcess();
         Actionss action1 = new Actionss();
+        Actionss action2 = new Actionss();
         
         rule1.setRuleAtt("ruleDaniel");
-        rule1.setDescription("Allow Daniel to send a message");
         rule1.setEffectAtt("Permit");
         
-        subjects1.setmatchIDSubject("string-equal");
-        subjects1.setAttributeValueSubject("Daniel");
-        subjects1.setAttributeIdSubject("subject-id");
+        rule1.setAttributeValueSubject("daniel");
         
-        rule1.setSubjects(subjects1);
-        System.out.println(rule1.getSubjects());
-
-        resources1.setMatchIDResource("anyURI-equal");
-        resources1.setAttributeValueResource("uri:message");
-        resources1.setAttributeIdResource("resource=id");
+        resources1.setResourcename("carro");
+        resources2.setResourcename("moto");
         
         rule1.setResources(resources1);
+        rule1.setResources(resources2);
+
         System.out.println(rule1.getResources());
         
-        action1.setMatchIDAction("string-equal");
-        action1.setAttributeValueAction("send");
-        action1.setAttributeIdAction("action-id");
+        action1.setAttributeValueAllOf("show");
+        action2.setAttributeValueAllOf("edit");
         
-        rule1.setActions(action1);
-        System.out.println(rule1.getActions());
+        policyCittadini.setActionss(action1);
+        policyCittadini.setActionss(action2);
+        
+        System.out.println(policyCittadini.getActionss());
         
         policyCittadini.setRules(rule1);
         
-        File file = new File("src\\main\\resources\\PolicyCittadini.xml");
+        File file = new File("src\\main\\resources\\PolicyCittadiniShowInsert.xml");
         
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

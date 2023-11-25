@@ -12,19 +12,38 @@ public class Ruless {
 
     private String ruleId;
     private String effectAtt;
-	@XmlPath("Description/text()")
-    private String description;
-	@XmlPath("Target/text()")
-    private String target;
+  
+	@XmlPath("Target/AnyOf/AllOf/Match/@MatchId")
+	private String subjectMatchId = "urn:oasis:names:tc:xacml:1.0:function:string-equal";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeValue/text()")
+	private String attributeValueSubject = "";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeValue/@DataType")
+	private String dataTypeAttributeValueSubject = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeDesignator/@AttributeId")
+	private String attributeIdAttributeDesignatorSubject = "http://wso2.org/attribute/roleNames";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeDesignator/@Category")
+	private String categoryAttributeDesignatorSubject = "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeDesignator/@DataType")
+	private String dataTypeAttributeDesignatorSubject = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Target/AnyOf/AllOf/Match/AttributeDesignator/@MustBePresent")
+	private String presentAttributeDesignatorSubject = "true";
+	@XmlPath("Condition/Apply/@FunctionId")
+	private String conditionApplyFunctionId = "urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of";
+	@XmlPath("Condition/Apply/Apply/@FunctionId")
+	private String conditionApplyApplyFunctionId = "urn:oasis:names:tc:xacml:1.0:function:string-bag";
 	
-	@XmlElement(name = "Target/Subjects/Subject", required = true)
-    private List<xml_dati_Cittadini_XMLediting.Subjectss> subjects = new ArrayList<xml_dati_Cittadini_XMLediting.Subjectss>();
-	@XmlElement(name = "Target/Resources/Resource", required = true)
-    private List<xml_dati_Cittadini_XMLediting.Resourcess> resources = new ArrayList<xml_dati_Cittadini_XMLediting.Resourcess>();
-	@XmlElement(name = "Target/Actions/Action", required = true)
-    private List<xml_dati_Cittadini_XMLediting.Actionss> actions = new ArrayList<xml_dati_Cittadini_XMLediting.Actionss>();
+	@XmlPath("Condition/Apply/AttributeDesignator/@AttributeId")
+	private String conditionApply1AttributeDesignatorAttributeId = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+	@XmlPath("Condition/Apply/AttributeDesignator/@Category")
+	private String conditionApply1AttributeDesignatorCategory = "urn:oasis:names:tc:xacml:3.0:attribute-category:resource";
+	@XmlPath("Condition/Apply/AttributeDesignator/@DataType")
+	private String conditionApply1AttributeDesignatorDataType = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Condition/Apply/AttributeDesignator/@MustBePresent")
+	private String conditionApply1AttributeDesignatorMustBePresent = "true";
 	
-
+	@XmlElement(name = "Condition/Apply/Apply/AttributeValue", required = true)
+    private List<xml_dati_Cittadini_XMLediting.Resourcess> resourcess = new ArrayList<xml_dati_Cittadini_XMLediting.Resourcess>();
+	
 	@XmlPath("@RuleId")
 	public String getRuleAtt() {
 		return ruleId;
@@ -32,21 +51,6 @@ public class Ruless {
 	
 	public void setRuleAtt(String ruleId) {
 		this.ruleId = ruleId;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getTarget() {
-		return target;
-	}
-	
-	public void setTarget(String target) {
-		this.target = target;
 	}
 	
 	@XmlPath("@Effect")
@@ -57,28 +61,19 @@ public class Ruless {
 		this.effectAtt = effectAtt;
 	}
 	
-	public List<Subjectss> getSubjects() {
-		return subjects;
+	public String getAttributeValueSubject() {
+		return attributeValueSubject;
 	}
-	
-	public void setSubjects(Subjectss subjectss) {
-		this.subjects.add(subjectss);
+	public void setAttributeValueSubject(String attributeValueSubject) {
+		this.attributeValueSubject = attributeValueSubject;
 	}
 	
 	public List<Resourcess> getResources() {
-		return resources;
+		return resourcess;
 	}
 	
-	public void setResources(Resourcess resourcess) {
-		this.resources.add(resourcess);
-	}
-	
-	public List<Actionss> getActions() {
-		return actions;
-	}
-	
-	public void setActions(Actionss actionss) {
-		this.actions.add(actionss);
+	public void setResources(Resourcess resources) {
+		this.resourcess.add(resources);
 	}
 	
 	

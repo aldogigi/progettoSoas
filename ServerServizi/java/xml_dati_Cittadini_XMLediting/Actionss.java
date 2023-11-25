@@ -4,39 +4,27 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 public class Actionss {
 
-	@XmlPath("ActionMatch/text()")
-    private String actionMatch;
-    private String MatchIDAction;
-    @XmlPath("ActionMatch/AttributeValue/text()")
-    private String attributeValueAction;
-    @XmlPath("ActionMatch/AttributeValue/@DataType")
-    private String attributeValueActionDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
-    @XmlPath("ActionMatch/ActionAttributeDesignator/text()")
-    private String actionAttributeDesignator;
-    private String attributeIdAction;
-    @XmlPath("ActionMatch/ActionAttributeDesignator/@DataType")
-    private String actionAttributeDesignatorActionDataTypeString = "http://www.w3.org/2001/XMLSchema#string";
+
+	@XmlPath("Match/@MatchId")
+	private String MatchIdAllOf = "urn:oasis:names:tc:xacml:1.0:function:string-equal";
+	@XmlPath("Match/AttributeValue/text()")
+	private String attributeValueAllOf = "";
+	@XmlPath("Match/AttributeValue/@DataType")
+	private String DataTypeAllOf = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Match/AttributeDesignator/@AttributeId")
+	private String AttributeIdAttributeDesignator = "urn:oasis:names:tc:xacml:1.0:action:action-id";
+	@XmlPath("Match/AttributeDesignator/@Category")
+	private String CategoryAttributeDesignator = "urn:oasis:names:tc:xacml:3.0:attribute-category:action";
+	@XmlPath("Match/AttributeDesignator/@DataType")
+	private String DataTypeAttributeDesignator = "http://www.w3.org/2001/XMLSchema#string";
+	@XmlPath("Match/AttributeDesignator/@MustBePresent")
+	private String MustBePresentAttributeDesignator = "true";
+	
+	public String getAttributeValueAllOf() {
+		return attributeValueAllOf;
+	}
+	public void setAttributeValueAllOf(String attributeValueAllOf) {
+		this.attributeValueAllOf = attributeValueAllOf;
+	}
     
-    @XmlPath("ActionMatch/@MatchID")
-	public String getMatchIDAction() {
-		return MatchIDAction;
-	}
-	public void setMatchIDAction(String matchIDAction) {
-		MatchIDAction = matchIDAction;
-	}
-    @XmlPath("ActionMatch/ActionAttributeDesignator/@AttributeId")
-	public String getAttributeIdAction() {
-		return attributeIdAction;
-	}
-	public void setAttributeIdAction(String attributeIdAction) {
-		this.attributeIdAction = attributeIdAction;
-	}
-	
-	public String getAttributeValueAction() {
-		return attributeValueAction;
-	}
-	public void setAttributeValueAction(String AttributeValueAction) {
-		this.attributeValueAction = AttributeValueAction;
-	}
-	
 }
