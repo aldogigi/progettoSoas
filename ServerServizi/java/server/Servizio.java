@@ -12,6 +12,7 @@ import javax.xml.bind.*;
 
 import org.postgresql.util.PSQLException;
 
+import xml_dati_Cittadini_XMLCheckerPolicy.XMLChecker;
 import xml_dati_Cittadini_XMLediting.*;
 
 /**
@@ -473,8 +474,10 @@ public class Servizio{
 	 * @param CFemail email o codice fiscale di un cittadino
 	 * 
 	 * @return lista di tutte vaccinazione eseguite e le eventuali avverità
+	 * @throws Exception 
 	 */
-	public String visualizzaInfoCentroVaccinale(String id, String CFemail) throws SQLException {
+	public String visualizzaInfoCentroVaccinale(String id, String CFemail) throws Exception {
+		
 		ResultSet ris = null;
 
 		ResultSet ris2 = null;
@@ -492,37 +495,81 @@ public class Servizio{
 				cf = "";
 			}
 		}
-
-		ris = stmt.executeQuery("SELECT t.id_vaccinazione, t.id_evento_avverso, t.evento, t.severita, t.note "
-				+ "FROM eventi_avversi AS t NATURAL JOIN vaccinazione_effettuata "
-				+ "WHERE vaccinazione_effettuata.centro_vaccinale_id = " + id
-				+ " AND  vaccinazione_effettuata.cf = ALL (SELECT vaccinazione_effettuata.cf "
-				+ "FROM vaccinazione_effettuata JOIN centri_vaccinali "
-				+ "ON vaccinazione_effettuata.centro_vaccinale_id = centri_vaccinali.centro_vaccinale_id "
-				+ "WHERE vaccinazione_effettuata.cf = '" + CFemail.toLowerCase()
-				+ "' OR  vaccinazione_effettuata.cf = '" + cf.toLowerCase() + "' "
-				+ "AND vaccinazione_effettuata.centro_vaccinale_id = " + id + ");");
-		String[] array = new String[3];
-		ResultSetMetaData rsmd = ris.getMetaData();
-		int numColonne = rsmd.getColumnCount();
-		String nomeColonne = "";
-		for (int nr = 0; nr < numColonne; nr++)
-			nomeColonne += (rsmd.getColumnName(nr + 1).toString() + ":");
-		String datiRighe = "";
-		while (ris.next()) {
-			String riga = "";
-			for (int nr = 0; nr < numColonne; nr++) {
-				riga += (ris.getObject(nr + 1).toString() + ":");
+		
+		ris = stmt.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata NATURAL JOIN cittadini_registrati "
+				+ "WHERE cf = '" + CFemail.toLowerCase() + "' OR cf = '" + cf.toLowerCase() + "';");
+		
+		String resultResponse = "Permit";
+		
+		String CFforXACML = "";
+		if(cf == "") {
+			CFforXACML = CFemail;
+		}
+		else {
+			CFforXACML = cf;
+		}
+		
+		while(ris.next()) {
+			String id_vaccinazione = ris.getString(1);
+			XMLChecker checker = new XMLChecker("show_insert", CFforXACML, "show", id_vaccinazione);
+			resultResponse = checker.getResultResponse();
+			
+			if(resultResponse.equals("Deny")) {
+				break;
 			}
-			datiRighe += riga + "___________";
+			else if(resultResponse.equals("Permit")){
+				
+				resultResponse = "Permit";
+				
+			}
+			else {
+				System.err.println("CI DEVE ESSERE UN ERRORE NEL CHECK, SICURAMENTE SARA' NEI PARAMETRI");
+			}
+			
 		}
-		array[0] = nomeColonne;
-		array[1] = datiRighe;
-
-		if (!(ris.first())) {
-			return "niente";
+		
+		if(resultResponse.equals("Permit")) {
+		
+			ris = stmt.executeQuery("SELECT t.id_vaccinazione, t.id_evento_avverso, t.evento, t.severita, t.note "
+					+ "FROM eventi_avversi AS t NATURAL JOIN vaccinazione_effettuata "
+					+ "WHERE vaccinazione_effettuata.centro_vaccinale_id = " + id
+					+ " AND  vaccinazione_effettuata.cf = ALL (SELECT vaccinazione_effettuata.cf "
+					+ "FROM vaccinazione_effettuata JOIN centri_vaccinali "
+					+ "ON vaccinazione_effettuata.centro_vaccinale_id = centri_vaccinali.centro_vaccinale_id "
+					+ "WHERE vaccinazione_effettuata.cf = '" + CFemail.toLowerCase()
+					+ "' OR  vaccinazione_effettuata.cf = '" + cf.toLowerCase() + "' "
+					+ "AND vaccinazione_effettuata.centro_vaccinale_id = " + id + ");");
+			
+			
+			String[] array = new String[3];
+			ResultSetMetaData rsmd = ris.getMetaData();
+			int numColonne = rsmd.getColumnCount();
+			String nomeColonne = "";
+			for (int nr = 0; nr < numColonne; nr++)
+				nomeColonne += (rsmd.getColumnName(nr + 1).toString() + ":");
+			String datiRighe = "";
+			while (ris.next()) {
+				String riga = "";
+				for (int nr = 0; nr < numColonne; nr++) {
+					riga += (ris.getObject(nr + 1).toString() + ":");
+				}
+				datiRighe += riga + "___________";
+			}
+			array[0] = nomeColonne;
+			array[1] = datiRighe;
+	
+			if (!(ris.first())) {
+				return "niente";
+			}
+			return (array[0] + "-" + array[1]);
+			
 		}
-		return (array[0] + "-" + array[1]);
+		else if(resultResponse.equals("Deny")) {
+			
+			return "permesso_negato";
+			
+		}
+		else return "niente";
 
 	}
 

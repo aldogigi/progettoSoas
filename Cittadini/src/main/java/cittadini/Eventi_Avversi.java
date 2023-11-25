@@ -472,6 +472,26 @@ public class Eventi_Avversi extends JFrame {
 			comboBox_id.setVisible(true);
 			delete_Avv.setVisible(true);
 
+		} else if (result.equals("permesso_negato")) {
+			response.setForeground(Color.RED);
+			response.setText("Non hai superato il controllo della policy XACML");
+			response.setVisible(true);
+			table.setVisible(false);
+			Update_Avv.setVisible(true);
+			Events.setVisible(true);
+			Insert_Avv.setVisible(true);
+			New_events.setVisible(true);
+			Notes.setVisible(true);
+			Event_label.setVisible(true);
+			comboBox_event.setVisible(true);
+			Insert_notes.setVisible(true);
+			Severity_label.setVisible(true);
+			comboBox_severity.setVisible(true);
+			Button_refresh.setVisible(true);
+			id_vacc_label.setVisible(true);
+			comboBox_id.setVisible(true);
+			delete_Avv.setVisible(true);
+
 		} else {
 			response.setVisible(false);
 			Vector<Vector> Righe = new Vector<Vector>();

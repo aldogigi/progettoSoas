@@ -11,14 +11,10 @@ import org.wso2.balana.finder.AttributeFinder;
 import org.wso2.balana.finder.AttributeFinderModule;
 import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Attributes;
-
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,30 +25,26 @@ import java.util.Set;
 public class XMLChecker {
 
     private static Balana balana;
-
-    public static void main(String[] args) throws Exception{
-
-    	BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
-        String userName = "";
-        String resultResponse = "";
-        String action = "";
-        String resource = "";
-
+    private static String policyLocationPATH = "";
+    private String resultResponse = "";
+    
+    public XMLChecker(String policylocationPath, String userName, String action, String resource) throws Exception {
+    	
+        policyLocationPATH = policylocationPath;
+        
+        System.out.println("\nWrite a policy location path : [modify_delete/show_insert]");
+        System.out.println(policylocationPath);
+        
         initBalana();
+        
+        System.out.println("\nWrite the user to check : ");
+        System.out.println(userName);
 
-        System.out.println("\nFollowing are the all static images names that are loaded to web page : \n");
-        
-        System.out.println("\nWrite the user to check");
-        
-        userName = in.readLine();
-        
         System.out.println("\nWrite the action to check : ");
-        
-        action = in.readLine();
+        System.out.println(action);
         
         System.out.println("\nWrite the resource to check : ");
-        
-        resource = in.readLine();
+        System.out.println(resource);
 
         if(userName != null && userName.trim().length() > 0
         		&& action != null && action.trim().length() > 0
@@ -107,13 +99,20 @@ public class XMLChecker {
         } else {
             System.err.println("\nUser name or action or resource can not be empty\n");                
         }
+    	
     }
+    
+//    public static void main(String[] args) throws Exception{
+//    	
+//    	new XMLChecker("show_insert", "fntglc00m07d423f", "show", "14");
+//    	
+//    }
 
     private static void initBalana(){
 
         try{
             // using file based policy repository. so set the policy location as system property
-            String policyLocation = (new File("src\\main\\resources\\modify_delete").getCanonicalPath());
+            String policyLocation = (new File("src\\main\\resources\\"+policyLocationPATH).getCanonicalPath());
             System.out.println("policyLocation: " + policyLocation);
             
             System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
@@ -195,6 +194,12 @@ public class XMLChecker {
                 "</Attributes>\n" +
                 "</Request>";
 
+    }
+    
+    public String getResultResponse() {
+    	
+    	return resultResponse;
+    	
     }
 
 }
