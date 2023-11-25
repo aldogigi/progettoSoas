@@ -27,17 +27,16 @@ import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.finder.AttributeFinder;
 import org.wso2.balana.finder.AttributeFinderModule;
-import org.wso2.balana.finder.PolicyFinder;
-import org.wso2.balana.finder.PolicyFinderModule;
 import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Attributes;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,41 +48,48 @@ public class ImageFilter {
 
     private static Balana balana;
 
-    private static String imageNames = "add.gif\tedit.gif\tdelete.gif\tcancel.gif\tcopy.gif\tmove.gif\tview.gif\thelp.gif\n";
+    public static void main(String[] args) throws Exception{
 
-    public static void main(String[] args){
-
-        Console console;
+    	BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
         String userName = "bob";
-
-        printDescription();
+        String resultResponse = "";
+        String action = "show";
+        String resource = "null";
 
         initBalana();
 
         System.out.println("\nFollowing are the all static images names that are loaded to web page : \n");
         
-        System.out.println(imageNames);
+        System.out.println("\nWrite the user to check");
+        
+        userName = in.readLine();
+        
+        System.out.println("\nWrite the action to check : ");
+        
+        action = in.readLine();
+        
+        System.out.println("\nWrite the resource to check : ");
+        
+        resource = in.readLine();
 
-        if ((console = System.console()) != null){
-            userName = console.readLine("Filter authorized images for user : ");
-        }
+        if(userName != null && userName.trim().length() > 0
+        		&& action != null && action.trim().length() > 0
+        		&& resource != null && resource.trim().length() > 0){
 
-        if(userName != null && userName.trim().length() > 0){
-
-            String request = createXACMLRequest(userName);
+            String request = createXACMLRequest(userName.toLowerCase(), action.toLowerCase(), resource.toLowerCase());
             PDP pdp = getPDPNewInstance();
 
-            System.out.println("\n======================== XACML Request ====================");
+            System.out.println("\n======================== XACML Request ========================");
             System.out.println(request);
-            System.out.println("===========================================================");
+            System.out.println("\n===============================================================");
 
             String response = pdp.evaluate(request);
 
-            System.out.println("\n======================== XACML Response ===================");
+            System.out.println("\n======================== XACML Response ========================");
             System.out.println(response);
-            System.out.println("===========================================================");
+            System.out.println("\n================================================================");
 
-            Set<String> resultImages = new HashSet<String>();
+            Set<String> resultResources = new HashSet<String>();
 
             try {
                 ResponseCtx responseCtx = ResponseCtx.getInstance(getXacmlResponse(response));
@@ -93,7 +99,7 @@ public class ImageFilter {
                         Set<Attributes> attributesSet = ((Result)result).getAttributes();
                         for(Attributes attributes : attributesSet){
                             for(Attribute attribute : attributes.getAttributes()){
-                                resultImages.add(attribute.getValue().encode());
+                            	resultResources.add(attribute.getValue().encode());
                             }
                         }
                     }
@@ -102,18 +108,22 @@ public class ImageFilter {
                 e.printStackTrace(); 
             }
 
-            if(resultImages.size() > 0){
-                System.out.println("\n" + userName + " is authorized to view following images...\n");
-                for(String result : resultImages){
-                    System.out.print(result + "\t");
-                }
+            if(resultResources.size() > 0){
+                System.out.println("\n" + userName + " is authorized to " + action + " " + resource);
+                
+            	resultResponse = "Permit";
+            	System.out.println(resultResponse);
+            
+                
                 System.out.println("\n");
             } else {
-                System.out.println("\n" + userName + " is NOT authorized to view any images..!!!\n");
+                System.out.println("\n" + userName + " is NOT authorized to " + action + " " + resource + "\n");
+                resultResponse = "Deny";
+            	System.out.println(resultResponse);
             }
 
         } else {
-            System.err.println("\nUser name can not be empty\n");                
+            System.err.println("\nUser name or action or resource can not be empty\n");                
         }
     }
 
@@ -180,24 +190,13 @@ public class ImageFilter {
         return doc.getDocumentElement();
     }
 
-    public static void printDescription(){
 
-        System.out.println("\nIn a web page,  there can be various static contents. Lets assume web page " +
-            "contains various type of static images.  These images are not authorized to view for all users. " +
-            "There are specific permissions for each image. Therefore before web page is viewed by user, " +
-            "authorization must be done for each images and dynamically filter the authorized content for user. " +
-            "To achieve, in a fine grained, dynamic and attribute based authorization manner, we can use XACML " +
-            "based authorization  engine such as WSO2 Balana.\n");    
-
-    }
-
-
-    public static String createXACMLRequest(String userName){
+    public static String createXACMLRequest(String userName, String action, String resource){
 
         return "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n" +
                 "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n" +
                 "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:action:action-id\" IncludeInResult=\"false\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">view</AttributeValue>\n" +
+                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + action + "</AttributeValue>\n" +
                 "</Attribute>\n" +
                 "</Attributes>\n" +
                 "<Attributes Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\">\n" +
@@ -207,47 +206,7 @@ public class ImageFilter {
                 "</Attributes>\n" +
                 "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">\n" +
                 "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">index.jsp</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">add.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">edit.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">delete.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">cancel.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">copy.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">move.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">view.gif</AttributeValue>\n" +
-                "</Attribute>\n" +
-                "</Attributes>\n" +
-                "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:image\">\n" +
-                "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:1.0:resource:resource-id\" IncludeInResult=\"true\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">help.gif</AttributeValue>\n" +
+                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + resource + "</AttributeValue>\n" +
                 "</Attribute>\n" +
                 "</Attributes>\n" +
                 "</Request>";

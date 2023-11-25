@@ -33,10 +33,12 @@ import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Attributes;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,10 +50,10 @@ public class Main {
 
     private static Balana balana;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception{
 
-        Console console;
-        String userName = null;
+    	BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
+    	String userName = null;
         String type = null;
 
         printDescription();
@@ -71,21 +73,10 @@ public class Main {
         System.out.println("    -              ---- news");
         System.out.println();
 
-        if ((console = System.console()) != null){
-            userName = console.readLine("\nCheck authorized resources for user : ");
-        }
-
-        if ((console = System.console()) != null){
-            type = console.readLine("\nDescendants or Children resources [D|C] : ");
-        }
-
+        System.out.println("\nCheck authorized resources for user : ");
+        userName = in.readLine();
+        
         if(userName != null && userName.trim().length() > 0){
-
-            if(type != null && type.toLowerCase().equals("d")){
-                type = "Descendants";
-            } else {
-                type = "Children";
-            }
 
             String request = createXACMLRequest(userName, type);
             PDP pdp = getPDPNewInstance();
@@ -235,7 +226,7 @@ public class Main {
                 "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">root</AttributeValue>\n" +
                 "</Attribute>\n" +
                 "<Attribute AttributeId=\"urn:oasis:names:tc:xacml:2.0:resource:scope\" IncludeInResult=\"false\">\n" +
-                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + type + "</AttributeValue>\n" +
+                "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#string\">" + "Children" + "</AttributeValue>\n" +
                 "</Attribute>\n" +
                 "</Attributes>\n" +
                 "</Request>";

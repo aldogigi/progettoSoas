@@ -92,14 +92,11 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
 
     private String findRole(String userName){
 
-        if(userName.equals("bob")){
-            return "publicUsers";
-        } else if(userName.equals("alice")){
-            return "internalUsers";
-        } else if(userName.equals("peter")){
-            return "adminUsers";
+        if(userName.equals("pntmtn99a44d423e")){
+            return "pntmtn99a44d423e";
         }
-
-        return null;
+        else {
+        	return "ciao";
+        }
     }
 }

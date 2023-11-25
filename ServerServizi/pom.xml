@@ -23,6 +23,7 @@
 		        </exclusion>
 		    </exclusions>
 		</dependency>
+
         <!-- API, java.xml.bind module -->
 		<dependency>
 			 <groupId>org.glassfish.jersey.media</groupId>
@@ -65,19 +66,8 @@
 		    <artifactId>commons-logging</artifactId>
 		    <version>1.1.1</version>
 		</dependency>
-		<dependency>
-		    <groupId>xerces</groupId>
-		    <artifactId>xercesImpl</artifactId>
-		    <version>2.12.2</version>
-		    <exclusions>
-		        <exclusion>
-				  <groupId>xml-apis</groupId>
-		          <artifactId>xml-apis</artifactId>
-		        </exclusion>
-		     </exclusions>
-		</dependency>
-		 <!-- API -->
   	</dependencies>
+  	
 	<properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

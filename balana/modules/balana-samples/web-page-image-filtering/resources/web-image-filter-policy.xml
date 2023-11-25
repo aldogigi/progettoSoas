@@ -2,12 +2,14 @@
    <Target>
       <AnyOf>
          <AllOf>
-            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">index.jsp</AttributeValue>
-               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-            </Match>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">view</AttributeValue>
+               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            </Match>
+         </AllOf>
+         <AllOf>
+            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">edit</AttributeValue>
                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AllOf>
@@ -18,19 +20,7 @@
          <AnyOf>
             <AllOf>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">publicUsers</AttributeValue>
-                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-               </Match>
-            </AllOf>
-            <AllOf>
-               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">internalUsers</AttributeValue>
-                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-               </Match>
-            </AllOf>
-            <AllOf>
-               <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">adminUsers</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">pntmtn99a44d423e</AttributeValue>
                   <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
                </Match>
             </AllOf>
@@ -39,10 +29,12 @@
       <Condition>
          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">view.gif</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">help.gif</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">carro</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">telefono</AttributeValue>
             </Apply>
-            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:image" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" 
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+            DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>
       </Condition>
    </Rule>
@@ -51,13 +43,14 @@
          <AnyOf>
             <AllOf>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">internalUsers</AttributeValue>
-                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">utente21</AttributeValue>
+                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" 
+                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
                </Match>
             </AllOf>
             <AllOf>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">adminUsers</AttributeValue>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">utente22</AttributeValue>
                   <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
                </Match>
             </AllOf>
@@ -70,7 +63,9 @@
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">move.gif</AttributeValue>
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">cancel.gif</AttributeValue>
             </Apply>
-            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:image" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" 
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+            DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>
       </Condition>
    </Rule>
@@ -79,8 +74,10 @@
          <AnyOf>
             <AllOf>
                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">adminUsers</AttributeValue>
-                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+                  <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">utente3</AttributeValue>
+                  <AttributeDesignator AttributeId="http://wso2.org/attribute/roleNames" 
+                  Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+                  DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
                </Match>
             </AllOf>
          </AnyOf>
@@ -92,7 +89,9 @@
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">edit.gif</AttributeValue>
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">delete.gif</AttributeValue>
             </Apply>
-            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:image" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
+            <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" 
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" 
+            DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>
       </Condition>
    </Rule>

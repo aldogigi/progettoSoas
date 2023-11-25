@@ -44,7 +44,6 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
         try {
             defaultSubjectId = new URI("urn:oasis:names:tc:xacml:1.0:subject:subject-id");
         } catch (URISyntaxException e) {
-        	e.printStackTrace();
            //ignore
         }
 
@@ -58,9 +57,9 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
     }
 
     @Override
-    public Set<String> getSupportedIds() {
+    public Set getSupportedIds() {
         Set<String> ids = new HashSet<String>();
-        ids.add("subject-id");
+        ids.add("http://wso2.org/attribute/roleNames");
         return ids;   
     }
 
@@ -93,14 +92,11 @@ public class SampleAttributeFinderModule extends AttributeFinderModule{
 
     private String findRole(String userName){
 
-        if(userName.equals("bob")){
-            return "User";
-        } else if(userName.equals("alice")){
-            return "Employee";
-        } else if(userName.equals("peter")){
-            return "Manager";
+        if(userName.equals("pntmtn99a44d423e")){
+            return "pntmtn99a44d423e";
         }
-
-        return null;
+        else {
+        	return "ciao";
+        }
     }
 }
