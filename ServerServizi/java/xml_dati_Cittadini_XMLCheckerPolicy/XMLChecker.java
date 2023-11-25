@@ -113,7 +113,7 @@ public class XMLChecker {
 
         try{
             // using file based policy repository. so set the policy location as system property
-            String policyLocation = (new File("ServerServizi\\src\\main\\resources").getCanonicalPath());
+            String policyLocation = (new File("src\\main\\resources\\modify_delete").getCanonicalPath());
             System.out.println("policyLocation: " + policyLocation);
             
             System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);

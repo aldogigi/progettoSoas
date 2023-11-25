@@ -23,8 +23,8 @@ import xml_dati_Cittadini_XMLediting.*;
 public class Servizio{
 	private Connection conn;
 	private String Email_CF;
-	private File fileShowInsert = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniShowInsert.xml");
-	private File fileModifyDelete = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniModifyDelete.xml");
+	private File fileShowInsert = new File("ServerServizi\\src\\main\\resources\\show_insert\\PolicyCittadiniShowInsert.xml");
+	private File fileModifyDelete = new File("ServerServizi\\src\\main\\resources\\modify_delete\\PolicyCittadiniModifyDelete.xml");
 	private PolicyCittadini policyCittadini = new PolicyCittadini();
 	private PolicyCittadini policyCittadini2 = new PolicyCittadini();
 	private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);

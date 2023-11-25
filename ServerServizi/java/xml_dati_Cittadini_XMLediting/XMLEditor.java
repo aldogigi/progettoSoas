@@ -41,7 +41,7 @@ public class XMLEditor{
         
         policyCittadini.setRules(rule1);
         
-        File file = new File("src\\main\\resources\\PolicyCittadiniShowInsert.xml");
+        File file = new File("src\\main\\resources\\show_insert\\PolicyCittadiniShowInsert.xml");
         
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
