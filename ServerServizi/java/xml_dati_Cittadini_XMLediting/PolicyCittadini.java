@@ -14,7 +14,7 @@ public class PolicyCittadini {
 	@XmlPath("@xmlns")
 	private String xmln = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
 	@XmlPath("@PolicyId")
-	private String policyId = "ServerServiziPolicyCittadini";
+	private String policyId = "";
 	@XmlPath("@RuleCombiningAlgId")
 	private String RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides";
 	@XmlPath("@Version")
@@ -25,6 +25,13 @@ public class PolicyCittadini {
 	
 	@XmlElement(name = "Rule", required = true)
     private List<xml_dati_Cittadini_XMLediting.Ruless> rules = new ArrayList<xml_dati_Cittadini_XMLediting.Ruless>();
+	
+	public String getPolicyId() {
+		return policyId;
+	}
+	public void setPolicyId(String policyId) {
+		this.policyId = policyId;
+	}
 	
 	public List<Actionss> getActionss() {
 		return actionss;

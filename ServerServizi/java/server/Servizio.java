@@ -24,12 +24,13 @@ import xml_dati_Cittadini_XMLediting.*;
 public class Servizio{
 	private Connection conn;
 	private String Email_CF;
-	private File fileShowInsert = new File("ServerServizi\\src\\main\\resources\\show_insert\\PolicyCittadiniShowInsert.xml");
-	private File fileModifyDelete = new File("ServerServizi\\src\\main\\resources\\modify_delete\\PolicyCittadiniModifyDelete.xml");
+	private File fileShowInsert = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniShowInsert.xml");
+	private File fileModifyDelete = new File("ServerServizi\\src\\main\\resources\\PolicyCittadiniModifyDelete.xml");
 	private PolicyCittadini policyCittadini = new PolicyCittadini();
 	private PolicyCittadini policyCittadini2 = new PolicyCittadini();
 	private JAXBContext jc = JAXBContext.newInstance(PolicyCittadini.class);
 	private Marshaller marshaller;
+	private XMLChecker checker;
 	/**
 	 * Il costruttore inizializza la connessione con il database
 	 * 
@@ -499,7 +500,7 @@ public class Servizio{
 		ris = stmt.executeQuery("SELECT id_vaccinazione FROM vaccinazione_effettuata NATURAL JOIN cittadini_registrati "
 				+ "WHERE cf = '" + CFemail.toLowerCase() + "' OR cf = '" + cf.toLowerCase() + "';");
 		
-		String resultResponse = "Permit";
+		String resultResponse = "";
 		
 		String CFforXACML = "";
 		if(cf == "") {
@@ -511,13 +512,15 @@ public class Servizio{
 		
 		while(ris.next()) {
 			String id_vaccinazione = ris.getString(1);
-			XMLChecker checker = new XMLChecker("show_insert", CFforXACML, "show", id_vaccinazione);
-			resultResponse = checker.getResultResponse();
-			
-			if(resultResponse.equals("Deny")) {
+			checker = new XMLChecker();
+			checker.initBalana();
+			String resultCheckXACML = checker.resultCheck(CFforXACML, "show", id_vaccinazione);
+						
+			if(resultCheckXACML.equals("Deny")) {
+				resultResponse = "Deny";
 				break;
 			}
-			else if(resultResponse.equals("Permit")){
+			else if(resultCheckXACML.equals("Permit")){
 				
 				resultResponse = "Permit";
 				
@@ -650,15 +653,46 @@ public class Servizio{
 		if (ris.next()) {
 			return "trovato evento avverso uguale!";
 		} else {
-			int risultato = stmt.executeUpdate(
-					"INSERT INTO eventi_avversi(id_evento_avverso, evento, severita, note, id_vaccinazione) "
-							+ "VALUES(nextval('eventi_avversi_seq'), '" + tipo + "', " + severy + ", '" + note + "', "
-							+ id1 + ");");
-			if (risultato > 0) {
-				deployAllRuleXACML();
-				return "inserimento avvenuto";
+			
+			String resultResponse = "";
+			
+			String id_vaccinazione = id1;
+			checker = new XMLChecker();
+			checker.initBalana();
+			String resultCheckXACML = checker.resultCheck(cFEmail, "insert", id_vaccinazione);
+			
+			if(resultCheckXACML.equals("Deny")) {
+				resultResponse = "Deny";
+			}
+			else if(resultCheckXACML.equals("Permit")){
+				
+				resultResponse = "Permit";
+				
+			}
+			else {
+				System.err.println("CI DEVE ESSERE UN ERRORE NEL CHECK, SICURAMENTE SARA' NEI PARAMETRI");
+			}
+			
+			if(resultResponse.equals("Permit")) {
+			
+				int risultato = stmt.executeUpdate(
+						"INSERT INTO eventi_avversi(id_evento_avverso, evento, severita, note, id_vaccinazione) "
+								+ "VALUES(nextval('eventi_avversi_seq'), '" + tipo + "', " + severy + ", '" + note + "', "
+								+ id1 + ");");
+				if (risultato > 0) {
+					deployAllRuleXACML();
+					return "inserimento avvenuto";
+				} else {
+					return "inserimento fallito";
+				}
+			} else if(resultResponse.equals("Deny")) {
+				
+				return "permesso_negato";
+				
 			} else {
-				return "inserimento fallito";
+				
+				return "errore";
+				
 			}
 
 		}
@@ -738,20 +772,49 @@ public class Servizio{
 	 * @return modifca avvenuta se non ci sono stati problemi, modifica fallita
 	 *         altrimenti
 	 */
-	public String updateAvversita(String id_vaccinazione, String id, String evento, String severita, String note)
+	public String updateAvversita(String cf, String id_vaccinazione, String id, String evento, String severita, String note)
 			throws Exception {
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-		int risultato = stmt.executeUpdate("UPDATE public.eventi_avversi " + "SET id_evento_avverso=" + id
-				+ ", evento='" + evento.toLowerCase() + "', severita=" + severita + ", " + "id_vaccinazione="
-				+ id_vaccinazione + ", note='" + note.toLowerCase() + "' " + "WHERE id_vaccinazione=" + id_vaccinazione
-				+ " AND  id_evento_avverso=" + id + " ;");
-		if (risultato > 0) {
-			deployAllRuleXACML();
-			return "modifica avvenuta";
-		} else {
-			return "modifica fallita";
+		String resultResponse = "";
+		
+		String id_evento_avverso = id;
+		checker = new XMLChecker();
+		checker.initBalana();
+		String resultCheckXACML = checker.resultCheck(cf, "modify", id_evento_avverso);
+		
+		if(resultCheckXACML.equals("Deny")) {
+			resultResponse = "Deny";
+		}
+		else if(resultCheckXACML.equals("Permit")){
+			
+			resultResponse = "Permit";
+			
+		}
+		else {
+			System.err.println("CI DEVE ESSERE UN ERRORE NEL CHECK, SICURAMENTE SARA' NEI PARAMETRI");
+		}
+		
+		if(resultResponse.equals("Permit")){
+		
+			int risultato = stmt.executeUpdate("UPDATE public.eventi_avversi " + "SET id_evento_avverso=" + id
+					+ ", evento='" + evento.toLowerCase() + "', severita=" + severita + ", " + "id_vaccinazione="
+					+ id_vaccinazione + ", note='" + note.toLowerCase() + "' " + "WHERE id_vaccinazione=" + id_vaccinazione
+					+ " AND  id_evento_avverso=" + id + " ;");
+			if (risultato > 0) {
+				deployAllRuleXACML();
+				return "modifica avvenuta";
+			} else {
+				return "modifica fallita";
+			}
+		} else if (resultResponse.equals("Deny")) {
+			
+			return "permesso_negato";
+			
+		}
+		else {
+			return "error";
 		}
 
 	}
@@ -763,18 +826,46 @@ public class Servizio{
 	 * 
 	 * @return cancellazione avvenuta se non ci sono stati problemi, cancellazione fallita se ci sono stati dei problemi
 	 */
-	public String deleteAvversita(String id) throws Exception {
+	public String deleteAvversita(String cf, String id) throws Exception {
 
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-		int risultato = stmt.executeUpdate("DELETE FROM eventi_avversi WHERE id_evento_avverso = " + id + " ;");
-		if (risultato > 0) {
-			deployAllRuleXACML();
-			return "cancellazione avvenuta";
-		} else {
-			return "cancellazione fallita";
+		String resultResponse = "";
+		
+		String id_evento_avverso = id;
+		checker = new XMLChecker();
+		checker.initBalana();
+		String resultCheckXACML = checker.resultCheck(cf, "delete", id_evento_avverso);
+		
+		if(resultCheckXACML.equals("Deny")) {
+			resultResponse = "Deny";
 		}
-
+		else if(resultCheckXACML.equals("Permit")){
+			
+			resultResponse = "Permit";
+			
+		}
+		else {
+			System.err.println("CI DEVE ESSERE UN ERRORE NEL CHECK, SICURAMENTE SARA' NEI PARAMETRI");
+		}
+		
+		if(resultResponse.equals("Permit")){
+		
+			int risultato = stmt.executeUpdate("DELETE FROM eventi_avversi WHERE id_evento_avverso = " + id + " ;");
+			if (risultato > 0) {
+				deployAllRuleXACML();
+				return "cancellazione avvenuta";
+			} else {
+				return "cancellazione fallita";
+			}
+		} else if (resultResponse.equals("Deny")) {
+			
+			return "permesso_negato";
+			
+		}
+		else {
+			return "error";
+		}
 	}
 	
 	public int inserisciUser(String email, String pass) {
@@ -1121,6 +1212,7 @@ public class Servizio{
 
 			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN cittadini_registrati;");
 			
+			policyCittadini.setPolicyId("policycittadiniInsertShow");
 
 	        Actionss action1 = new Actionss();
 	        Actionss action2 = new Actionss();
@@ -1176,6 +1268,8 @@ public class Servizio{
 			System.out.println(result);
 			
 			ris = stmt.executeQuery("SELECT DISTINCT cf FROM vaccinazione_effettuata NATURAL JOIN eventi_avversi;");
+			
+			policyCittadini2.setPolicyId("policycittadiniModifyDelete");
 			
 	        Actionss action3 = new Actionss();
 	        Actionss action4 = new Actionss();

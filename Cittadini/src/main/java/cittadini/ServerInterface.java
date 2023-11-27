@@ -30,8 +30,8 @@ public interface ServerInterface {
 
 	public String popola_id_V(String id1, String CFemail) throws Exception;
 
-	public String updateAvversita(String id_vaccinazione, String id, String evento, String severita, String note)
+	public String updateAvversita(String cf, String id_vaccinazione, String id, String evento, String severita, String note)
 			throws Exception;
 	
-	public String deleteAvversita(String id_avversita) throws Exception;
+	public String deleteAvversita(String cf, String id_avversita) throws Exception;
 }

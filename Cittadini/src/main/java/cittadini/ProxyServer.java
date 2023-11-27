@@ -333,13 +333,14 @@ public class ProxyServer implements ServerInterface{
 	 * @param evento          evento avverso
 	 * @param severita        grado di severtià
 	 * @param note            eventuali commenti (opzionale)
+	 * @param string 
 	 * 
 	 * @return 	modifca avvenuta se non ci sono stati problemi,
 	 * 			modifica fallita altrimenti
 	 */
-	public String updateAvversita(String id_vaccinazione, String id, String evento, String severita, String note) throws Exception {
+	public String updateAvversita(String cf, String id_vaccinazione, String id, String evento, String severita, String note) throws Exception {
 		
-		String param = id_vaccinazione + ":" + id + ":" + evento + ":" + severita + ":" + note;
+		String param = cf + ":" + id_vaccinazione + ":" + id + ":" + evento + ":" + severita + ":" + note;
 		out.println("updateAvversita:" + param);
 	
 		String risposta = in.readLine();
@@ -361,15 +362,16 @@ public class ProxyServer implements ServerInterface{
 	 * Il metodo deleteAvversita invia una richiesta al server di rimuovere una avversità selezionata da un utente
 	 * 
 	 * @param id id rappresentante l'avversità 
+	 * @param id_evento_avverso 
 	 * 
 	 * @exception Exception Exception se non si riesce a comunicare con il Server
 	 * 
 	 * @return 	cancellazione avvenuta se non ci sono stati problemi,
 	 *  		cancellazione fallita se ci sono stati dei problemi
 	 */
-	public String deleteAvversita(String id) throws Exception {
+	public String deleteAvversita(String cf, String id_evento_avverso) throws Exception {
 		
-		String param = id;
+		String param = cf + ":" + id_evento_avverso;
 		out.println("deleteAvversita:" + param);
 	
 		String risposta = in.readLine();

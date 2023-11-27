@@ -195,7 +195,7 @@ public class Backend extends Thread {
 
 						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
 					} else if (param[0].equals("updateAvversita")) {
-						String result = servizio.updateAvversita(param[1], param[2], param[3], param[4], param[5]);
+						String result = servizio.updateAvversita(param[1], param[2], param[3], param[4], param[5], param[6]);
 
 						if (out != null) {
 							out.println(result);
@@ -204,7 +204,7 @@ public class Backend extends Thread {
 						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
 
 					} else if (param[0].equals("deleteAvversita")) {
-						String result = servizio.deleteAvversita(param[1]);
+						String result = servizio.deleteAvversita(param[1], param[2]);
 
 						if (out != null) {
 							out.println(result);

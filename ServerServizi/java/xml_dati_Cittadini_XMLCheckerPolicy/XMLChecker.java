@@ -25,32 +25,37 @@ import java.util.Set;
 public class XMLChecker {
 
     private static Balana balana;
-    private static String policyLocationPATH = "";
     private String resultResponse = "";
+    private String userName = "";
+    private String action = "";
+    private String resource = "";
     
-    public XMLChecker(String policylocationPath, String userName, String action, String resource) throws Exception {
+    
+    public XMLChecker() {
     	
-        policyLocationPATH = policylocationPath;
+    	
+    }
+    
+    public String resultCheck(String userName, String action, String resource) {
         
-        System.out.println("\nWrite a policy location path : [modify_delete/show_insert]");
-        System.out.println(policylocationPath);
-        
-        initBalana();
-        
+    	this.userName = userName;
+    	this.action = action;
+    	this.resource = resource;
+                
         System.out.println("\nWrite the user to check : ");
-        System.out.println(userName);
+        System.out.println(this.userName);
 
         System.out.println("\nWrite the action to check : ");
-        System.out.println(action);
+        System.out.println(this.action);
         
         System.out.println("\nWrite the resource to check : ");
-        System.out.println(resource);
+        System.out.println(this.resource);
+    	
+        if(this.userName != null && this.userName.trim().length() > 0
+        		&& this.action != null && this.action.trim().length() > 0
+        		&& this.resource != null && this.resource.trim().length() > 0){
 
-        if(userName != null && userName.trim().length() > 0
-        		&& action != null && action.trim().length() > 0
-        		&& resource != null && resource.trim().length() > 0){
-
-            String request = createXACMLRequest(userName.toLowerCase(), action.toLowerCase(), resource.toLowerCase());
+            String request = createXACMLRequest(this.userName, this.action, this.resource);
             PDP pdp = getPDPNewInstance();
 
             System.out.println("\n======================== XACML Request ========================");
@@ -83,42 +88,43 @@ public class XMLChecker {
             }
 
             if(resultResources.size() > 0){
-                System.out.println("\n" + userName + " is authorized to " + action + " " + resource);
+                System.out.println("\n" + this.userName + " is authorized to " + this.action + " " + this.resource);
                 
             	resultResponse = "Permit";
             	System.out.println(resultResponse);
-            
-                
                 System.out.println("\n");
+            	return resultResponse;
+
             } else {
-                System.out.println("\n" + userName + " is NOT authorized to " + action + " " + resource + "\n");
+                System.out.println("\n" + this.userName + " is NOT authorized to " + this.action + " " + this.resource + "\n");
                 resultResponse = "Deny";
             	System.out.println(resultResponse);
+            	return resultResponse;
+
             }
 
         } else {
-            System.err.println("\nUser name or action or resource can not be empty\n");                
+            System.err.println("\nUser name or action or resource can not be empty\n");
+        	return "error";
         }
     	
     }
     
 //    public static void main(String[] args) throws Exception{
 //    	
-//    	new XMLChecker("show_insert", "fntglc00m07d423f", "show", "14");
-//    	
+//    	XMLChecker checker = new XMLChecker();
+//    	checker.initBalana("modify_delete");
+//    	String result = checker.resultCheck("fntglc00m07d423f", "delete", "20");
+//    	System.out.println(result);
 //    }
 
-    private static void initBalana(){
-
-        try{
-            // using file based policy repository. so set the policy location as system property
-            String policyLocation = (new File("src\\main\\resources\\"+policyLocationPATH).getCanonicalPath());
-            System.out.println("policyLocation: " + policyLocation);
-            
-            System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
-        } catch (IOException e) {
-            System.err.println("Can not locate policy repository");
-        }
+    public void initBalana(){
+    	
+        // using file based policy repository. so set the policy location as system property
+		String policyLocation = (new File("ServerServizi\\src\\main\\resources").getPath());
+		System.out.println("policyLocation: " + policyLocation);
+		
+		System.setProperty(FileBasedPolicyFinderModule.POLICY_DIR_PROPERTY, policyLocation);
         // create default instance of Balana
         balana = Balana.getInstance();
     }
@@ -128,7 +134,7 @@ public class XMLChecker {
      *
      * @return a  PDP instance
      */
-    private static PDP getPDPNewInstance(){
+    private PDP getPDPNewInstance(){
 
         PDPConfig pdpConfig = balana.getPdpConfig();
 
@@ -148,7 +154,7 @@ public class XMLChecker {
      * @param response  XACML request as a String object
      * @return XACML request as a DOM element
      */
-    public static Element getXacmlResponse(String response) {
+    public Element getXacmlResponse(String response) {
 
         ByteArrayInputStream inputStream;
         DocumentBuilderFactory dbf;
@@ -174,7 +180,7 @@ public class XMLChecker {
     }
 
 
-    public static String createXACMLRequest(String userName, String action, String resource){
+    public String createXACMLRequest(String userName, String action, String resource){
 
         return "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" CombinedDecision=\"false\" ReturnPolicyIdList=\"false\">\n" +
                 "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:action\">\n" +

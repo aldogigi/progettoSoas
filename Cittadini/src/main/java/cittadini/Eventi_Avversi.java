@@ -80,7 +80,7 @@ public class Eventi_Avversi extends JFrame {
 	 * @param id1 id del centro vaccinale selezionato
 	 * @param CFEmail codice fiscale o email del cittadino
 	 */
-	public Eventi_Avversi(final String id1, final String CFEmail) {
+	public Eventi_Avversi(String id1, String CFEmail) {
 		this.id = id1;
 		this.CFemail = CFEmail;
 
@@ -315,10 +315,10 @@ public class Eventi_Avversi extends JFrame {
 
 						else if (datiTabellaSplit2.length == 4) {
 
-							risultato = proxy.updateAvversita(datiTabellaSplit2[0], datiTabellaSplit2[1],
+							risultato = proxy.updateAvversita(CFEmail, datiTabellaSplit2[0], datiTabellaSplit2[1],
 									datiTabellaSplit2[2], datiTabellaSplit2[3], " ");
 						} else {
-							risultato = proxy.updateAvversita(datiTabellaSplit2[0], datiTabellaSplit2[1],
+							risultato = proxy.updateAvversita(CFEmail, datiTabellaSplit2[0], datiTabellaSplit2[1],
 									datiTabellaSplit2[2], datiTabellaSplit2[3], datiTabellaSplit2[4]);
 						}
 					} catch (Exception e1) {
@@ -337,6 +337,11 @@ public class Eventi_Avversi extends JFrame {
 					alert.setText("modifica fallita");
 					alert.setVisible(true);
 
+				} else if(risultato.equals("permesso_negato")) {
+					
+					alert.setText("Non hai superato i controlli XACML per modificare l'evento avverso");
+					alert.setVisible(true);
+					
 				}
 
 			}
@@ -358,7 +363,7 @@ public class Eventi_Avversi extends JFrame {
 					}
 
 					try {
-							risultato = proxy.deleteAvversita(id_evento_avverso);
+							risultato = proxy.deleteAvversita(CFEmail, id_evento_avverso);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -373,6 +378,11 @@ public class Eventi_Avversi extends JFrame {
 					alert.setText("cancellazione fallita");
 					alert.setVisible(true);
 
+				} else if(risultato.equals("permesso_negato")) {
+					
+					alert.setText("Non hai superato i controlli XACML per eliminare l'evento avverso");
+					alert.setVisible(true);
+					
 				}
 
 			}
@@ -424,6 +434,11 @@ public class Eventi_Avversi extends JFrame {
 					alert.setText("inserimento fallito");
 					alert.setVisible(true);
 
+				} else if (result.equals("permesso_negato")) {
+					
+					alert.setText("Non hai superato i controlli XACML per inserire il nuovo evento avverso");
+					alert.setVisible(true);
+					
 				}
 
 			}
@@ -474,7 +489,7 @@ public class Eventi_Avversi extends JFrame {
 
 		} else if (result.equals("permesso_negato")) {
 			response.setForeground(Color.RED);
-			response.setText("Non hai superato il controllo della policy XACML");
+			response.setText("Non hai superato il controllo della policy XACML per vedere gli eventi avversi");
 			response.setVisible(true);
 			table.setVisible(false);
 			Update_Avv.setVisible(true);

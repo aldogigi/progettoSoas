@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="ServerServiziPolicyCittadini" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides" Version="1.0">
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="policycittadiniModifyDelete" RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides" Version="1.0">
    <Target>
       <AnyOf>
          <AllOf>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">show</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">modify</AttributeValue>
                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AllOf>
          <AllOf>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">insert</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">delete</AttributeValue>
                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AllOf>
@@ -51,12 +51,10 @@
          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">6</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">7</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">9</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">11</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">13</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">14</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">18</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">19</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">20</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">21</AttributeValue>
             </Apply>
             <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>
@@ -76,7 +74,8 @@
       <Condition>
          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">16</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">11</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">12</AttributeValue>
             </Apply>
             <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>
