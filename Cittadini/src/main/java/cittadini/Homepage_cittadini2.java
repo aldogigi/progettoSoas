@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
  *<p> Visualizzazione delle proprie avversità (post autenticazione)
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class Homepage_cittadini2 extends JFrame {
 

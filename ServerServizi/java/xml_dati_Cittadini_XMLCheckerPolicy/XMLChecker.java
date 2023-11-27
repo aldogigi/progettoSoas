@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Web page image filtering sample
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
  */
 public class XMLChecker {
 

@@ -17,8 +17,8 @@ import java.awt.event.ActionEvent;
 /**
 * E' la classe che gestisce la GUI e la logica applicativa per la gestione dei centri vaccinali
 *
-* @author Gianluca Fontana 21452A
-* @author Alex Rabuffetti "Matricola"
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
 */
 public class CentroVaccinale extends JFrame {
 

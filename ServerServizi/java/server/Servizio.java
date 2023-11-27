@@ -19,7 +19,7 @@ import xml_dati_Cittadini_XMLediting.*;
  * E' la classe che fornisce i metodi principali che si occupano di interrogare il database eseguendo la query di interesse.
  * 
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class Servizio{
 	private Connection conn;

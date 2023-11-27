@@ -7,6 +7,12 @@ import javax.xml.bind.annotation.*;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
+/**
+* @author Gianluca Fontana 21452A
+* @author Alex Rabuffetti 20290A
+*/
+
+
 @XmlRootElement(name="Policy")
 
 public class PolicyCittadini {

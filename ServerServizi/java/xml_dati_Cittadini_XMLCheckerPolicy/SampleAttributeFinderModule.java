@@ -34,6 +34,8 @@ import java.util.Set;
 
 /**
  * Sample attribute finder module
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
  */
 public class SampleAttributeFinderModule extends AttributeFinderModule{
 

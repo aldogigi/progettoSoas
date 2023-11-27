@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * <p>e di poter, oltre ad accedere alle funzionalità libere, inserire eventuali avversità 
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class Registrazione_Cittadini2 extends JFrame {
 	

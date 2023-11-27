@@ -5,8 +5,8 @@ import java.io.IOException;
 * La classe esegue tutti i controlli sulle informazioni ricevute per la registrazione del nuovo
 * <p>centro vaccinale e procede a inviarli al server tramite il proxy
 *
-* @author Gianluca Fontana 21452A
-* @author Alex Rabuffetti "Matricola"
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
 */
 public class RegistrazioneCentroVaccinale {
 	private String nomecv, hub, indirizzo, nome, comune, provincia;

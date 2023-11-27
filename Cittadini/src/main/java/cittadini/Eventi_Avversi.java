@@ -24,8 +24,9 @@ import javax.swing.JComboBox;
  * <p>delle avversità permettendo le seguenti funzionalità: inserimento, modifica e rimozione 
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
+
 public class Eventi_Avversi extends JFrame {
 
 	private static final long serialVersionUID = 1L;

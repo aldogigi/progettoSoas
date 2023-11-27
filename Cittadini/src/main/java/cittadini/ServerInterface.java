@@ -6,7 +6,7 @@ package cittadini;
  * <p>il server è in ascolto
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public interface ServerInterface {
 	public static final int PORT = 4444;

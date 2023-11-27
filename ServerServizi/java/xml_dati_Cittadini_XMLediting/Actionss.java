@@ -2,8 +2,12 @@ package xml_dati_Cittadini_XMLediting;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-public class Actionss {
+/**
+* @author Gianluca Fontana 21452A
+* @author Alex Rabuffetti 20290A
+*/
 
+public class Actionss {
 
 	@XmlPath("Match/@MatchId")
 	private String MatchIdAllOf = "urn:oasis:names:tc:xacml:1.0:function:string-equal";

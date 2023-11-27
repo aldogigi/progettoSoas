@@ -31,7 +31,7 @@ import java.awt.event.ActionEvent;
  * <p> accedere alle funzionalità libere
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 
 public class Home2 extends JFrame {

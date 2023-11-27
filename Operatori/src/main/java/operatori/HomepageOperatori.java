@@ -20,7 +20,7 @@ import java.awt.Font;
  * <p>Genera la nostra interfaccia principale
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class HomepageOperatori extends JFrame {
 	/**

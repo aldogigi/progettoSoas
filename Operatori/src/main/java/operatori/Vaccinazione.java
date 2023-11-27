@@ -19,8 +19,8 @@ import java.awt.event.ActionEvent;
 /**
 * E' la classe che gestisce la GUI e la logica applicativa per la gestione delle vaccinazioni
 *
-* @author Gianluca Fontana 21452A
-* @author Alex Rabuffetti "Matricola"
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
 */
 public class Vaccinazione extends JFrame {
 	/**

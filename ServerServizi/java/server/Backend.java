@@ -14,7 +14,7 @@ import java.sql.Connection;
  * <p>da ogni client in quanto ad ogni richiesta corrisponde un singolo thread Backend
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 
 public class Backend extends Thread {

@@ -7,7 +7,7 @@ import java.sql.*;
  * <p>sono presenti tutti i dati relativi all'applicativo
  * 
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 
 public class Connessione {

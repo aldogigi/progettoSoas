@@ -14,7 +14,7 @@ import java.net.SocketException;
  * E' il proxy che viene usato dal client per comunicare con il server
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class ProxyServer implements ServerInterface{
 	private Socket socket;

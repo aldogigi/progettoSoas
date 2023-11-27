@@ -31,6 +31,11 @@ import oauth.Login_OAuth;
 import oauth.OAuthGestione;
 import oauth.ProxyServer;
 
+/**
+ * @author Gianluca Fontana 21452A
+ * @author Alex Rabuffetti 20290A
+ * */
+
 public class OAuth_buttons_users extends JButton {
 
 	private static final long serialVersionUID = 1L;

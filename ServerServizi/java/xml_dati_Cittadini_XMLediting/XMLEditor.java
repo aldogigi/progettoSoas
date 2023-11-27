@@ -2,6 +2,12 @@ package xml_dati_Cittadini_XMLediting;
 
 import java.io.File;
 
+/**
+* @author Gianluca Fontana 21452A
+* @author Alex Rabuffetti 20290A
+*/
+
+
 import javax.xml.bind.*;
 
 public class XMLEditor{

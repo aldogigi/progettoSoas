@@ -15,7 +15,7 @@ import java.net.Socket;
  * <p>Questo permette di avere più client che lavorano parallelamente
  * 
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  */
 public class Server {
 	

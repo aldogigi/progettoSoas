@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 
 /**
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
  * */
 
 public class Login_OAuth extends JFrame{

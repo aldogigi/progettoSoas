@@ -5,7 +5,8 @@ package cittadini;
  * <p>o ricerca per comune e tipologia nella finestra iniziale di Homepage_cittadini2
  *
  * @author Gianluca Fontana 21452A
- * @author Alex Rabuffetti "Matricola"
+ * @author Alex Rabuffetti 20290A
+ * 
  */
 public class ComboItem {
 	private String key;
