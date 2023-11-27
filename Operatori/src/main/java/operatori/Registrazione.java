@@ -182,7 +182,7 @@ public class Registrazione extends JFrame{
 			
 			 dispose();
 			 ProcessBuilder builder = new ProcessBuilder(
-			            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar registrazione operatori");
+			            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar registrazione operatori && exit");
 			        builder.redirectErrorStream(true);
 			        Process p;
 					try {

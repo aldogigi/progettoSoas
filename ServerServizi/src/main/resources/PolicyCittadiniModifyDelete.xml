@@ -51,10 +51,7 @@
          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
             <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-bag">
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">3</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">18</AttributeValue>
                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">19</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">20</AttributeValue>
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">21</AttributeValue>
             </Apply>
             <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
          </Apply>

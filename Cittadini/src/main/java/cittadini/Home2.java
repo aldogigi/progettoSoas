@@ -146,7 +146,7 @@ public class Home2 extends JFrame {
 				
 				 dispose();
 				 ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login cittadini");
+				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login cittadini && exit");
 				        builder.redirectErrorStream(true);
 				        Process p;
 						try {

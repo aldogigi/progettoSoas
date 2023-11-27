@@ -252,7 +252,7 @@ public class Login_OAuth extends JFrame{
 				   
 				   
 				   ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null");
+				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null && exit");
 				   
 				        builder.redirectErrorStream(true);
 				        Process p;
@@ -279,7 +279,7 @@ public class Login_OAuth extends JFrame{
 					   
 					   dispose();
 					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null");
+					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null && exit");
 					        builder.redirectErrorStream(true);
 					        Process p;
 							try {
