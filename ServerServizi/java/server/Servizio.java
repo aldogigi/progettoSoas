@@ -641,14 +641,25 @@ public class Servizio{
 			throws Exception {
 
 		ResultSet ris = null;
-
+		
+		String cf = "";
+		
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 		ris = stmt.executeQuery(
-				"SELECT eventi_avversi.id_vaccinazione, eventi_avversi.id_evento_avverso, eventi_avversi.evento, eventi_avversi.severita, eventi_avversi.note "
-						+ "FROM eventi_avversi NATURAL JOIN vaccinazione_effettuata "
-						+ "WHERE eventi_avversi.evento = '" + tipo + "' AND " + "eventi_avversi.id_vaccinazione = "
-						+ id1 + " ;");
+				"SELECT cf FROM cittadini_registrati NATURAL JOIN vaccinazione_effettuata WHERE id_vaccinazione = '" + id1 + "' ;");
+		if (ris.next()) {
+			cf = ris.getObject(1).toString();
+		} else {
+			cf = "";
+		}
+		
+		ris = stmt.executeQuery(
+				"SELECT eventi_avversi.id_vaccinazione, eventi_avversi.id_evento_avverso, "
+					+ "eventi_avversi.evento, eventi_avversi.severita, eventi_avversi.note "
+					+ "FROM eventi_avversi NATURAL JOIN vaccinazione_effettuata "
+					+ "WHERE eventi_avversi.evento = '" + tipo + "' AND " + "eventi_avversi.id_vaccinazione = "
+					+ id1 + " ;");
 
 		if (ris.next()) {
 			return "trovato evento avverso uguale!";
@@ -659,7 +670,7 @@ public class Servizio{
 			String id_vaccinazione = id1;
 			checker = new XMLChecker();
 			checker.initBalana();
-			String resultCheckXACML = checker.resultCheck(cFEmail, "insert", id_vaccinazione);
+			String resultCheckXACML = checker.resultCheck(cf, "insert", id_vaccinazione);
 			
 			if(resultCheckXACML.equals("Deny")) {
 				resultResponse = "Deny";
@@ -772,12 +783,24 @@ public class Servizio{
 	 * @return modifca avvenuta se non ci sono stati problemi, modifica fallita
 	 *         altrimenti
 	 */
-	public String updateAvversita(String cf, String id_vaccinazione, String id, String evento, String severita, String note)
+	public String updateAvversita(String cf2, String id_vaccinazione, String id, String evento, String severita, String note)
 			throws Exception {
 
+		ResultSet ris = null;
+		
+		String cf = "";
+		
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 		String resultResponse = "";
+		
+		ris = stmt.executeQuery(
+				"SELECT cf FROM cittadini_registrati NATURAL JOIN vaccinazione_effettuata WHERE id_vaccinazione = '" + id_vaccinazione + "' ;");
+		if (ris.next()) {
+			cf = ris.getObject(1).toString();
+		} else {
+			cf = "";
+		}
 		
 		String id_evento_avverso = id;
 		checker = new XMLChecker();
@@ -826,11 +849,23 @@ public class Servizio{
 	 * 
 	 * @return cancellazione avvenuta se non ci sono stati problemi, cancellazione fallita se ci sono stati dei problemi
 	 */
-	public String deleteAvversita(String cf, String id) throws Exception {
+	public String deleteAvversita(String id1, String id) throws Exception {
 
+		ResultSet ris = null;
+		
+		String cf = "";
+		
 		Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 		String resultResponse = "";
+		
+		ris = stmt.executeQuery(
+				"SELECT cf FROM cittadini_registrati NATURAL JOIN vaccinazione_effettuata WHERE id_vaccinazione = '" + id1 + "' ;");
+		if (ris.next()) {
+			cf = ris.getObject(1).toString();
+		} else {
+			cf = "";
+		}
 		
 		String id_evento_avverso = id;
 		checker = new XMLChecker();

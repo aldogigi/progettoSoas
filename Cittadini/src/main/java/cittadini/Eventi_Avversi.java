@@ -354,7 +354,9 @@ public class Eventi_Avversi extends JFrame {
 				String risultato = "";
 
 				String id_evento_avverso = table.getValueAt(table.getSelectedRow(), 1).toString();
-
+				String id_vacc = table.getValueAt(table.getSelectedRow(), 0).toString();
+				
+				System.out.println(id_vacc);
 
 					try {
 						proxy = new ProxyServer();
@@ -363,7 +365,7 @@ public class Eventi_Avversi extends JFrame {
 					}
 
 					try {
-							risultato = proxy.deleteAvversita(CFEmail, id_evento_avverso);
+							risultato = proxy.deleteAvversita(id_vacc, id_evento_avverso);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}

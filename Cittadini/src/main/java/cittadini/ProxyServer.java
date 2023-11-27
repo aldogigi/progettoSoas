@@ -369,9 +369,9 @@ public class ProxyServer implements ServerInterface{
 	 * @return 	cancellazione avvenuta se non ci sono stati problemi,
 	 *  		cancellazione fallita se ci sono stati dei problemi
 	 */
-	public String deleteAvversita(String cf, String id_evento_avverso) throws Exception {
+	public String deleteAvversita(String id1, String id_evento_avverso) throws Exception {
 		
-		String param = cf + ":" + id_evento_avverso;
+		String param = id1 + ":" + id_evento_avverso;
 		out.println("deleteAvversita:" + param);
 	
 		String risposta = in.readLine();

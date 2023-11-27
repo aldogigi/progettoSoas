@@ -143,7 +143,7 @@ public class Login extends JFrame{
 				else {
 				
 					try {
-						risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "null");
+						risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "null" + ":" + "null");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
