@@ -101,16 +101,6 @@ public class Backend extends Thread {
 						}
 						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
 					}
-
-//					else if (param[0].equals("inserisciVN")) {
-//						int result = servizio.inserisciVN(param[1], param[2], param[3], param[4], param[5], param[6]);
-//
-//						if (out != null) {
-//							out.println(result);
-//						}
-//
-//						System.out.println("Il thread " + this.getId() + " ha finito \n---------------------------");
-//					}
 					else {
 						System.out.println("Errore nell'input di param[0]");
 					}
