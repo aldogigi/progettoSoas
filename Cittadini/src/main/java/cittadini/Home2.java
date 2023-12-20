@@ -172,10 +172,10 @@ public class Home2 extends JFrame {
 						TabbedPane = Homepage.getTabbedPane();
 						panel = Homepage.getPanel();
 						ProxyServer proxy = new ProxyServer();
-						System.out.println(resultsplit[2]);
-						String result2 = proxy.setCF(resultsplit[2]);
+						System.out.println(resultsplit[3]);
+						String result2 = proxy.setCF(resultsplit[3]);
 						Homepage.set(result2);
-						Homepage.setCFnormale(resultsplit[2]);
+						Homepage.setCFnormale(resultsplit[3]);
 						Homepage.setTitle("Accesso da Autenticato");
 						Homepage.goSignIn().setVisible(false);
 						Homepage.goLogIn().setText("Logout");
