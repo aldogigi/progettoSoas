@@ -7,9 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
@@ -36,7 +33,6 @@ public class Login_OAuth extends JFrame{
 	private JTextField EMail;
 	private JTextField Password;
 	private Registrazione_OAuth registrazione;
-	private ProxyServer ps;
 	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
 	private JTextField CF;
@@ -46,13 +42,8 @@ public class Login_OAuth extends JFrame{
 	 * @param token 
 	 * @param project 
 	 */
-	public Login_OAuth(String checkLR, String token, String project){
+	public Login_OAuth(Thread thread, Servizio servizio, String checkLR, String token, String project){
 				
-		try {
-			ps = new ProxyServer();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 695, 442);
 		contentPane = new JPanel();
@@ -129,12 +120,12 @@ public class Login_OAuth extends JFrame{
 				
 					try {
 						if(project.equals("operatori")) {
-							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + "null");
+							risultato = servizio.checkUser(emailString, passwordString, "oauth", "null");
 						}
 						else if(project.equals("cittadini")) {
-							risultato = ps.checkUser(emailString + ":" + passwordString + ":" + "oauth" + ":" + cFString);
+							risultato = servizio.checkUser(emailString, passwordString, "oauth", cFString);
 						}
-					} catch (IOException e1) {
+					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
 					
@@ -148,7 +139,7 @@ public class Login_OAuth extends JFrame{
 						 setVisible(false);
 						 OAuthGestione oAuthGestione = null;
 						try {
-							oAuthGestione = new OAuthGestione(checkLR, project);
+							oAuthGestione = new OAuthGestione(thread, servizio, checkLR, project);
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -168,7 +159,7 @@ public class Login_OAuth extends JFrame{
 			public void mouseClicked(MouseEvent e) {
 
 				 try {
-					registrazione = new Registrazione_OAuth(checkLR, project);
+					registrazione = new Registrazione_OAuth(thread, servizio, checkLR, project);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -211,7 +202,7 @@ public class Login_OAuth extends JFrame{
 				setVisible(false);
 				OAuthGestione oAuthGestione;
 				try {
-					oAuthGestione = new OAuthGestione(checkLR, project);
+					oAuthGestione = new OAuthGestione(thread, servizio, checkLR, project);
 					oAuthGestione.setVisible(true);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -245,58 +236,18 @@ public class Login_OAuth extends JFrame{
 			
 		});
 		
-		if(project.equals("operatori")) {
-			
-			this.addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   
-				   
-				   ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null && exit");
-				   
-				        builder.redirectErrorStream(true);
-				        Process p;
-				        
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						dispose();
+		this.addWindowListener(new WindowAdapter() {
+		   public void windowClosing(WindowEvent evt) {
+			   
+			   servizio.setReturn("1");
+			   
+			   synchronized (thread){
+			       thread.notify();	
 			   }
-			  });
-		}
-		else if (project.equals("cittadini")) {
-			this.addWindowListener(new WindowAdapter() {
-				   public void windowClosing(WindowEvent evt) {
-					   
-					   dispose();
-					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null && exit");
-					        builder.redirectErrorStream(true);
-					        Process p;
-							try {
-								p = builder.start();
-								BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-						        String line;
-						        while (true) {
-						            line = r.readLine();
-						            if (line == null) { break; }
-						            System.out.println(line);
-						        }
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-				   }
-				  });
-		}
+			   setVisible(false);		   
+		   }
+		 });
+		
 		contentPane.setLayout(null);
 		contentPane.add(labelEmail);
 		contentPane.add(labelLogin);

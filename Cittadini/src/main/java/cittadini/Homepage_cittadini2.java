@@ -435,7 +435,12 @@ public class Homepage_cittadini2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				(new Home2("false", "null", "null")).setVisible(true);
+				try {
+					(new Home2("false", "null", "null")).setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				for(Eventi_Avversi x : listaAvversi)
 					x.dispose();
@@ -450,7 +455,12 @@ public class Homepage_cittadini2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				(new Registrazione_Cittadini2()).setVisible(true);
+				try {
+					(new Registrazione_Cittadini2()).setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				for(Eventi_Avversi x : listaAvversi)
 					x.dispose();

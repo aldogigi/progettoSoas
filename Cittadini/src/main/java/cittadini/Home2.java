@@ -10,14 +10,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,6 +38,7 @@ public class Home2 extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Homepage_cittadini2 Homepage;
 	private Registrazione_Cittadini2 Registrazione;
+	private Home2 home2 = this;
 
 	private JPanel contentPane;
 	private JTextField Email_CF;
@@ -53,17 +53,21 @@ public class Home2 extends JFrame {
 	private JPanel panel;
 
 	public static JLabel response;
+	private ProxyServer proxy;
 
 	/**
 	 * Il costruttore crea l'interfaccia grafica principale
 	 * @param cf 
 	 * @param args2 
 	 * @param args 
+	 * @throws Exception 
 	 * 
 	 * @exception Expceton se non si riesce a comunicare con il server o se il server è disconnesso
 	 */
-	public Home2(String checkOauthLogin, String token, String cf) {
+	public Home2(String checkOauthLogin, String token, String cf) throws Exception {
 		super("Login Cittadini");
+		
+		proxy = new ProxyServer();
 		
 		setBounds(100, 100, 516, 338);
 		contentPane = new JPanel();
@@ -144,23 +148,60 @@ public class Home2 extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				 dispose();
-				 ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login cittadini && exit");
-				        builder.redirectErrorStream(true);
-				        Process p;
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+				home2.setVisible(false);
+				
+				String result = "";
+				try {
+					result = proxy.openOauth("login", "cittadini");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(result.equals("1")) {
+					
+					home2.setVisible(true);
+					
+				}
+				else if (result.contains("2")) {
+					
+					String[] resultsplit = result.split("-");
+					
+					try {
+						Homepage = new Homepage_cittadini2();
+						TabbedPane = Homepage.getTabbedPane();
+						panel = Homepage.getPanel();
+						ProxyServer proxy = new ProxyServer();
+						System.out.println(resultsplit[2]);
+						String result2 = proxy.setCF(resultsplit[2]);
+						Homepage.set(result2);
+						Homepage.setCFnormale(resultsplit[2]);
+						Homepage.setTitle("Accesso da Autenticato");
+						Homepage.goSignIn().setVisible(false);
+						Homepage.goLogIn().setText("Logout");
+						Homepage.setVisible(true);
+						Homepage.Severita();
+						setVisible(false);
+						dispose();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+					JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Cittadino");
+					
+				}
+				else if (result.contains("3")) {
+					
+					System.out.println(result);
+					try {
+						Registrazione = new Registrazione_Cittadini2();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Registrazione.setVisible(true);
+					home2.setVisible(false);
+				}
 				        
 			}
 		});
@@ -181,7 +222,6 @@ public class Home2 extends JFrame {
 		AccessButtom.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ProxyServer proxy = null;
 				
 				String res = "";
 				if (Email_CF.getText().toString().length() == 0
@@ -240,30 +280,6 @@ public class Home2 extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Cittadini - Login");
 		setVisible(true);
-		
-		if(checkOauthLogin.equals("true")) {
-			
-			try {
-				Homepage = new Homepage_cittadini2();
-				TabbedPane = Homepage.getTabbedPane();
-				panel = Homepage.getPanel();
-				ProxyServer proxy = new ProxyServer();
-				System.out.println(cf);
-				String result = proxy.setCF(cf);
-				Homepage.set(result);
-				Homepage.setCFnormale(cf);
-				Homepage.setTitle("Accesso da Autenticato");
-				Homepage.goSignIn().setVisible(false);
-				Homepage.goLogIn().setText("Logout");
-				Homepage.setVisible(true);
-				Homepage.Severita();
-				setVisible(false);
-				dispose();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			
-		}
 		
 	}
 

@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
-
 /**
  * E' il proxy che viene usato dal client per comunicare con il server
  *
@@ -20,6 +19,7 @@ public class ProxyServer implements ServerInterface{
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
+	private InetAddress addr;
 	
 	/**
 	 * Il costruttore instaura un collegamento con il server e inizializza
@@ -29,7 +29,7 @@ public class ProxyServer implements ServerInterface{
 	 * @exception SocketEception se il server è disconesso
 	 */
 	public ProxyServer() throws IOException {
-		InetAddress addr = InetAddress.getByName(null);
+		addr = InetAddress.getByName(null);
 		try {
 		socket = new Socket(addr, ServerInterface.PORT);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -386,6 +386,31 @@ public class ProxyServer implements ServerInterface{
 		}
 		
 		return risposta;
+	}
+	
+	public String openOauth(String login, String operatori) throws IOException {
+
+		socket = new Socket(addr, ServerInterface.PORTOAUTH);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("openOauth:" + login + ":" + operatori);
+		
+		String risposta = in.readLine();
+		
+		System.out.println(risposta);
+		
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return risposta;
+		
 	}
 
 	

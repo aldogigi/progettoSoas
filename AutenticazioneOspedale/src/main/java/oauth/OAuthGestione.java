@@ -1,5 +1,4 @@
 package oauth;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -17,9 +16,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Color;
@@ -35,7 +31,6 @@ public class OAuthGestione extends JFrame {
 	private Container contentPane;
 	private JPanel panel;
 	private String timeToken;
-	private ProxyServer ps;
 	private String[] emails;
 	private Registrazione_OAuth registrazione;
 	private String checkLR = "";
@@ -43,29 +38,15 @@ public class OAuthGestione extends JFrame {
 	private String typeUser = "";
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					OAuthGestione frame = new OAuthGestione(args[0], args[1]);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
+	 * @param thread 
+	 * @param servizio 
+	 * @param context 
 	 * @throws Exception 
 	 */
-	public OAuthGestione(String checkLR, String project) throws Exception {
+	public OAuthGestione(Thread thread, Servizio servizio, String checkLR, String project) throws Exception {
 		
-		ps = new ProxyServer();
+		new ProxyServer();
 		
 		setBackground(new Color(119, 119, 255));
 		
@@ -90,7 +71,7 @@ public class OAuthGestione extends JFrame {
 		this.checkLR = checkLR;
 		System.out.print(this.checkLR);
 		
-		String allUserOAuthString = ps.allUserOAuth(project);
+		String allUserOAuthString = servizio.allUserOAuth(project);
 		if(allUserOAuthString.equals("niente")) {
 			JLabel nothing = new JLabel("Nessun utente trovato nel server OAuth");
 			panel.setBackground(Color.RED);
@@ -118,69 +99,36 @@ public class OAuthGestione extends JFrame {
 				token = riga[1];
 				String cf = riga[2];
 				String email = riga[3];
-				timeToken = riga[4];			
-				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(email, timeToken, this.checkLR, this, token, project, typeUser, cf);
+				timeToken = riga[4];
+				
+				OAuthGestione oauthgestione = this;
+				
+				OAuth_buttons_users oAuth_buttons = new OAuth_buttons_users(thread, servizio, getTitle(), email, timeToken, checkLR, oauthgestione, token, project, typeUser, cf);
 				panel.add(oAuth_buttons);
+			    
 			}
 		}
 		
-		if(project.equals("operatori")) {
-			
-			this.addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   
-				   dispose();
-				   ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null && exit");
-				        builder.redirectErrorStream(true);
-				        Process p;
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+		this.addWindowListener(new WindowAdapter() {
+		   public void windowClosing(WindowEvent evt) {
+			   
+			   servizio.setReturn("1");
+			   
+			   synchronized (thread){
+    		       thread.notify();	
 			   }
-			  });
-		}
-		else if (project.equals("cittadini")) {
-			this.addWindowListener(new WindowAdapter() {
-				   public void windowClosing(WindowEvent evt) {
-					   
-					   dispose();
-					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null && exit");
-					        builder.redirectErrorStream(true);
-					        Process p;
-							try {
-								p = builder.start();
-								BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-						        String line;
-						        while (true) {
-						            line = r.readLine();
-						            if (line == null) { break; }
-						            System.out.println(line);
-						        }
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-				   }
-				  });
-		}
-			
+			   
+			   setVisible(false);
+		   }
+		  });
+		
 		registati.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
 				try {
-					registrazione = new Registrazione_OAuth(checkLR, project);
+					registrazione = new Registrazione_OAuth(thread, servizio, checkLR, project);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -219,7 +167,7 @@ public class OAuthGestione extends JFrame {
 				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	
-		setResizable(false);
+		setResizable(true);
 		contentPane.add(scroll);
 		contentPane.setVisible(true);
 		setBounds(100,100,960,161);

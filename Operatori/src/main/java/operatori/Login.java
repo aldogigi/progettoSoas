@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
@@ -41,6 +39,7 @@ public class Login extends JFrame{
 	private JTextField Password;
 	private Registrazione registrazione;
 	private ProxyServer ps;
+	private Login login = this;
 	private JButton btnAutoLogin;
 	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
@@ -57,8 +56,6 @@ public class Login extends JFrame{
 					Login login = new Login(args[0], args[1]);
 					if(args[0].equals("true")) {
 						
-						HomepageOperatori HO = new HomepageOperatori(args[0], args[1]);
-						HO.setVisible(true);
 						JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
 						login.setVisible(false);
 						
@@ -82,7 +79,7 @@ public class Login extends JFrame{
 	public Login(final String checkOAuth, final String tokenUserOAuth) throws Exception{
 		
 		btnAutoLogin = new JButton("");
-		
+				
 		try {
 			ps = new ProxyServer();
 		}catch (Exception e) {
@@ -217,24 +214,47 @@ public class Login extends JFrame{
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				 dispose();
-				 ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar login operatori && exit");
-				        builder.redirectErrorStream(true);
-				        Process p;
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-				        
+				login.setVisible(false);
+				
+				String result = "";
+				try {
+					result = ps.openOauth("login", "operatori");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(result.equals("1")) {
+					
+					login.setVisible(true);
+					
+				}
+				else if (result.contains("2")) {
+					
+					String[] resultsplit = result.split("-");
+					HomepageOperatori HO = null;
+					try {
+						HO = new HomepageOperatori(resultsplit[1], resultsplit[2]);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					HO.setVisible(true);
+					JOptionPane.showMessageDialog(new JFrame(), "Benvenuto Operatore");
+					
+				}
+				else if (result.contains("3")){
+					System.out.println(result);
+					registrazione = new Registrazione(checkOAuth, tokenUserOAuth);
+					registrazione.setVisible(true);
+					setVisible(false);
+					
+				}
+				else {
+					System.out.println("errore");
+				}
+				
+				
 			}
 		});
 		

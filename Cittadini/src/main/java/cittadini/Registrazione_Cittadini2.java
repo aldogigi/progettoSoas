@@ -9,9 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +24,7 @@ import java.util.regex.Pattern;
 public class Registrazione_Cittadini2 extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
+	private Registrazione_Cittadini2 registrazione_Cittadini2 = this;
 	private JPanel contentPane;
 	private JTextField CF;
 	private JTextField Email;
@@ -45,6 +44,9 @@ public class Registrazione_Cittadini2 extends JFrame {
 	private Pattern CF_REGEX = Pattern.compile("^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$");
 	private JPasswordField ConfirmPass;
 	private JButton btnAutoLogin;
+	private ProxyServer proxy;
+	
+	
 	/*
 	 * La password deve avere una lunghezza di almeno otto (8) caratteri in cui il
 	 * sistema può supportarla. Le password devono includere caratteri di almeno due
@@ -53,11 +55,14 @@ public class Registrazione_Cittadini2 extends JFrame {
 
 	/**
 	 * Crea l'interfaccia grafica che mostra un form tramite quale l'utente può registrarsi
+	 * @throws Exception 
 	 * 
 	 * @exception Exception se non si riesce a comunicare con il server o se il server è disconnesso
 	 */
-	public Registrazione_Cittadini2() {
+	public Registrazione_Cittadini2() throws Exception {
 
+		proxy = new ProxyServer();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 552, 534);
 		contentPane = new JPanel();
@@ -133,24 +138,26 @@ public class Registrazione_Cittadini2 extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				 dispose();
-				 ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar registrazione cittadini && exit");
-				        builder.redirectErrorStream(true);
-				        Process p;
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+				registrazione_Cittadini2.setVisible(false);
+				
+				String result = "";
+				try {
+					result = proxy.openOauth("registrazione", "cittadini");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(result.equals("1")) {
+					
+					registrazione_Cittadini2.setVisible(true);
+					
+				}
+				else {
+					System.out.println("errore");
+				}
 				        
+				
 			}
 		});
 		
@@ -162,14 +169,18 @@ public class Registrazione_Cittadini2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				(new Home2("false", "null", "null")).setVisible(true);
+				try {
+					(new Home2("false", "null", "null")).setVisible(true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dispose();
 
 			}
 		});
 		SignInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				ProxyServer proxy = null;
 				
 				ErrorLabel.setForeground(Color.RED);
 				

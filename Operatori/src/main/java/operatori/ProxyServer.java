@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-
 /**
 * La classe fa da proxy con il server offrendo al client tutti i metodi per l'invio di dati
 * 
@@ -19,7 +18,6 @@ public class ProxyServer implements ServerInterface {
 	private BufferedReader in;
 	private PrintWriter out;
 	private InetAddress addr;
-
 	/**
 	 * Il costruttore definisce la Socket e gli oggetti I/O
 	 * 
@@ -179,6 +177,32 @@ public class ProxyServer implements ServerInterface {
 
 		String risposta = in.readLine();
 
+		try {
+			in.close();
+			out.close();
+			socket.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return risposta;
+		
+	}
+
+
+	public String openOauth(String login, String operatori) throws IOException {
+
+		socket = new Socket(addr, ServerInterface.PORTOAUTH);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		
+		out.println("openOauth:" + login + ":" + operatori);
+		
+		String risposta = in.readLine();
+		
+		System.out.println(risposta);
+		
 		try {
 			in.close();
 			out.close();

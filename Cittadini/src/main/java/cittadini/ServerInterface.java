@@ -10,6 +10,7 @@ package cittadini;
  */
 public interface ServerInterface {
 	public static final int PORT = 4444;
+	public static final int PORTOAUTH = 4445;
 
 	public String registraCittadino(String CF, String email, String password) throws Exception;
 

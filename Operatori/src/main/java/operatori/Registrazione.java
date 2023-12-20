@@ -5,9 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
@@ -38,6 +36,7 @@ public class Registrazione extends JFrame{
 	private JTextField EMail;
 	private JTextField Password;
 	private Login login;
+	private Registrazione registrazione = this;
 	private ProxyServer ps;
 	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
@@ -180,26 +179,29 @@ public class Registrazione extends JFrame{
 					
 		public void actionPerformed(ActionEvent e) {
 			
-			 dispose();
-			 ProcessBuilder builder = new ProcessBuilder(
-			            "cmd.exe", "/c", "java -jar AutenticazioneOspedale\\target\\AutenticazioneOspedale-1.0.jar registrazione operatori && exit");
-			        builder.redirectErrorStream(true);
-			        Process p;
-					try {
-						p = builder.start();
-						BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-				        String line;
-				        while (true) {
-				            line = r.readLine();
-				            if (line == null) { break; }
-				            System.out.println(line);
-				        }
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-			        
+				registrazione.setVisible(false);
+					
+				String result = "";
+				try {
+					result = ps.openOauth("registrazione", "operatori");
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-			});
+				
+				if(result.equals("1")) {
+					
+					registrazione.setVisible(true);
+					
+				}
+				else {
+					System.out.println(result);
+					System.out.println("errore");
+					
+				}
+			        
+			}
+		});
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(

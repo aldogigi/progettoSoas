@@ -30,6 +30,7 @@ import javax.swing.SwingConstants;
 import oauth.Login_OAuth;
 import oauth.OAuthGestione;
 import oauth.ProxyServer;
+import oauth.Servizio;
 
 /**
  * @author Gianluca Fontana 21452A
@@ -111,7 +112,7 @@ public class OAuth_buttons_users extends JButton {
      */
     private final JButton delete = new JButton("");
 
-    public OAuth_buttons_users(String email, String timeToken, String checkLR, OAuthGestione oAuthGestione, String token, String project, String typeUser, String cf) throws Exception{
+    public OAuth_buttons_users(Thread thread, Servizio servizio, String titleOAuth, String email, String timeToken, String checkLR, OAuthGestione oAuthGestione, String token, String project, String typeUser, String cf) throws Exception{
         //  Init Color
     	
     	ps = new ProxyServer();
@@ -170,8 +171,8 @@ public class OAuth_buttons_users extends JButton {
 				
 				int result = 0;
 				try {
-					result = ps.deleteUserOAuth(token);
-				} catch (IOException e1) {
+					result = servizio.deleteUserOAuth(token);
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -195,7 +196,7 @@ public class OAuth_buttons_users extends JButton {
 						JOptionPane.showMessageDialog(new JFrame(), "Utente OAuth in Operatori inesistente");
 					}
 					try {
-						OAuthGestione oAuthGestione2 = new OAuthGestione(checkLR, project);
+						OAuthGestione oAuthGestione2 = new OAuthGestione(thread, servizio, checkLR, project);
 						oAuthGestione2.setVisible(true);
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
@@ -260,7 +261,7 @@ public class OAuth_buttons_users extends JButton {
 						 System.out.println("Expired login");
 						 try {
 							 oAuthGestione.setVisible(false);
-							 loginOauth = new Login_OAuth(checkLR, token, project);
+							 loginOauth = new Login_OAuth(thread, servizio, checkLR, token, project);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -290,58 +291,56 @@ public class OAuth_buttons_users extends JButton {
 						}
 						if(project.equals("operatori")) {
 							if(presenceUserOAuth.equals("0")) {
-								oAuthGestione.dispose();
-								ProcessBuilder builder = null;
-								builder = new ProcessBuilder(
-							            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar true " + token + "");
-							
-						        builder.redirectErrorStream(true);
-						        Process p;
-								try {
-									p = builder.start();
-									BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-							        String line;
-							        while (true) {
-							            line = r.readLine();
-							            if (line == null) { break; }
-							            System.out.println(line);
-							        }
-								} catch (IOException e1) {
-									e1.printStackTrace();
+								
+								//true token
+								servizio.setReturn("2-true-"+token);
+								
+								synchronized (thread){
+					    		    thread.notify();	
 								}
+								
+								oAuthGestione.dispose();
+								
 							}
 							else if (presenceUserOAuth.equals("-1")) {
 								oAuthGestione.showOptionPane("Questo utente non e' presente all'interno del database degli Operatori");
 								
+								servizio.setReturn("3");
+								
+								synchronized (thread){
+					    		    thread.notify();	
+								}
+								
+								oAuthGestione.dispose();
 							}
 						}
 						else if(project.equals("cittadini")) {
 							if (presenceUserOAuth.equals("autenticazione")) {
-								oAuthGestione.dispose();
-								ProcessBuilder builder = null;
-								builder = new ProcessBuilder(
-							            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar true " + token + " " + cf + "");
-							
-						        builder.redirectErrorStream(true);
-						        Process p;
-								try {
-									p = builder.start();
-									BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-							        String line;
-							        while (true) {
-							            line = r.readLine();
-							            if (line == null) { break; }
-							            System.out.println(line);
-							        }
-								} catch (IOException e1) {
-									e1.printStackTrace();
+								//true token
+								servizio.setReturn("2-true-"+token+"-"+cf+"");
+								
+								synchronized (thread){
+					    		    thread.notify();	
 								}
+								
+								oAuthGestione.dispose();
 							} else if (presenceUserOAuth.equals("non ho trovato ne' CF ne' Email sul Db, Registrati!")) {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "non ho trovato ne' CF ne' Email sul Db, Registrati!");
+								servizio.setReturn("3");
+								
+								synchronized (thread){
+					    		    thread.notify();	
+								}
+								
+								oAuthGestione.dispose();
+								
 							} else if (presenceUserOAuth.equals("password errata")) {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "password errata");
 
 							} else if (presenceUserOAuth.equals("Il codice fiscale ha tutte lettere maiuscole")) {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "Il codice fiscale ha tutte lettere maiuscole");
 
 							}
@@ -354,7 +353,7 @@ public class OAuth_buttons_users extends JButton {
 						 System.out.println("Expired registrazione");
 						 try {
 							 oAuthGestione.setVisible(false);
-							 loginOauth = new Login_OAuth(checkLR, token, project);
+							 loginOauth = new Login_OAuth(thread, servizio, checkLR, token, project);
 							} catch (Exception e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -378,6 +377,14 @@ public class OAuth_buttons_users extends JButton {
 								
 								JOptionPane.showMessageDialog(new JFrame(), "Utente inserito correttamente!");
 								
+								oAuthGestione.dispose();
+								servizio.setReturn("1");
+								   
+								   synchronized (thread){
+					    		       thread.notify();	
+								   }
+								   
+								   setVisible(false);
 							}
 							else {
 								
@@ -399,12 +406,18 @@ public class OAuth_buttons_users extends JButton {
 								JOptionPane.showMessageDialog(new JFrame(), "Utente gia' registrato!");
 								
 							} else if (result.equals("L'utente non si e' ancora vaccinato")) {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "L'utente non si e' ancora vaccinato");
-
+								
+								
 							} else if (result.equals("inserimento avvenuto")) {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "inserimento avvenuto");
+								
 							} else {
+								
 								JOptionPane.showMessageDialog(new JFrame(), "errore");
+								
 							}
 							
 						}
@@ -413,6 +426,7 @@ public class OAuth_buttons_users extends JButton {
 			}
 		
 		});
+        
     }
     
     @Override

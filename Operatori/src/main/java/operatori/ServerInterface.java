@@ -10,6 +10,7 @@ import java.io.IOException;
 */
 public interface ServerInterface {
 	public static final int PORT = 4444;
+	public static final int PORTOAUTH = 4445;
 
 	public int inserisciCV(String param) throws IOException;
 

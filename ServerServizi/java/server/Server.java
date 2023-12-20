@@ -24,7 +24,7 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader in = new BufferedReader (new InputStreamReader(System.in)); 
-		System.out.print("Inserisci la porta:\n4444 per ServerServizi e 4445 per ServerOauth:\n");
+		System.out.print("Inserisci la porta:\n4444 per ServerServizi:\n");
 		portServiziOauth = in.readLine(); 
 		
 		int PORT = Integer.parseInt(portServiziOauth); /*Porta su cui gira la ServerSocket*/

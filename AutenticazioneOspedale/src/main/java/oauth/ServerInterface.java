@@ -7,5 +7,7 @@ package oauth;
 * @author Alex Rabuffetti 20290A
 */
 public interface ServerInterface {
-	public static final int PORT = 4445;
+	public static final int PORTOAUTH = 4445;
+	public static final int PORT = 4444;
+	
 }

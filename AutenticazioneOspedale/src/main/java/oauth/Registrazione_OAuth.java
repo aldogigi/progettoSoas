@@ -37,18 +37,18 @@ public class Registrazione_OAuth extends JFrame{
 	private JTextField EMail;
 	private JTextField Password;
 	private OAuthGestione oauth;
-	private ProxyServer ps;
+	private Registrazione_OAuth registrazione_OAuth = this;
 	private Pattern EMAIL_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 	private Pattern PASSWORD_REGEX = Pattern.compile("^.*(?=.*[A-Z])(?=.{8,})(?=.*\\d)(?=.*[a-z])(?=.*[!@#$%^&]).*$");
 	private JTextField CF;
 
 	/**
 	 * Create the frame.
+	 * @param context 
 	 * @param project 
 	 * @param check 
 	 */
-	public Registrazione_OAuth(String checkLR, String project) throws Exception{
-		ps = new ProxyServer();
+	public Registrazione_OAuth(Thread thread, Servizio servizio, String checkLR, String project) throws Exception{
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -127,14 +127,22 @@ public class Registrazione_OAuth extends JFrame{
 					
 					
 					try {
-						result = ps.inserNewUserOauth(emailString + ":" + passwordString + ":" + timestamp + ":" + cFString + ":" + project);
-					} catch (IOException e1) {
+						result = servizio.inserNewUserOauth(emailString, passwordString, timestamp, cFString, project);
+					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					if(result > 0) {
 						
 						JOptionPane.showMessageDialog(new JFrame(), "Utente inserito correttamente");
+						try {
+							oauth = new OAuthGestione(thread, servizio, checkLR, project);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						 oauth.setVisible(true);
+						 registrazione_OAuth.setVisible(false);
 						
 					}
 					else {
@@ -155,14 +163,14 @@ public class Registrazione_OAuth extends JFrame{
 			
 			public void mouseClicked(MouseEvent e) {
 
-				 try {
-					oauth = new OAuthGestione(checkLR, project);
+				try {
+					oauth = new OAuthGestione(thread, servizio, checkLR, project);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				 oauth.setVisible(true);
-				 setVisible(false);
+				 registrazione_OAuth.setVisible(false);
 				
 			}
 			
@@ -186,56 +194,19 @@ public class Registrazione_OAuth extends JFrame{
 				
 			}
 		});
-		
-		if(project.equals("operatori")) {
 			
-			this.addWindowListener(new WindowAdapter() {
-			   public void windowClosing(WindowEvent evt) {
-				   
-				   dispose();
-				   ProcessBuilder builder = new ProcessBuilder(
-				            "cmd.exe", "/c", "java -jar Operatori\\target\\Operatori-1.0.jar false null && exit");
-				        builder.redirectErrorStream(true);
-				        Process p;
-						try {
-							p = builder.start();
-							BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					        String line;
-					        while (true) {
-					            line = r.readLine();
-					            if (line == null) { break; }
-					            System.out.println(line);
-					        }
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
+		this.addWindowListener(new WindowAdapter() {
+		   public void windowClosing(WindowEvent evt) {
+			   
+			   servizio.setReturn("1");
+			   
+			   synchronized (thread){
+    		       thread.notify();	
 			   }
-			  });
-		}
-		else if (project.equals("cittadini")) {
-			this.addWindowListener(new WindowAdapter() {
-				   public void windowClosing(WindowEvent evt) {
-					   
-					   dispose();
-					   ProcessBuilder builder = new ProcessBuilder(
-					            "cmd.exe", "/c", "java -jar Cittadini\\target\\Cittadini-1.0.jar false null null && exit");
-					        builder.redirectErrorStream(true);
-					        Process p;
-							try {
-								p = builder.start();
-								BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-						        String line;
-						        while (true) {
-						            line = r.readLine();
-						            if (line == null) { break; }
-						            System.out.println(line);
-						        }
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-				   }
-				  });
-		}
+			   setVisible(false);	
+			   
+		   }
+		  });
 		
 		contentPane.setLayout(null);
 		contentPane.add(labelPassword);
