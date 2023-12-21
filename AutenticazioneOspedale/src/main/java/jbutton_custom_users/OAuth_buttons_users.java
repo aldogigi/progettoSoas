@@ -111,7 +111,6 @@ public class OAuth_buttons_users extends JButton {
     private final JButton delete = new JButton("");
 
     public OAuth_buttons_users(Thread thread, Servizio servizio, String titleOAuth, String email, String timeToken, String checkLR, OAuthGestione oAuthGestione, String token, String project, String typeUser, String cf) throws Exception{
-        //  Init Color
     	
     	ps = new ProxyServer();
     	GridLayout gl = new GridLayout();
