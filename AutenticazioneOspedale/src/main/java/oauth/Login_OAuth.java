@@ -44,7 +44,6 @@ public class Login_OAuth extends JFrame{
 	 */
 	public Login_OAuth(Thread thread, Servizio servizio, String checkLR, String token, String project){
 				
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 695, 442);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

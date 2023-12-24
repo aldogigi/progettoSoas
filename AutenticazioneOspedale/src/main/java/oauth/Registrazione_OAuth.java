@@ -47,7 +47,6 @@ public class Registrazione_OAuth extends JFrame{
 	 */
 	public Registrazione_OAuth(Thread thread, Servizio servizio, String checkLR, String project) throws Exception{
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
